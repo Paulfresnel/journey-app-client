@@ -1,0 +1,8 @@
+.flex-step{
+    display: flex;
+    flex-direction: column;
+  }
+  
+.steps-table{
+    margin: 0 auto;
+}
