@@ -12,7 +12,3 @@ code {
     monospace;
 }
 
-.flex-step{
-  display: flex;
-  flex-direction: column;
-}

@@ -1,24 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState} from "react"
+import { useParams } from "react-router-dom"
 import axios from "axios"
-import './CreateStep.css'
-import { Link } from "react-router-dom"
+import "./EditStep.css"
 
-function CreateStep(){
 
+function EditStep(){
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
     ])
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
-
-
     const [notesFields, setNotesFields] = useState([
         ""
     ])
-
+    
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
-        if (event.target.parentNode.className === "parent"){
+        if (event.target.parentNode.parentNode.className === "parent flex-row"){
            let data = [...linkFields]
         data[index][event.target.name] = event.target.value
         setStep({...step, links: data})
@@ -59,15 +56,24 @@ function CreateStep(){
         }     
     }
 
-    const formHandleSubmit = (e)=>{
-        e.preventDefault()
-        console.log(step)
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/steps`, step)
+
+    const {stepId} = useParams()
+    console.log(stepId)
+    const [isLoading, setIsLoading] = useState(true)
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
+
+
+    useEffect( ()=>{
+       axios.get(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`)
             .then(response=>{
                 console.log("response")
-                console.log(response.data.step)
+                const data = response.data
+                setLinkFields(data.links)
+                setNotesFields(data.notes)
+                setStep(data)
+                setIsLoading(false)
             })
-    }
+    }, [stepId])
 
     const handleChange = (e)=>{
         const name = e.target.name;
@@ -75,42 +81,26 @@ function CreateStep(){
         setStep({...step, [name]: value})
     }
 
+    const handleFormSubmit =(e)=>{
+        e.preventDefault()
+        console.log("info sent:")
+        console.log(step)
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`, {step})
+            .then(response=>{
+                const data = response.data.step
+                console.log(data)
+                setStep(data)
+            })
+    }
+
     return(
-        <div className="flex-step">
+        <div>
+            {isLoading ? <p>Data is Loading..</p> : 
+
             <div>
-                <h1>Block's Edition Page</h1>
-                <h2>Step's Creation Page</h2>
-            </div>
-            <div>
-                <h3>Current Steps in the Learning Block:</h3>
-                <table className="steps-table">
-                    <thead>
-                        <tr>
-                            <td>Step #</td>
-                            <td>Title</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Leaning javascript</td>
-                            <td>
-                            <Link to={"/edit-step/63e403947b21639c6d7398eb"}>
-                                <button>More Info</button>
-                                </Link>
-                            </td>
-                            <td>
-                                <button>Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <h1>Add a new Step</h1>
-                <form>
+            <h2>Edit your Step information</h2>
+            
+            <form onSubmit={(e)=>handleFormSubmit(e)}>
                     <div>
                         <label>Title:</label>
                         <input onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
@@ -119,6 +109,7 @@ function CreateStep(){
                         <label>Description:</label>
                         <input onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
                     </div>
+                    
                     <div>
                         <label>Difficulty:</label>
                         <select onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
@@ -137,47 +128,55 @@ function CreateStep(){
                             <option>Optional - Bonus Knowledge</option>
                         </select>
                     </div>
-                    <div>
-                        <label>Image:</label>
+                    <div className="flex-c">
+                        <img className="step-image"  src={step.image}/>
+                        <label>Update Image by URL:</label>
                         <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
-                    </div>
+                    </div>  
+
                     <div>
-                    <h3>Add Link Resources</h3>
+                    <h3>Edit your Link Resources</h3>
                     {linkFields.map((input, index) => {
           return (
-            <div key={index} className="parent"> 
+            <div key={index} className="parent flex-row">
+            <div className="flex-column">
+            <label>Change the Name:</label>
               <input required
                 name='name'
                 placeholder='name your link resource'
                 value={input.name}
                 onChange={(event) => handleFieldsChange(index, event)}
               />
+              </div>
+              <div className="flex-column">
+            <label>Change the Link:</label>
               <input required
                 name='link'
                 placeholder='link https:// ressource here'
                 value={input.link}
                 onChange={(event) => handleFieldsChange(index, event)}
               />
-              <button name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
+              </div>
+              <button className="remove" name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
             </div>
           )
         })}
         <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
         </div>
 
-
         <div>
-            <h3>Add Notes</h3>
+            <h3>Edit your Notes</h3>
             {notesFields.map((input, index) => {
           return (
-            <div key={index}>
-              <input required
+            <div key={index} className="flex-r">
+              <textarea className="large" required
+                rows="2" cols="35"
                 name='note'
                 placeholder='write your note..'
-                value={input.name}
+                value={input}
                 onChange={(event) => handleFieldsChange(index, event)}
               />
-              <button name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+              <button className="remove" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
             </div>
           )
         })}
@@ -187,12 +186,15 @@ function CreateStep(){
 
 
 
-        
-        <button onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
-                </form>
-            </div>
+
+
+                    <button type="submit">Submit Form</button>
+                    </form>
+
+                    </div>
+                }
         </div>
     )
 }
 
-export default CreateStep
+export default EditStep
