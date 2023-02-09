@@ -166,7 +166,7 @@ function CreateStep(){
 
 
         <div>
-            <h3>Add Link Resources</h3>
+            <h3>Add Notes</h3>
             {notesFields.map((input, index) => {
           return (
             <div key={index}>
