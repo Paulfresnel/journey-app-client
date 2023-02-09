@@ -3,7 +3,7 @@ import './App.css';
 import CreateStep from './components/CreateStep/CreateStep';
 import {Routes, Route} from "react-router-dom"
 import { Link } from 'react-router-dom';
-import EditStep from './components/EditStep.js/EditStep';
+import EditStep from './components/EditStep/EditStep';
 
 function App() {
   return (

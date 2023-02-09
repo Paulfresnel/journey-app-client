@@ -1,0 +1,59 @@
+.step-image{
+    margin: 0 auto;
+    width: 350px;
+    border: 1px black solid;
+    outline: 2px red solid;
+    outline-offset: 10px;
+    margin-bottom: 35px;
+}
+
+.flex-c{
+    margin: 0 auto;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 25px;
+    padding-bottom: 35px;
+}
+
+.large{
+    width: 500px;
+}
+
+.flex-r{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px 0px 10px 0px;
+}
+
+.flex-row{
+    margin: 0 auto;
+    width: 55%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 1px solid black;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 35px;
+
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.remove{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+}
+
+.remove:hover{
+    cursor: pointer;
+}
