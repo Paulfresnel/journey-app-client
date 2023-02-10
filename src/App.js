@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import CreateStep from './components/CreateStep/CreateStep';
+import CreateBlock from './components/CreateBlock/CreateBlock';
 import {Routes, Route} from "react-router-dom"
 import { Link } from 'react-router-dom';
 import EditStep from './components/EditStep/EditStep';
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path={"/create-step"} element={<CreateStep/>} />
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
+        <Route path={"/blocks"} element={<CreateBlock/>}/>
       </Routes>
     </div>
   );
