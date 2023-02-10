@@ -1,10 +1,15 @@
 import { useEffect, useState} from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./EditStep.css"
 
 
+
 function EditStep(){
+    const navigate = useNavigate()
+    const {stepId} = useParams()
+    const [isLoading, setIsLoading] = useState(true)
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
@@ -21,7 +26,7 @@ function EditStep(){
         setStep({...step, links: data})
         setLinkFields(data) 
         } 
-        else if (event.target.name === "note"){
+        else if (event.target.name === "notes"){
             let data = [...notesFields]
         data[index] = event.target.value
         setStep({...step, notes: data})
@@ -45,35 +50,19 @@ function EditStep(){
 
     const removeFields = (index, event)=>{
         if (event.target.name === "removeNote"){
-            let data = [...notesFields]
+        let data = [...notesFields]
         data.splice(index, 1)
         setNotesFields(data)
+        setStep({...step, notes: data})
+
         }
         else if (event.target.name === "removeLink"){
             let data = [...linkFields]
             data.splice(index, 1)
             setLinkFields(data)
+            setStep({...step, links: data})
         }     
     }
-
-
-    const {stepId} = useParams()
-    console.log(stepId)
-    const [isLoading, setIsLoading] = useState(true)
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
-
-
-    useEffect( ()=>{
-       axios.get(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`)
-            .then(response=>{
-                console.log("response")
-                const data = response.data
-                setLinkFields(data.links)
-                setNotesFields(data.notes)
-                setStep(data)
-                setIsLoading(false)
-            })
-    }, [stepId])
 
     const handleChange = (e)=>{
         const name = e.target.name;
@@ -90,9 +79,26 @@ function EditStep(){
                 const data = response.data.step
                 console.log(data)
                 setStep(data)
+                navigate(-1)
             })
     }
 
+    
+
+
+    useEffect( ()=>{
+       axios.get(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`)
+            .then(response=>{
+                console.log("response")
+                const data = response.data
+                setLinkFields(data.links)
+                setNotesFields(data.notes)
+                setStep(data)
+                setIsLoading(false)
+            })
+    }, [stepId])
+
+   
     return(
         <div>
             {isLoading ? <p>Data is Loading..</p> : 
@@ -171,7 +177,7 @@ function EditStep(){
             <div key={index} className="flex-r">
               <textarea className="large" required
                 rows="2" cols="35"
-                name='note'
+                name='notes'
                 placeholder='write your note..'
                 value={input}
                 onChange={(event) => handleFieldsChange(index, event)}
