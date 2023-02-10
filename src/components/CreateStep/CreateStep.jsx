@@ -5,12 +5,13 @@ import { Link } from "react-router-dom"
 
 function CreateStep(){
 
+    const [imageUrl,setImageUrl] = useState('')
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
     ])
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
     const [notesFields, setNotesFields] = useState([
         ""
@@ -57,6 +58,30 @@ function CreateStep(){
             data.splice(index, 1)
             setLinkFields(data)
         }     
+    }
+
+    const uploadImage = (file) => {
+        return axios.post("http://localhost:5005/api/upload", file)
+          .then(res => {
+            console.log("file url from cloudinary")
+            console.log(res.data)
+            setImageUrl(res.data.fileUrl)
+            setStep({...step, image: res.data.fileUrl})
+        })
+          .catch(err=>console.log(err));
+      }
+
+    const handleFileUpload= (e)=>{
+        const uploadData = new FormData();
+ 
+
+    uploadData.append("imageUrl", e.target.files[0]);
+    uploadImage(uploadData)
+        .then(response=>{
+            console.log("file url is returning...:")
+            console.log(response)
+        })
+        .catch(err=>console.log(err))
     }
 
     const formHandleSubmit = (e)=>{
@@ -134,12 +159,13 @@ function CreateStep(){
                         <option disabled>-- Choose Degree of importance --</option>
                             <option>Critical</option>
                             <option>Recommended</option>
-                            <option>Optional - Bonus Knowledge</option>
+                            <option>Optional</option>
                         </select>
                     </div>
                     <div>
                         <label>Image:</label>
                         <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
+                        <input  type="file" onChange={(e) => handleFileUpload(e)} />
                     </div>
                     <div>
                     <h3>Add Link Resources</h3>
