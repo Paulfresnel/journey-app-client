@@ -14,6 +14,12 @@ function App() {
     <Link to={"/create-step"}>
     <button>Create a New Step</button>
     </Link>
+    <Link to={"/blocks"}>
+    <button>Create a Block</button>
+    </Link>
+    <Link to={"/journeys"}>
+    <button>Create a Journey</button>
+    </Link>
       <Routes>
         <Route path={"/create-step"} element={<BlocksStepsPage/>} />
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
