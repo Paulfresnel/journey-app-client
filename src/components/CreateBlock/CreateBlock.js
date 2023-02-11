@@ -3,15 +3,17 @@ import axios from "axios"
 import './CreateBlock.css'
 import { Link } from "react-router-dom"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
+const testArray = [];
 
 function CreateBlock() {
 
-    const testBlocks = [];
+   
 
     const [block, setBlock] = useState('');
-    const [blocksInJourney, setBlocksInJourney] = useState('');
+    const [blocksInJourney, setBlocksInJourney] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
 
+    console.log(blocksInJourney)
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -19,13 +21,16 @@ function CreateBlock() {
         setBlock({...block, [name] : value});
     }
 
+   
+
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(`${API_ROUTE}/api/23408393/blocks`, block)
             .then(createdBlock => {
-                testBlocks.push(createdBlock);
-                setBlocksInJourney(testBlocks)
-            })
+                testArray.push({block: createdBlock.data});
+                setBlocksInJourney(testArray);
+
+             })
             .catch(err => {
                 setErrorMessage(err.response.data.message)
             })
@@ -35,11 +40,11 @@ function CreateBlock() {
         <div>
             <div>
                 {blocksInJourney && blocksInJourney.map(blocks => {
-                    <div>
-                        <h1>{blocks.name}</h1>
-                        <h2>{blocks.description}</h2>
-                        <h2>{blocks.category}</h2>
-                        <h2>{blocks.importance}</h2>
+                   return <div>
+                        <h1>{blocks.block.name}</h1>
+                        <h2>{blocks.block.description}</h2>
+                        <h2>{blocks.block.category}</h2>
+                        <h2>{blocks.block.importance}</h2>
                     </div>
                 })}
             </div>
