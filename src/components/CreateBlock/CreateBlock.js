@@ -29,7 +29,7 @@ function CreateBlock() {
                 testArray.push({block: createdBlock.data});
                 setBlocksInJourney(testArray);
              })
-             
+
             .catch(err => {
                 setErrorMessage(err.response.data.message)
             })
@@ -37,6 +37,7 @@ function CreateBlock() {
 
     return(
         <div>
+            <h1>Create a Block</h1>
             <div>
                 {blocksInJourney && blocksInJourney.map(blocks => {
                    return <div>

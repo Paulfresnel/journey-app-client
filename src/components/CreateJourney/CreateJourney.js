@@ -47,6 +47,7 @@ function CreateJourney(){
 
     return(
         <div>
+            <h1>Create a Journey</h1>
             <form onSubmit={(event) => handleSubmit(event)}>
                 <label>Title:
                     <input type='text' name='title' onChange={(event) => setTitle(event.target.value)}/>
