@@ -22,15 +22,14 @@ function CreateBlock() {
     }
 
    
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(`${API_ROUTE}/api/23408393/blocks`, block)
+        axios.post(`${API_ROUTE}/api/blocks`, block)
             .then(createdBlock => {
                 testArray.push({block: createdBlock.data});
                 setBlocksInJourney(testArray);
-
              })
+             
             .catch(err => {
                 setErrorMessage(err.response.data.message)
             })
