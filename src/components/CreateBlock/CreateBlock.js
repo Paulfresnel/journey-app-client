@@ -1,10 +1,13 @@
 import { useState } from "react"
 import axios from "axios"
 import './CreateBlock.css'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
 function CreateBlock() {
+
+    const navigate = useNavigate()
 
     const testBlocks = [];
 
@@ -21,10 +24,14 @@ function CreateBlock() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(`${API_ROUTE}/api/23408393/blocks`, block)
+        axios.post(`${API_ROUTE}/api/blocks`, block)
             .then(createdBlock => {
                 testBlocks.push(createdBlock);
+                let newBlock = createdBlock.data
+                console.log(newBlock)
                 setBlocksInJourney(testBlocks)
+                navigate(`/blocks/${newBlock._id}/edit`)
+
             })
             .catch(err => {
                 setErrorMessage(err.response.data.message)
