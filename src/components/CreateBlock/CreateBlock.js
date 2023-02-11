@@ -4,17 +4,21 @@ import './CreateBlock.css'
 import { Link, useNavigate } from "react-router-dom"
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
+const testArray = [];
 
 function CreateBlock() {
+
 
     const navigate = useNavigate()
 
     const testBlocks = [];
 
+
     const [block, setBlock] = useState('');
-    const [blocksInJourney, setBlocksInJourney] = useState('');
+    const [blocksInJourney, setBlocksInJourney] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
 
+    console.log(blocksInJourney)
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -22,10 +26,12 @@ function CreateBlock() {
         setBlock({...block, [name] : value});
     }
 
+   
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(`${API_ROUTE}/api/blocks`, block)
             .then(createdBlock => {
+
                 testBlocks.push(createdBlock);
                 let newBlock = createdBlock.data
                 console.log(newBlock)
@@ -33,6 +39,7 @@ function CreateBlock() {
                 navigate(`/blocks/${newBlock._id}/edit`)
 
             })
+
             .catch(err => {
                 setErrorMessage(err.response.data.message)
             })
@@ -40,13 +47,14 @@ function CreateBlock() {
 
     return(
         <div>
+            <h1>Create a Block</h1>
             <div>
                 {blocksInJourney && blocksInJourney.map(blocks => {
-                    <div>
-                        <h1>{blocks.name}</h1>
-                        <h2>{blocks.description}</h2>
-                        <h2>{blocks.category}</h2>
-                        <h2>{blocks.importance}</h2>
+                   return <div>
+                        <h1>{blocks.block.name}</h1>
+                        <h2>{blocks.block.description}</h2>
+                        <h2>{blocks.block.category}</h2>
+                        <h2>{blocks.block.importance}</h2>
                     </div>
                 })}
             </div>
