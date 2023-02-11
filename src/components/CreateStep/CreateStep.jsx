@@ -2,9 +2,10 @@ import { useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function CreateStep(){
-
+    const navigate= useNavigate()
     const [imageUrl,setImageUrl] = useState('')
 
     const [linkFields, setLinkFields] = useState([
@@ -16,9 +17,13 @@ function CreateStep(){
     const [notesFields, setNotesFields] = useState([
         ""
     ])
+    const [linkMessage, setLinkMessage] = useState('')
+    const [noteMessage, setNoteMessage] = useState('')
+    const [formMessage, setFormMessage] = useState('')
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
+        setFormMessage('')
         if (event.target.parentNode.className === "parent"){
            let data = [...linkFields]
         data[index][event.target.name] = event.target.value
@@ -36,11 +41,14 @@ function CreateStep(){
 
     const addFields = (e) =>{
         e.preventDefault()
+        
         if (e.target.name === "addNote"){
+            setNoteMessage('')
             let newField = ""
             setNotesFields([...notesFields, newField])
         }
         else if (e.target.name === "addLink"){
+            setLinkMessage('')
             let newField = {name:"", link:""}
             setLinkFields([...linkFields, newField])
         }
@@ -50,15 +58,25 @@ function CreateStep(){
     const removeFields = (index, event)=>{
         if (event.target.name === "removeNote"){
             let data = [...notesFields]
+            if (data.length<=1){
+                setNoteMessage("You need to write at least 1 note for your step")
+             }
+             else {
         data.splice(index, 1)
         setNotesFields(data)
         }
+    }
         else if (event.target.name === "removeLink"){
             let data = [...linkFields]
+            if (data.length<=1){
+                setLinkMessage("You need to have at least 1 Link resource attached to your step!")
+             }
+             else {
             data.splice(index, 1)
             setLinkFields(data)
         }     
     }
+}
 
     const uploadImage = (file) => {
         return axios.post("http://localhost:5005/api/upload", file)
@@ -86,11 +104,13 @@ function CreateStep(){
 
     const formHandleSubmit = (e)=>{
         e.preventDefault()
-        console.log(step)
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/steps`, step)
             .then(response=>{
                 console.log("response")
+                console.log(response.data)
                 console.log(response.data.step)
+                setFormMessage(response.data.message)
+                setTimeout(navigate(`/edit-step/${response.data.step._id}`, 1500))
             })
     }
 
@@ -98,56 +118,27 @@ function CreateStep(){
         const name = e.target.name;
         const value = e.target.value;
         setStep({...step, [name]: value})
+        setFormMessage('')
     }
 
     return(
         <div className="flex-step">
-            <div>
-                <h1>Block's Edition Page</h1>
-                <h2>Step's Creation Page</h2>
-            </div>
-            <div>
-                <h3>Current Steps in the Learning Block:</h3>
-                <table className="steps-table">
-                    <thead>
-                        <tr>
-                            <td>Step #</td>
-                            <td>Title</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Leaning javascript</td>
-                            <td>
-                            <Link to={"/edit-step/63e403947b21639c6d7398eb"}>
-                                <button>More Info</button>
-                                </Link>
-                            </td>
-                            <td>
-                                <button>Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
             <div>
                 <h1>Add a new Step</h1>
                 <form>
                     <div>
                         <label>Title:</label>
-                        <input onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
+                        <input required onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
                     </div>
                     <div>
                         <label>Description:</label>
-                        <input onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
+                        <input required onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
                     </div>
                     <div>
                         <label>Difficulty:</label>
-                        <select onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
-                        <option disabled defaultValue>-- Choose Difficulty of the Step --</option>
+                        <select required onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
+                        <option disabled selected>-- Choose Difficulty of the Step --</option>
                             <option default>High</option>
                             <option>Medium</option>
                             <option>Low</option>
@@ -155,8 +146,8 @@ function CreateStep(){
                     </div>
                     <div>
                         <label>Importance:</label>
-                        <select onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
-                        <option disabled>-- Choose Degree of importance --</option>
+                        <select required onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
+                        <option disabled selected>-- Choose Degree of importance --</option>
                             <option>Critical</option>
                             <option>Recommended</option>
                             <option>Optional</option>
@@ -164,11 +155,12 @@ function CreateStep(){
                     </div>
                     <div>
                         <label>Image:</label>
-                        <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
+                        <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
                         <input  type="file" onChange={(e) => handleFileUpload(e)} />
                     </div>
                     <div>
                     <h3>Add Link Resources</h3>
+                    {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                     {linkFields.map((input, index) => {
           return (
             <div key={index} className="parent"> 
@@ -194,6 +186,7 @@ function CreateStep(){
 
         <div>
             <h3>Add Notes</h3>
+            {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
             {notesFields.map((input, index) => {
           return (
             <div key={index}>
@@ -213,7 +206,7 @@ function CreateStep(){
 
 
 
-        
+        {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
         <button onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
                 </form>
             </div>

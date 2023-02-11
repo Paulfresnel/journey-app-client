@@ -5,6 +5,7 @@ import CreateBlock from './components/CreateBlock/CreateBlock';
 import {Routes, Route} from "react-router-dom"
 import { Link } from 'react-router-dom';
 import EditStep from './components/EditStep/EditStep';
+import BlocksStepsPage from './components/BlockStepsPage/BlocksStepsPage';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
     <button>Create a New Step</button>
     </Link>
       <Routes>
-        <Route path={"/create-step"} element={<CreateStep/>} />
+        <Route path={"/create-step"} element={<BlocksStepsPage/>} />
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
         <Route path={"/blocks"} element={<CreateBlock/>}/>
       </Routes>

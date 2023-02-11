@@ -9,7 +9,11 @@ function EditStep(){
     const navigate = useNavigate()
     const {stepId} = useParams()
     const [isLoading, setIsLoading] = useState(true)
+    const [imageUrl, setImageUrl] = useState("")
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
+    const [linkMessage, setLinkMessage] = useState('')
+    const [noteMessage, setNoteMessage] = useState('')
+
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
@@ -49,19 +53,35 @@ function EditStep(){
     }
 
     const removeFields = (index, event)=>{
-        if (event.target.name === "removeNote"){
+        event.preventDefault()
+     console.log(index)
+        if (event.target.name === "removeNote" ){
+            
         let data = [...notesFields]
+        if (data.length<=1){
+            setNoteMessage("You can not erase all the notes, please add another one before deleting this one")
+         }
+         else {
         data.splice(index, 1)
         setNotesFields(data)
         setStep({...step, notes: data})
-
-        }
+         }
+    }
+        
         else if (event.target.name === "removeLink"){
+            console.log(event)
             let data = [...linkFields]
+            console.log(data.length)
+            if (data.length<=1){
+                setLinkMessage("You can not erase all the links, please add another one before deleting this one")
+             }
+             else {
             data.splice(index, 1)
             setLinkFields(data)
             setStep({...step, links: data})
-        }     
+        }
+         
+     }  
     }
 
     const handleChange = (e)=>{
@@ -82,6 +102,29 @@ function EditStep(){
                 navigate(-1)
             })
     }
+    const uploadImage = (file) => {
+        return axios.post("http://localhost:5005/api/upload", file)
+          .then(res => {
+            console.log("file url from cloudinary")
+            console.log(res.data)
+            setImageUrl(res.data.fileUrl)
+            setStep({...step, image: res.data.fileUrl})
+        })
+          .catch(err=>console.log(err));
+      }
+
+    const handleFileUpload= (e)=>{
+        const uploadData = new FormData();
+ 
+
+    uploadData.append("imageUrl", e.target.files[0]);
+    uploadImage(uploadData)
+        .then(response=>{
+            console.log("file url is returning...:")
+            console.log(response)
+        })
+        .catch(err=>console.log(err))
+    }
 
     
 
@@ -94,6 +137,7 @@ function EditStep(){
                 setLinkFields(data.links)
                 setNotesFields(data.notes)
                 setStep(data)
+                setImageUrl(data.image)
                 setIsLoading(false)
             })
     }, [stepId])
@@ -119,7 +163,7 @@ function EditStep(){
                     <div>
                         <label>Difficulty:</label>
                         <select onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
-                        <option disabled defaultValue>-- Choose Difficulty of the Step --</option>
+                        <option disabled selected defaultValue>-- Choose Difficulty of the Step --</option>
                             <option default>High</option>
                             <option>Medium</option>
                             <option>Low</option>
@@ -128,7 +172,7 @@ function EditStep(){
                     <div>
                         <label>Importance:</label>
                         <select onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
-                        <option disabled>-- Choose Degree of importance --</option>
+                        <option disabled selected>-- Choose Degree of importance --</option>
                             <option>Critical</option>
                             <option>Recommended</option>
                             <option>Optional - Bonus Knowledge</option>
@@ -138,10 +182,12 @@ function EditStep(){
                         <img className="step-image"  src={step.image}/>
                         <label>Update Image by URL:</label>
                         <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
+                        <input  type="file" onChange={(e) => handleFileUpload(e)} />
                     </div>  
 
                     <div>
                     <h3>Edit your Link Resources</h3>
+                    {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                     {linkFields.map((input, index) => {
           return (
             <div key={index} className="parent flex-row">
@@ -172,6 +218,7 @@ function EditStep(){
 
         <div>
             <h3>Edit your Notes</h3>
+            {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
             {notesFields.map((input, index) => {
           return (
             <div key={index} className="flex-r">
