@@ -1,10 +1,13 @@
 import { useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
-function CreateStep(){
+function CreateStep(props){
+
+    const {blockId} = useParams()
+    console.log(blockId)
     const navigate= useNavigate()
     const [imageUrl,setImageUrl] = useState('')
 
@@ -12,7 +15,7 @@ function CreateStep(){
         {name:"", link:""}
     ])
 
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
+    const {step, setStep, block, setBlock} = props
 
     const [notesFields, setNotesFields] = useState([
         ""
@@ -83,8 +86,9 @@ function CreateStep(){
           .then(res => {
             console.log("file url from cloudinary")
             console.log(res.data)
-            setImageUrl(res.data.fileUrl)
-            setStep({...step, image: res.data.fileUrl})
+            setImageUrl(res.data.imageUrl)
+            setStep({...step, image: imageUrl})
+            console.log(step)
         })
           .catch(err=>console.log(err));
       }
@@ -96,21 +100,22 @@ function CreateStep(){
     uploadData.append("imageUrl", e.target.files[0]);
     uploadImage(uploadData)
         .then(response=>{
-            console.log("file url is returning...:")
             console.log(response)
         })
         .catch(err=>console.log(err))
     }
 
-    const formHandleSubmit = (e)=>{
+    const formHandleSubmit = async (e)=>{
         e.preventDefault()
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/steps`, step)
-            .then(response=>{
-                console.log("response")
-                console.log(response.data)
-                console.log(response.data.step)
-                setFormMessage(response.data.message)
-                setTimeout(navigate(`/edit-step/${response.data.step._id}`, 1500))
+        await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
+            .then(async (response)=>{
+                await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)   
+                    .then((blockUpdated)=>{
+                        setBlock(blockUpdated.data.block)
+                        setFormMessage(response.data.message)
+                    })
+                
+                
             })
     }
 
@@ -121,6 +126,7 @@ function CreateStep(){
         setFormMessage('')
     }
 
+    
     return(
         <div className="flex-step">
             

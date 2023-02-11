@@ -107,8 +107,8 @@ function EditStep(){
           .then(res => {
             console.log("file url from cloudinary")
             console.log(res.data)
-            setImageUrl(res.data.fileUrl)
-            setStep({...step, image: res.data.fileUrl})
+            setImageUrl(res.data.imageUrl)
+            setStep({...step, image: res.data.imageUrl})
         })
           .catch(err=>console.log(err));
       }
