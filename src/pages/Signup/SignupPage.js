@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
  
-const API_ROUTE = process.env.REACT_APP_SERVER_URL
+const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
  
 function SignupPage(props) {
@@ -21,9 +21,8 @@ function SignupPage(props) {
     const newUser = {email, username, password};
 
     axios.post(`${API_ROUTE}/auth/signup`, newUser)
-      .then((response) => {console.log(response);
-      navigate('/log-in');
-      })
+      .then(() => navigate('/log-in'))
+      .catch(err => setErrorMessage(err.response.data.message));
   };
  
   
@@ -66,7 +65,7 @@ function SignupPage(props) {
       { errorMessage && <p className="error-message">{errorMessage}</p> }
  
       <p>Already have account?</p>
-      <Link to={"/login"}> Login</Link>
+      <Link to={"/log-in"}> Login</Link>
     </div>
   )
 }

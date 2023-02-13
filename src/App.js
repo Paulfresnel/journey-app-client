@@ -10,6 +10,7 @@ import BlocksStepsPage from './components/BlockStepsPage/BlocksStepsPage';
 import { useNavigate } from 'react-router-dom';
 import SignupPage from './pages/Signup/SignupPage';
 import LoginPage from './pages/Login/LoginPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 
 function App() {
   const navigate=useNavigate()
@@ -34,9 +35,12 @@ function App() {
     </Link>
 
     <Link to={"/sign-up"}>
-    <button>Sign Up</button>
+      <button>Sign Up</button>
     </Link>
 
+    <Link to={"/log-in"}>
+      <button>Log In</button>
+    </Link>
 
       <Routes>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
@@ -45,6 +49,7 @@ function App() {
         <Route path={"/journeys"} element={<CreateJourney/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
+        <Route path={"/profile-page"} element={<ProfilePage/>}/>
       </Routes>
     </div>
   );
