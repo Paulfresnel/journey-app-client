@@ -11,7 +11,7 @@ function LoginPage(props) {
   const [errorMessage, setErrorMessage] = useState(undefined);
   
   const navigate = useNavigate();
-  const { storeToken } = useContext(AuthContext);
+  const { storeToken, authenticateUser } = useContext(AuthContext);
  
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
@@ -22,6 +22,7 @@ function LoginPage(props) {
     axios.post(`${API_ROUTE}/auth/login`, loggedUser)
         .then(response => {
             storeToken(response.data.authToken);
+            authenticateUser();
             navigate('/profile-page');
         })
         .catch(err => setErrorMessage(err.response.data.message));

@@ -13,8 +13,31 @@ function AuthProviderWrapper(props) {
     localStorage.setItem('authToken', token);
   }
 
+  const authenticateUser = () => {
+    const storedToken = localStorage.getItem('authToken');
+    
+    if(storedToken) {
+        axios.get(`${API_ROUTE}/auth/verify`, { headers : { Authorization: `Bearer ${storedToken}`}})
+            .then(response => {
+                const user = response.data;
+                setIsLoggedIn(true);
+                setIsLoading(false);
+                setUser(user);
+            })
+            .catch(err => {
+                setIsLoggedIn(false);
+                setIsLoading(false);
+                setUser(null);
+            })
+    } else {
+            setIsLoggedIn(false);
+            setIsLoading(false);
+            setUser(null);
+        };
+  }
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isLoading, user, storeToken }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, user, storeToken, authenticateUser }}>
       {props.children}
     </AuthContext.Provider>
   )
