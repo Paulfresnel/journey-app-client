@@ -9,6 +9,7 @@ import EditStep from './components/EditStep/EditStep';
 import BlocksStepsPage from './components/BlockStepsPage/BlocksStepsPage';
 import { useNavigate } from 'react-router-dom';
 import SignupPage from './pages/Signup/SignupPage';
+import LoginPage from './pages/Login/LoginPage';
 
 function App() {
   const navigate=useNavigate()
@@ -43,6 +44,7 @@ function App() {
         <Route path={"/blocks"} element={<CreateBlock/>}/>
         <Route path={"/journeys"} element={<CreateJourney/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
+        <Route path={"/log-in"} element={<LoginPage/>}/>
       </Routes>
     </div>
   );

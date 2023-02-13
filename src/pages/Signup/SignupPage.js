@@ -16,7 +16,15 @@ function SignupPage(props) {
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
   const handleuserName = (event) => setUsername(event.target.value);
-  const handleSignupSubmit = (event) => {};
+  const handleSignupSubmit = (event) => {
+    event.preventDefault();
+    const newUser = {email, username, password};
+
+    axios.post(`${API_ROUTE}/auth/signup`, newUser)
+      .then((response) => {console.log(response);
+      navigate('/log-in');
+      })
+  };
  
   
   return (
@@ -31,6 +39,16 @@ function SignupPage(props) {
           value={email}
           onChange={handleEmail}
         />
+        <br/>
+
+        <label>Userame:</label>
+        <input 
+          type="text"
+          name="username"
+          value={username}
+          onChange={handleuserName}
+        />
+        <br/>
  
         <label>Password:</label>
         <input 
@@ -39,16 +57,10 @@ function SignupPage(props) {
           value={password}
           onChange={handlePassword}
         />
- 
-        <label>Name:</label>
-        <input 
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleuserName}
-        />
+        <br/>
  
         <button type="submit">Sign Up</button>
+        <br/>
       </form>
  
       { errorMessage && <p className="error-message">{errorMessage}</p> }
