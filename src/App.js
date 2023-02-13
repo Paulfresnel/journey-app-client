@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import EditStep from './components/EditStep/EditStep';
 import BlocksStepsPage from './components/BlockStepsPage/BlocksStepsPage';
 import { useNavigate } from 'react-router-dom';
+import SignupPage from './pages/Signup/SignupPage';
 
 function App() {
   const navigate=useNavigate()
@@ -25,15 +26,23 @@ function App() {
     <Link to={"/blocks"}>
     <button>Create a Block</button>
     </Link>
+    
     <Link to={"/journeys"}>
     <button>Create a Journey</button>
 
     </Link>
+
+    <Link to={"/sign-up"}>
+    <button>Sign Up</button>
+    </Link>
+
+
       <Routes>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
         <Route path={"/blocks"} element={<CreateBlock/>}/>
         <Route path={"/journeys"} element={<CreateJourney/>}/>
+        <Route path={"/sign-up"} element={<SignupPage/>}/>
       </Routes>
     </div>
   );
