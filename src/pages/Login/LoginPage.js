@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/auth.context";
  
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
@@ -10,16 +11,19 @@ function LoginPage(props) {
   const [errorMessage, setErrorMessage] = useState(undefined);
   
   const navigate = useNavigate();
+  const { storeToken } = useContext(AuthContext);
  
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
- 
   
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     const loggedUser = {email, password};
     axios.post(`${API_ROUTE}/auth/login`, loggedUser)
-        .then(() => navigate('/profile-page'))
+        .then(response => {
+            storeToken(response.data.authToken);
+            navigate('/profile-page');
+        })
         .catch(err => setErrorMessage(err.response.data.message));
   };
   
