@@ -1,11 +1,11 @@
 import { useState } from "react"
 import axios from "axios"
 import './CreateBlock.css'
-import { Link, useNavigate } from "react-router-dom"
+import { /* Link, */ useNavigate } from "react-router-dom"
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
-const testArray = [];
-
+/* const testArray = [];
+ */
 function CreateBlock() {
 
 
