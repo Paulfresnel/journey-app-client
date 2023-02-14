@@ -1,21 +1,20 @@
 import { useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
-import { Link, useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-
+import { /* Link, */ useParams } from "react-router-dom"
+/* import { useNavigate } from "react-router-dom"
+ */
 function CreateStep(props){
 
     const {blockId} = useParams()
     console.log(blockId)
-    const navigate= useNavigate()
     const [imageUrl,setImageUrl] = useState('')
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
     ])
 
-    const {step, setStep, block, setBlock} = props
+    const {step, setStep, /* block, */ setBlock} = props
 
     const [notesFields, setNotesFields] = useState([
         ""
