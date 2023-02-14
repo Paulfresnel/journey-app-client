@@ -9,7 +9,7 @@ function EditStep(){
     const navigate = useNavigate()
     const {stepId} = useParams()
     const [isLoading, setIsLoading] = useState(true)
-    const [/* imageUrl, */ setImageUrl] = useState("")
+    const [imageUrl, setImageUrl] = useState("")
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
     const [linkMessage, setLinkMessage] = useState('')
     const [noteMessage, setNoteMessage] = useState('')

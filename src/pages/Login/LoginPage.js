@@ -23,8 +23,6 @@ function LoginPage() {
         .then(response => {
             storeToken(response.data.authToken);
             authenticateUser();
-            console.log("login response")
-            console.log(response)
             navigate('/profile');
         })
         .catch(err => setErrorMessage(err.response.data.message));
