@@ -9,7 +9,7 @@ function EditStep(){
     const navigate = useNavigate()
     const {stepId} = useParams()
     const [isLoading, setIsLoading] = useState(true)
-    const [imageUrl, setImageUrl] = useState("")
+    const [/* imageUrl, */ setImageUrl] = useState("")
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
     const [linkMessage, setLinkMessage] = useState('')
     const [noteMessage, setNoteMessage] = useState('')
@@ -140,7 +140,7 @@ function EditStep(){
                 setImageUrl(data.image)
                 setIsLoading(false)
             })
-    }, [stepId])
+    }, [stepId, setImageUrl])
 
    
     return(
@@ -179,7 +179,7 @@ function EditStep(){
                         </select>
                     </div>
                     <div className="flex-c">
-                        <img className="step-image"  src={step.image}/>
+                        <img alt={step.description} className="step-image"  src={step.image}/>
                         <label>Update Image by URL:</label>
                         <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
                         <input  type="file" onChange={(e) => handleFileUpload(e)} />
