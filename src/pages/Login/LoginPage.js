@@ -23,7 +23,7 @@ function LoginPage(props) {
         .then(response => {
             storeToken(response.data.authToken);
             authenticateUser();
-            navigate('/profile-page');
+            navigate('/profile');
         })
         .catch(err => setErrorMessage(err.response.data.message));
   };

@@ -60,7 +60,7 @@ function App() {
         <Route path={"/journeys"} element={<CreateJourney/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
-        <Route path={"/profile-page"} element={<ProfilePage/>}/>
+        <Route path={"/profile"} element={<ProfilePage/>}/>
       </Routes>
     </div>
   );
