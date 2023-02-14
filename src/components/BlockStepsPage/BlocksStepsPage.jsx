@@ -43,7 +43,7 @@ function BlocksStepsPage(){
                 setBlock(data)
                 setIsLoading(false)
             })
-    },[])
+    },[blockId])
 
     console.log("consoel loggin block")
     console.log(block)
