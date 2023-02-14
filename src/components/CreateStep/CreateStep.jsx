@@ -2,11 +2,9 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
 import { /* Link, */ useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-
-const API_ROUTE = process.env.REACT_APP_SERVER_URL
-
-function CreateStep(){
+/* import { useNavigate } from "react-router-dom"
+ */
+function CreateStep(props){
 
     const {blockId, journeyId} = useParams()
     const navigate = useNavigate()
@@ -16,10 +14,8 @@ function CreateStep(){
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
     ])
-    
-    const [block, setBlock]= useState({title:"", description:"", category:"", importance:"",steps:[{}]})
 
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
+    const {step, setStep, /* block, */ setBlock} = props
 
     const [notesFields, setNotesFields] = useState([
         ""

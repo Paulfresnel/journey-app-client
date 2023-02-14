@@ -2,8 +2,8 @@ import { Routes, Route, Link, useNavigate} from "react-router-dom";
 import { useContext } from "react";
 
 import './App.css';
-import CreateStep from './components/CreateStep/CreateStep';
-import CreateBlock from './components/CreateBlock/CreateBlock';
+/* import CreateStep from './components/CreateStep/CreateStep';
+ */import CreateBlock from './components/CreateBlock/CreateBlock';
 import CreateJourney from './components/CreateJourney/CreateJourney';
 import EditStep from './components/EditStep/EditStep';
 import BlocksStepsPage from './components/BlockStepsPage/BlocksStepsPage';

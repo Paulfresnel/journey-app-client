@@ -6,9 +6,9 @@ import { /* Link, */ useNavigate } from "react-router-dom"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
 /* const testArray = [];
  */
-function CreateBlock(props) {
+function CreateBlock() {
 
-    const {journeyId, setJourney, journey, setUpdatedJourney} = props
+
     const navigate = useNavigate()
     const [block, setBlock] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
