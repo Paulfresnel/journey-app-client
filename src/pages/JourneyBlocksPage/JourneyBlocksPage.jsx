@@ -78,11 +78,11 @@ function JourneyBlocksPage(){
 
 
     return(
-        <div>
+        <div >
 
         {isLoading && <p>Data is Loading...</p>} 
         
-        {journey._id !=='' && <table>
+        {journey._id !=='' && <table style={{margin:'0 auto'}} >
             <thead>
                 <tr>
                     <td>Block #</td>

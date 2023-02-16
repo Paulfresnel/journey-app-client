@@ -45,7 +45,8 @@ function CreateJourney(){
         console.log(userJourney)
         axios.post(`${API_ROUTE}/api/${user._id}/journeys`, userJourney)
             .then(response => {
-                console.log(response.data.user)
+                console.log(response.data.user)       
+                setUser(response.data.user)
                 })
         } else {
             setErrorMessage('Please Add a Title and a Description to Your Journey')

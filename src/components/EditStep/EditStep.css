@@ -1,18 +1,16 @@
 .step-image{
     margin: 0 auto;
-    width: 350px;
     border: 1px black solid;
     outline: 2px red solid;
     outline-offset: 10px;
-    margin-bottom: 35px;
 }
 
 .flex-c{
     margin: 0 auto;
-    width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding-top: 25px;
     padding-bottom: 35px;
 }

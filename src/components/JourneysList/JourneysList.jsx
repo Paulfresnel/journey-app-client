@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 import './JourneysList.css'
+import CreateJourney from "../CreateJourney/CreateJourney";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -10,6 +11,11 @@ function JourneysList(){
     const {user, setUser} = useContext(AuthContext)
     const {userId} = useParams()
     const [isLoading, setIsLoading] = useState(true)
+    const [showForm,setShowForm] = useState(false)
+
+    const changeVisibility = ()=>{
+        setShowForm(!showForm)
+    }
 
     useEffect(()=>{
         console.log(userId)
@@ -24,6 +30,10 @@ function JourneysList(){
 
     return(
         <div>
+        <button onClick={changeVisibility} >Show/Hide Form</button>
+        {showForm && <div>
+            <CreateJourney/>
+        </div>}
     <h1>Journeys Created</h1>
     {isLoading && <p>Loading..</p>}  
     {!isLoading && <div> {user.journeysCreated.map((journey, index)=>{

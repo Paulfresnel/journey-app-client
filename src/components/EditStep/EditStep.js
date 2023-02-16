@@ -179,8 +179,8 @@ function EditStep(){
                         </select>
                     </div>
                     <div className="flex-c">
-                        <img alt={step.description} className="step-image"  src={step.image}/>
-                        <label>Update Image by URL:</label>
+                        <img style={{margin:"0 auto",width:'12rem'}} alt={step.description} className="step-image"  src={step.image}/>
+                        <label style={{marginTop:'25px',marginBottom:"25px"}}>Update Image by URL:</label>
                         <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
                         <input  type="file" onChange={(e) => handleFileUpload(e)} />
                     </div>  

@@ -29,7 +29,9 @@ function App() {
     <div className="App">
     
     <button onClick={goBack}>Go Back</button>
-   
+    {isLoggedIn && <Link to={"/profile"}>
+    <button>Go to Profile</button>
+    </Link>}
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
@@ -42,7 +44,7 @@ function App() {
 
         <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
-        <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<CreateStep/>}/>
+        <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<BlocksStepsPage/>}/>
 
       </Routes>
     </div>

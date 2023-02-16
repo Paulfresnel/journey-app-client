@@ -18,7 +18,7 @@ function BlocksStepsPage(){
 
     const deleteStep = async (e)=>{
         const stepId = e.target.value
-      await  axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`)
+      await  axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/steps/${blockId}/${stepId}`)
             .then(async(response)=>{
              await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)
                 .then(blockResponse=>{
@@ -58,11 +58,8 @@ function BlocksStepsPage(){
         <h2>Description: {block.description}</h2>
         <h3>Category: {block.category}</h3>
         <h4>Importance of Learning Block for overall Journey: {block.importance}</h4>
-            <div>
-                <h1>Block's Edition Page</h1>
-                <h2>Step's Creation Page</h2>
-            </div>
-            { block.steps.length >0 && <div>
+            
+            { block.steps.length !== 0 && <div>
                 <h3>Current Steps in the Learning Block:</h3>
                 <table className="steps-table">
                     <thead>

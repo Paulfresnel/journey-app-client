@@ -92,7 +92,7 @@ function CreateStep(){
             console.log("file url from cloudinary")
             console.log(res.data)
             setImageUrl(res.data.imageUrl)
-            setStep({...step, image: imageUrl})
+            setStep({...step, image: res.data.imageUrl})
             console.log(step)
         })
           .catch(err=>console.log(err));
@@ -146,7 +146,7 @@ function CreateStep(){
     
     return(
         <div className="flex-step">
-            <div>
+            {/* <div>
             {isLoading ? <p>Loading...</p> : <div>
                 <h1>{block.title}</h1>
                 <h2>{block.description}</h2>
@@ -175,7 +175,7 @@ function CreateStep(){
 
             </div>}
 
-            </div>
+            </div> */}
             <div>
                 <h1>Add a new Step</h1>
                 <form>
