@@ -25,6 +25,7 @@ function LoginPage() {
             authenticateUser();
             console.log("login response")
             console.log(response)
+
             navigate('/profile');
         })
         .catch(err => setErrorMessage(err.response.data.message));

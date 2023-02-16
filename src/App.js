@@ -39,11 +39,10 @@ function App() {
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
         <Route path={"/profile"} element={<ProfilePage/>}/>
+
         <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
         <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<CreateStep/>}/>
-
-
 
       </Routes>
     </div>
