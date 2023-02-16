@@ -1,20 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
 import { /* Link, */ useParams } from "react-router-dom"
-/* import { useNavigate } from "react-router-dom"
- */
-function CreateStep(props){
+import { useNavigate } from "react-router-dom"
 
-    const {blockId} = useParams()
+const API_ROUTE = process.env.REACT_APP_SERVER_URL
+
+function CreateStep(){
+
+    const {blockId, journeyId} = useParams()
+    const navigate = useNavigate()
     console.log(blockId)
     const [imageUrl,setImageUrl] = useState('')
 
     const [linkFields, setLinkFields] = useState([
         {name:"", link:""}
     ])
+    
+    const [block, setBlock]= useState({title:"", description:"", category:"", importance:"",steps:[{}]})
 
-    const {step, setStep, /* block, */ setBlock} = props
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
     const [notesFields, setNotesFields] = useState([
         ""
@@ -22,6 +27,7 @@ function CreateStep(props){
     const [linkMessage, setLinkMessage] = useState('')
     const [noteMessage, setNoteMessage] = useState('')
     const [formMessage, setFormMessage] = useState('')
+    const [isLoading,setIsLoading] = useState(true)
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -112,6 +118,7 @@ function CreateStep(props){
                     .then((blockUpdated)=>{
                         setBlock(blockUpdated.data.block)
                         setFormMessage(response.data.message)
+                        navigate(`/profile/journeys/${journeyId}/edit`)
                     })
                 
                 
@@ -125,10 +132,50 @@ function CreateStep(props){
         setFormMessage('')
     }
 
+
+    useEffect(()=>{
+        axios.get(`${API_ROUTE}/api/blocks/${blockId}`)
+            .then(response=>{
+                const {block} = response.data
+                setBlock(block)
+                console.log(block)
+                setIsLoading(false)
+            })
+    },[])
+
     
     return(
         <div className="flex-step">
-            
+            <div>
+            {isLoading ? <p>Loading...</p> : <div>
+                <h1>{block.title}</h1>
+                <h2>{block.description}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Link Title</td>
+                            <td># of Links</td>
+                            <td>Difficulty</td>
+                            <td>Importance</td>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {block.steps.map((step,index)=>{
+                          return <tr>  
+                            <td>{index+1}</td>
+                            <td>{step.title}</td>
+                            <td>{step.links.length}</td>
+                            <td>{step.difficulty}</td>
+                            <td>{step.importance}</td>
+                       </tr> })}
+                    </tbody>
+                </table>
+
+            </div>}
+
+            </div>
             <div>
                 <h1>Add a new Step</h1>
                 <form>
@@ -162,6 +209,7 @@ function CreateStep(props){
                         <label>Image:</label>
                         <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
                         <input  type="file" onChange={(e) => handleFileUpload(e)} />
+                        <img width={75} src={step.image}/>
                     </div>
                     <div>
                     <h3>Add Link Resources</h3>

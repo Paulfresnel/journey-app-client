@@ -5,13 +5,13 @@ import { AuthContext } from "../../context/auth.context";
  
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
-function LoginPage(props) {
+function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
   
   const navigate = useNavigate();
-  const { storeToken, authenticateUser } = useContext(AuthContext);
+  const { user, storeToken, authenticateUser } = useContext(AuthContext);
  
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
@@ -23,7 +23,9 @@ function LoginPage(props) {
         .then(response => {
             storeToken(response.data.authToken);
             authenticateUser();
-            navigate('/profile-page');
+            console.log("login response")
+            console.log(response)
+            navigate('/profile');
         })
         .catch(err => setErrorMessage(err.response.data.message));
   };

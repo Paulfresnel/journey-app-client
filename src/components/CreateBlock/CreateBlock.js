@@ -6,12 +6,12 @@ import { /* Link, */ useNavigate } from "react-router-dom"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
 /* const testArray = [];
  */
-function CreateBlock() {
+function CreateBlock(props) {
 
-
+    const {journeyId, setJourney, journey} = props
     const navigate = useNavigate()
+    
 
-    const testBlocks = [];
 
 
     const [block, setBlock] = useState('');
@@ -29,27 +29,25 @@ function CreateBlock() {
    
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(`${API_ROUTE}/api/blocks`, block)
-            .then(createdBlock => {
-
-                testBlocks.push(createdBlock);
-                let newBlock = createdBlock.data
-                console.log(newBlock)
-                setBlocksInJourney(testBlocks)
-                navigate(`/blocks/${newBlock._id}/edit`)
-
+        axios.post(`${API_ROUTE}/api/${journeyId}/blocks`, block)
+            .then( (apiResponse) => {
+                console.log("new block received")
+                let updatedBlock = apiResponse.data
+                console.log(updatedBlock)
+                setJourney({...journey, blocks: updatedBlock})
+                console.log("copy array after block push")
+                console.log(journey)
             })
-
             .catch(err => {
-                setErrorMessage(err.response.data.message)
+                console.log(err)
             })
     }
 
     return(
         <div>
             <h1>Create a Block</h1>
-            <div>
-                {blocksInJourney && blocksInJourney.map(blocks => {
+            {/* <div>
+               {} {blocksInJourney && blocksInJourney.map(blocks => {
                    return <div>
                         <h1>{blocks.block.name}</h1>
                         <h2>{blocks.block.description}</h2>
@@ -57,7 +55,7 @@ function CreateBlock() {
                         <h2>{blocks.block.importance}</h2>
                     </div>
                 })}
-            </div>
+            </div> */}
             <form onSubmit={(event) => handleSubmit(event)}>
                 <label> Title:
                     <input type='text' name='title' onChange={(event) => handleChange(event)}/>
