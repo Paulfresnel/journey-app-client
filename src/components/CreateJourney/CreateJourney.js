@@ -1,12 +1,16 @@
 import { useState/* , useEffect */ } from "react";
 import axios from "axios";
 import EditTags from "../EditTags/EditTags";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth.context";
+
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 const allTags = [];
 
 
 function CreateJourney(){
 
+    const {user, setUser} = useContext(AuthContext)
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
@@ -38,8 +42,11 @@ function CreateJourney(){
         event.preventDefault();
         if(title && description){
         const userJourney = {title, description, image, tags: tagArray, isPublic};
-        axios.post(`${API_ROUTE}/api/journeys`, userJourney)
-            .then(response => console.log(response.data))
+        console.log(userJourney)
+        axios.post(`${API_ROUTE}/api/${user._id}/journeys`, userJourney)
+            .then(response => {
+                console.log(response.data.user)
+                })
         } else {
             setErrorMessage('Please Add a Title and a Description to Your Journey')
         }
