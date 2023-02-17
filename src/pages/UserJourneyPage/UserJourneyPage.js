@@ -9,11 +9,18 @@ function UserJourneyPage() {
     const [ userJourney, setUserJourney ] = useState({});
     const { journeyId } = useParams();
 
+
     useEffect(() => {
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
             .then(foundJourney => setUserJourney(foundJourney.data))
     }, [userJourney])
 
-}
+    return(
+        <div>
+
+        </div>
+    )
+
+};
 
 export default UserJourneyPage;
