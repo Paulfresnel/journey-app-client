@@ -10,15 +10,9 @@ function CreateBlock(props) {
 
     const {journeyId, setJourney, journey} = props
     const navigate = useNavigate()
-    
-
-
-
     const [block, setBlock] = useState('');
     const [blocksInJourney, setBlocksInJourney] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-
-    console.log(blocksInJourney)
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -70,8 +64,8 @@ function CreateBlock(props) {
                 </label>
                 <br/> 
                 <label> Importance Level:
-                    <select name='importance' onChange={(event) => handleChange(event)}>
-                        <option disabled selected>Select Priority</option>
+                    <select name='importance' defaultValue={'default'} onChange={(event) => handleChange(event)}>
+                        <option value={'default'} disabled>Select Priority</option>
                         <option value='Critical'>Critical</option>
                         <option value='Recommended'>Recommended</option>
                         <option value='Optional'>Critical</option>
