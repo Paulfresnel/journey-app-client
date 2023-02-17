@@ -11,6 +11,7 @@ function UserJourneyPage() {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ showForm, setShowForm ] = useState(false);
     const [ updatedJourney, setUpdatedJourney ] = useState({});
+    const [ blockToDisplay, setBlockToDisplay ] = useState(''); 
     const { journeyId } = useParams();
 
 
@@ -33,11 +34,20 @@ function UserJourneyPage() {
                     <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
                     <div>
                         {userJourney.blocks && userJourney.blocks.map(block => {
-                            return (
-                                <div>
-                                    <h2>{block.title}</h2>
-                                </div>)
-                        })}
+                                if(blockToDisplay === block._id){
+                                 return (
+                                    <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
+                                        <button onClick={() => setBlockToDisplay("")}><h2>{block.title}</h2></button>
+                                        <p>{block.description}</p>
+                                        <p>{block.category}</p>
+                                        <p>{block.importance}</p>
+                                    </div>)
+                                } else return (
+                                    <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
+                                        <button onClick={() => setBlockToDisplay(block._id)}><h2>{block.title}</h2></button>
+                                    </div>
+                                    )}
+                                )}
                     </div>
                 </div>
                 <div>  
