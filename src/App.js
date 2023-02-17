@@ -14,6 +14,7 @@ import { AuthContext } from "./context/auth.context";
 import HomePage from "./pages/HomePage/HomePage";
 import JourneysList from "./components/JourneysList/JourneysList";
 import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
+import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
         <Route path={"/blocks"} element={<CreateBlock/>}/>
         <Route path={"/journeys"} element={<CreateJourney/>}/>
+        <Route path={"/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
         <Route path={"/profile"} element={<ProfilePage/>}/>
