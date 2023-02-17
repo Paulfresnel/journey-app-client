@@ -10,6 +10,7 @@ function UserJourneyPage() {
     const [ userJourney, setUserJourney ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
     const [ showForm, setShowForm ] = useState(false);
+    const [ updatedJourney, setUpdatedJourney ] = useState({});
     const { journeyId } = useParams();
 
 
@@ -20,28 +21,30 @@ function UserJourneyPage() {
                 setUserJourney(foundJourney.data);
                 setIsLoading(false)}
             })
-    }, []);
+    }, [updatedJourney]);
 
     return(
         <div>
             {isLoading && <h1>Loading...</h1>}   
-            <div>
-                <h1>{userJourney.title}</h1>
-                <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
+            {userJourney &&
+            <>
                 <div>
-                    {userJourney.blocks && userJourney.blocks.map(block => {
-                        return (
-                            <div>
-                                <h2>{block.title}</h2>
-                            </div>)
-                    })}
+                    <h1>{userJourney.title}</h1>
+                    <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
+                    <div>
+                        {userJourney.blocks && userJourney.blocks.map(block => {
+                            return (
+                                <div>
+                                    <h2>{block.title}</h2>
+                                </div>)
+                        })}
+                    </div>
                 </div>
-            </div>
-            <div>  
-                {showForm ? <CreateBlock/> : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
-            </div>            
-            
-        </div>
+                <div>  
+                    {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney}/> : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
+                </div>           
+            </>} 
+       </div> 
     )
 
 };
