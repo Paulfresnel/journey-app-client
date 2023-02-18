@@ -28,8 +28,9 @@ function UserJourneyPage() {
     }, [updatedJourney]);
 
     const handleEditValue = (event) => {
-        if(event.target.value && event.target.value !== userJourney.title){
-            axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {title: event.target.value})
+        const name = event.target.name
+        if(event.target.value && event.target.value !== userJourney.name){
+            axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {[name] : event.target.value})
                 .then(response => setUpdatedJourney(response.data))
             setFieldToEdit('')
             } else setFieldToEdit('');
@@ -42,9 +43,9 @@ function UserJourneyPage() {
             {userJourney &&
             <>
                 <div>
-                    {fieldToEdit === 'user-journey-title' ? <input type="text" defaultValue={userJourney.title} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/> : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}
+                    {fieldToEdit === 'user-journey-title' ? <div><input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/><br/></div> : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}
                     <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
-                    <h2>{userJourney.description}</h2>
+                    {fieldToEdit === 'user-journey-description' ? <div><input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/><br/></div> : <h2 id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}</h2>}
                     <div>
                         {userJourney.tags && userJourney.tags.map(tag => {
                             return <h3 key={Math.random()*10}>{tag}</h3>
