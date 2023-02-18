@@ -10,6 +10,7 @@ function CreateBlock(props) {
 
     const {journeyId, setJourney, journey, setUpdatedJourney} = props
     const navigate = useNavigate()
+
     const [block, setBlock] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -24,6 +25,7 @@ function CreateBlock(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(`${API_ROUTE}/api/${journeyId}/blocks`, block)
+
             .then((apiResponse) => {
                 // console.log("new block received")
                 let updatedBlock = apiResponse.data
@@ -33,6 +35,7 @@ function CreateBlock(props) {
                 
                 // console.log("copy array after block push")
                 // console.log(journey)
+
             })
             .catch(err => {
                 console.log(err)

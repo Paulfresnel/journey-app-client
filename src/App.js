@@ -17,6 +17,7 @@ import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
 import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
 
 
+
 function App() {
   const navigate=useNavigate()
 
@@ -41,6 +42,14 @@ function App() {
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
         <Route path={"/profile"} element={<ProfilePage/>}/>
+<<<<<<< HEAD
+=======
+
+        <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
+        <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
+        <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<CreateStep/>}/>
+
+>>>>>>> main
       </Routes>
     </div>
   );
