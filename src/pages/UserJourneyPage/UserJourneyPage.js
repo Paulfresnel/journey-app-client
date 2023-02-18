@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from "react-router-dom";
 import CreateBlock from "../../components/CreateBlock/CreateBlock";
 
@@ -14,8 +14,9 @@ function UserJourneyPage() {
     const [ updatedJourney, setUpdatedJourney ] = useState({});
     const [ blockToDisplay, setBlockToDisplay ] = useState(''); 
     const [ fieldToEdit, setFieldToEdit ] = useState('');
+    const [ errorMessage, setErrorMessage ] = useState(null);
     const { journeyId } = useParams();
-
+    const hiddenFileInput  = useRef(null);
 
     useEffect(() => {
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
@@ -35,6 +36,24 @@ function UserJourneyPage() {
             setFieldToEdit('')
             } else setFieldToEdit('');
         }
+
+    const handleImageUpload = () => {
+        hiddenFileInput.current.click();
+    }
+
+    const handleImageChange = async (event) => {
+        let newImageUrl = '';
+        const uploadData = new FormData();
+        uploadData.append("imageUrl", event.target.files[0]);
+        const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
+            .then(response => newImageUrl = response.data.imageUrl)
+            .catch(error => setErrorMessage(error.response.data.message));
+
+        axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {image: newImageUrl})
+            .then((response) => setUpdatedJourney(response.data))
+            .catch(error => setErrorMessage(error.response.data.message));
+
+    }
         
 
     return(
@@ -48,9 +67,16 @@ function UserJourneyPage() {
                             <input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
-                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}
-
-                    <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
+                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}             
+                    
+                    <div>
+                        <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
+                        <br/>
+                        <label for='update-journey-image'>
+                            <button onClick={handleImageUpload}>Update Image</button>
+                            <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
+                        </label>
+                    </div>
 
                     {fieldToEdit === 'user-journey-description' ? 
                         <div>
@@ -64,7 +90,6 @@ function UserJourneyPage() {
                             return <h3 key={Math.random()*10}>{tag}</h3>
                         })}
                     </div>
-                    
                     {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers}</h2>}
                     {userJourney.isPublic && <h2>Copied {userJourney.usersCopying.length} times</h2>}
                     <div>
