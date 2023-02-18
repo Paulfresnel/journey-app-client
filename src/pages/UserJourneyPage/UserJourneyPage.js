@@ -43,14 +43,28 @@ function UserJourneyPage() {
             {userJourney &&
             <>
                 <div>
-                    {fieldToEdit === 'user-journey-title' ? <div><input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/><br/></div> : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}
+                    {fieldToEdit === 'user-journey-title' ? 
+                        <div>
+                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
+                            <br/>
+                        </div> 
+                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}
+
                     <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
-                    {fieldToEdit === 'user-journey-description' ? <div><input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/><br/></div> : <h2 id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}</h2>}
+
+                    {fieldToEdit === 'user-journey-description' ? 
+                        <div>
+                            <input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>    
+                            <br/>
+                        </div> 
+                    : <h2 id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}</h2>}
+                   
                     <div>
                         {userJourney.tags && userJourney.tags.map(tag => {
                             return <h3 key={Math.random()*10}>{tag}</h3>
                         })}
                     </div>
+                    
                     {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers}</h2>}
                     {userJourney.isPublic && <h2>Copied {userJourney.usersCopying.length} times</h2>}
                     <div>
