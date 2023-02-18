@@ -10,7 +10,6 @@ function ProfilePage() {
     
     
     const { user, isLoading } =  useContext(AuthContext);
-    console.log(user)
     const [showForm, setShowForm] = useState(false);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
