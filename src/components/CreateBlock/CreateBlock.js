@@ -8,17 +8,11 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
  */
 function CreateBlock(props) {
 
-    const {journeyId, setJourney, journey} = props
+    const {journeyId, setJourney, journey, setUpdatedJourney} = props
     const navigate = useNavigate()
-    
-
-
 
     const [block, setBlock] = useState('');
-    const [blocksInJourney, setBlocksInJourney] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-
-    console.log(blocksInJourney)
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -26,17 +20,22 @@ function CreateBlock(props) {
         setBlock({...block, [name] : value});
     }
 
+    // DEFINE setJourney or setUserJourney! ///////////
    
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(`${API_ROUTE}/api/${journeyId}/blocks`, block)
-            .then( (apiResponse) => {
-                console.log("new block received")
+
+            .then((apiResponse) => {
+                // console.log("new block received")
                 let updatedBlock = apiResponse.data
-                console.log(updatedBlock)
-                setJourney({...journey, blocks: updatedBlock})
-                console.log("copy array after block push")
-                console.log(journey)
+                // console.log(updatedBlock)
+                setUpdatedJourney({...journey, blocks: updatedBlock})
+                // setJourney({...journey, blocks: updatedBlock})
+                
+                // console.log("copy array after block push")
+                // console.log(journey)
+
             })
             .catch(err => {
                 console.log(err)
@@ -70,8 +69,8 @@ function CreateBlock(props) {
                 </label>
                 <br/> 
                 <label> Importance Level:
-                    <select name='importance' onChange={(event) => handleChange(event)}>
-                        <option disabled selected>Select Priority</option>
+                    <select name='importance' defaultValue={'default'} onChange={(event) => handleChange(event)}>
+                        <option value={'default'} disabled>Select Priority</option>
                         <option value='Critical'>Critical</option>
                         <option value='Recommended'>Recommended</option>
                         <option value='Optional'>Critical</option>
