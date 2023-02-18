@@ -40,7 +40,7 @@ function App() {
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
         <Route path={"/blocks"} element={<CreateBlock/>}/>
         <Route path={"/journeys"} element={<CreateJourney/>}/>
-        <Route path={"/journeys/:journeyId"} element={<UserJourneyPage/>}/>
+        <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
         <Route path={"/profile"} element={<ProfilePage/>}/>

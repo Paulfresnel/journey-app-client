@@ -36,7 +36,7 @@ function ProfilePage() {
                     {journeys.map(journey => {
                         return (
                             <div key={journey._id}>
-                                <Link to={`/journeys/${journey._id}`}>
+                                <Link to={`/profile/journeys/${journey._id}`}>
                                     <h1>{journey.title}</h1>
                                 </Link>
                                 <img src={journey.image} alt={`${journey.title}`} style={{width: '300px', height: 'auto'}}/>
