@@ -54,25 +54,6 @@ function ProfilePage() {
                 
         </div>
     )
-
-
-    const {user, setUser} =  useContext(AuthContext)
-    console.log(user)
-    const [showForm, setShowForm] = useState(false)
-
-
-    return(
-        <div>
-        {user ? <div><h1>Hello {user.username}</h1>
-            <Link to={`/profile/${user._id}/journeys`}>
-            <button>Check the Journeys created</button>
-            </Link>
-            <button onClick={()=>setShowForm(!showForm)}>Show Form</button>
-            {showForm && <CreateJourney/>}</div> : <p>Loading..</p> }
-            
-        </div>
-    )
-
 }
 
 export default ProfilePage;
