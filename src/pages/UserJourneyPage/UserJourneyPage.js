@@ -141,7 +141,8 @@ function UserJourneyPage() {
                     </div>
                 </div>
                 <div>  
-                    {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney}/> : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
+                    {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} setShowForm={setShowForm}/>
+                            : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
                 </div>           
             </>} 
        </div> 
