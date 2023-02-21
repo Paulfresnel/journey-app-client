@@ -9,58 +9,70 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function PublicJourneysPage(){
     
     const [isLoading, setIsLoading] = useState(true)
-    const [allPublicJourneys, setAllPublicJourneys] = useState([{}])
+    const [allPublicJourneys, setAllPublicJourneys] = useState([])
     const {user} = useContext(AuthContext)
 
-    const likeJourney = (e) => {
+    const likeJourney = async (e) => {
         e.preventDefault();
-        const journeyId = e.target.parentNode.value;
-        axios.get(`${API_ROUTE}/api/users/${user._id}`)
-          .then(async (userResponse) => {
-            const currentUser = userResponse.data;
-            
-            await axios.put(`${API_ROUTE}/api/journeys/${journeyId}/like`, { userId: user._id })
-                .then(apiResponse=>{
-                    console.log("api response")
-                    console.log(apiResponse)
-                 })
-                 .catch(err=>console.log(err))
-            await axios.get(`${API_ROUTE}/api/journeys/`)
-            .then(apiResponse=>{
-                console.log("all journeys here")
-                console.log(apiResponse)
-                setAllPublicJourneys(apiResponse.data.publicJourneys)
-             })
-            
+        const journeyId = e.target.dataset.journeyid;
+        const isLiked = e.target.value;
+        try {
+          let response;
+          if (isLiked) {
+            response = await axios.delete(`${API_ROUTE}/api/journeys/${journeyId}/like/${user._id}`);
+          } else {
+            response = await axios.post(`${API_ROUTE}/api/journeys/${journeyId}/like`, { userId: user._id });
+          }
+          const updatedJourney = response.data.journey;
+          let copyOfJourneys = await [...allPublicJourneys]
+          copyOfJourneys.map(journey=>{
+            if (journey._id === updatedJourney._id) {
+                console.log("updating here")
+                console.log(journey)
+                journey.upvoteUsers = updatedJourney.upvoteUsers;
+                return journey
+              } else {
+                return journey;
+              }
           })
-          .catch(error => {
-            console.log(error);
-          })
-          ;
+
+          setAllPublicJourneys(copyOfJourneys);
+        } catch (error) {
+          console.log(error);
+        }
       };
     
 
     useEffect(()=>{
-        axios.get(`${API_ROUTE}/api/journeys`)
-            .then(journeysArray=>{
+        console.log('useEffect');
+        async function fetchData(){
+          await  axios.get(`${API_ROUTE}/api/journeys`)
+            .then(async (journeysArray)=>{
                 console.log("api response")
+                console.log(journeysArray)
                 let journeysArrayReceived = journeysArray.data.publicJourneys
-                setAllPublicJourneys(journeysArrayReceived)
+                await setAllPublicJourneys(journeysArrayReceived)
                 console.log(allPublicJourneys)
                 setIsLoading(false)
             })
+            .catch(err=>console.log(err))
+        }
+        fetchData()
+         
     }, [])
+
+    console.log('allPublicJourneys:', allPublicJourneys);
 
     return(
         <div>
-        {allPublicJourneys && !isLoading && allPublicJourneys.map((journey,index)=>{
+        {!isLoading && allPublicJourneys.map((journey,index)=>{
             return ( <div className="card">
                     <img className="card-img-top" src={journey.image} alt="Card  cap"/>
                 <div className="card-body">
                     <h5 className="card-title">{journey.title}</h5> 
                     <div>
-                    <p>{journey.upvoteUsers.length} Likes</p> 
-                    {user && <button value={journey._id} onClick={(e)=>likeJourney(e)} type="button" className="btn btn-primary btn-sm"><i className={journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart"}> Like </i></button>}
+                    <p>{journey.upvoteUsers ? journey.upvoteUsers.length : "0"} Likes</p> 
+                    {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart"}> Like </i></button>}
                     </div>
                     <p className="card-text">{journey.description}</p>
                     <p>Created by: {journey.author.username}</p>
