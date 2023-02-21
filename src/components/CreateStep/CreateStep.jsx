@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom"
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
-function CreateStep(){
+function CreateStep(props){
 
-    const {blockId, journeyId} = useParams()
+    const { blockId, journeyId } = props;
+    // const {blockId, journeyId} = useParams()
     const navigate = useNavigate()
     console.log(blockId)
     const [imageUrl,setImageUrl] = useState('')

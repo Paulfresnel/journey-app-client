@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from 'react'
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CreateBlock from "../../components/CreateBlock/CreateBlock";
+import EditTags from "../../components/EditTags/EditTags";
+import CreateStep from "../../components/CreateStep/CreateStep";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -14,9 +16,14 @@ function UserJourneyPage() {
     const [ updatedJourney, setUpdatedJourney ] = useState({});
     const [ blockToDisplay, setBlockToDisplay ] = useState(''); 
     const [ fieldToEdit, setFieldToEdit ] = useState('');
+    const [tag, setTag] = useState('');
+    const [ tagArray, setTagArray ] = useState([]);
+    const [ editTags, setEditTags ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
+    const [ addStep, setAddStep ] = useState(false);
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
+    const allTags = [...tagArray];
 
     useEffect(() => {
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
@@ -54,6 +61,15 @@ function UserJourneyPage() {
             .catch(error => setErrorMessage(error.response.data.message));
 
     }
+
+    const handleTagButton = () => {
+        if(tag){
+            allTags.push(tag);
+            setTagArray(allTags);
+
+            setTag('')
+        };
+    }
         
 
     return(
@@ -80,17 +96,26 @@ function UserJourneyPage() {
 
                     {fieldToEdit === 'user-journey-description' ? 
                         <div>
-                            <input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>    
+                            <input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {if(!editTags){handleEditValue(event)}}}/>    
                             <br/>
                         </div> 
                     : <h2 id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}</h2>}
                    
-                    <div>
-                        {userJourney.tags && userJourney.tags.map(tag => {
-                            return <h3 key={Math.random()*10}>{tag}</h3>
-                        })}
-                    </div>
-                    {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers}</h2>}
+                   
+                    {fieldToEdit === 'user-journey-tags' ?
+                      <div>
+                        <EditTags tag={tag} setTag={setTag} allTags={userJourney.tags} setTagArray={setTagArray} tagArray={tagArray} setEditTags={setEditTags}/>
+                            <input type="text" name="tags" autoFocus onChange={(event) => setTag(event.target.value)} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/> 
+                        <button type="button" onClick={handleTagButton}>Add tag</button>
+                      </div>
+                    : <div>
+                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:</h2> 
+                            
+                                {userJourney.tags && userJourney.tags.map(tag => {
+                                    return <h3 key={Math.random()*10}>{tag}</h3>
+                            })}
+                    </div>}
+                    {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers.length}</h2>}
                     {userJourney.isPublic && <h2>Copied {userJourney.usersCopying.length} times</h2>}
                     <div>
                         {userJourney.blocks && userJourney.blocks.map(block => {
@@ -101,6 +126,11 @@ function UserJourneyPage() {
                                         <p>{block.description}</p>
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
+                                        {block.steps && block.steps.map(step => {
+                                            return <h1>{step}</h1>
+                                        })}
+                                        {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id}/>}
+                                        {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
