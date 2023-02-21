@@ -15,6 +15,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import JourneysList from "./components/JourneysList/JourneysList";
 import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
 import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
+import PublicJourneysPage from "./pages/PublicJourneysPage/PublicJourneysPage";
 
 
 
@@ -34,15 +35,18 @@ function App() {
     {isLoggedIn && <Link to={"/profile"}>
     <button>Go to Profile</button>
     </Link>}
+    <Link to={"/journeys"}>
+      <button>Check all Public Journeys</button>
+    </Link>
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
         <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
-        <Route path={"/blocks"} element={<CreateBlock/>}/>
-        <Route path={"/journeys"} element={<CreateJourney/>}/>
+        
         <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
+        <Route path={"/journeys"} element={<PublicJourneysPage/>}/>
         <Route path={"/profile"} element={<ProfilePage/>}/>
         <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
