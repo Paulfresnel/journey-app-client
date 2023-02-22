@@ -8,10 +8,10 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
 function CreateStep(props){
 
-    const { blockId, journeyId } = props;
+    const { blockId, journeyId, setAddStep } = props;
     // const {blockId, journeyId} = useParams()
     const navigate = useNavigate()
-    console.log(blockId)
+    
     const [imageUrl,setImageUrl] = useState('')
 
     const [linkFields, setLinkFields] = useState([
@@ -19,7 +19,7 @@ function CreateStep(props){
     ])
     
     const [block, setBlock]= useState({title:"", description:"", category:"", importance:"",steps:[{}]})
-
+    console.log(block)
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
     const [notesFields, setNotesFields] = useState([
@@ -111,19 +111,28 @@ function CreateStep(props){
         .catch(err=>console.log(err))
     }
 
-    const formHandleSubmit = async (e)=>{
+    // const formHandleSubmit = async (e)=>{
+    //     e.preventDefault()
+    //     await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
+    //         .then(async (response)=>{
+    //             await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)   
+    //                 .then((blockUpdated)=>{
+    //                     setBlock(blockUpdated.data.block)
+    //                     setFormMessage(response.data.message)
+    //                     navigate(`/profile/journeys/${journeyId}/edit`)
+    //                 })
+                
+                
+    //         })
+    // }
+
+    const formHandleSubmit = (e)=>{
         e.preventDefault()
-        await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
-            .then(async (response)=>{
-                await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)   
-                    .then((blockUpdated)=>{
-                        setBlock(blockUpdated.data.block)
-                        setFormMessage(response.data.message)
-                        navigate(`/profile/journeys/${journeyId}/edit`)
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
+            .then((response) => {
+                        console.log(response)
                     })
-                
-                
-            })
+
     }
 
     const handleChange = (e)=>{
@@ -146,125 +155,129 @@ function CreateStep(props){
 
     
     return(
-        <div className="flex-step">
-            {/* <div>
-            {isLoading ? <p>Loading...</p> : <div>
-                <h1>{block.title}</h1>
-                <h2>{block.description}</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Link Title</td>
-                            <td># of Links</td>
-                            <td>Difficulty</td>
-                            <td>Importance</td>
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {block.steps.map((step,index)=>{
-                          return <tr>  
-                            <td>{index+1}</td>
-                            <td>{step.title}</td>
-                            <td>{step.links.length}</td>
-                            <td>{step.difficulty}</td>
-                            <td>{step.importance}</td>
-                       </tr> })}
-                    </tbody>
-                </table>
+        <>
+            <div className="overlay-style"/>
+            <div className="modal-style">
+                {/* <div>
+                {isLoading ? <p>Loading...</p> : <div>
+                    <h1>{block.title}</h1>
+                    <h2>{block.description}</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Link Title</td>
+                                <td># of Links</td>
+                                <td>Difficulty</td>
+                                <td>Importance</td>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {block.steps.map((step,index)=>{
+                            return <tr>  
+                                <td>{index+1}</td>
+                                <td>{step.title}</td>
+                                <td>{step.links.length}</td>
+                                <td>{step.difficulty}</td>
+                                <td>{step.importance}</td>
+                        </tr> })}
+                        </tbody>
+                    </table>
 
-            </div>}
+                </div>}
 
-            </div> */}
+                </div> */}
+                <div>
+                    <h1>Add a new Step</h1>
+                    <form>
+                        <div>
+                            <label>Title:</label>
+                            <input required onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
+                        </div>
+                        <div>
+                            <label>Description:</label>
+                            <input required onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
+                        </div>
+                        <div>
+                            <label>Difficulty:</label>
+                            <select required onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
+                            <option disabled selected>-- Choose Difficulty of the Step --</option>
+                                <option default>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Importance:</label>
+                            <select required onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
+                            <option disabled selected>-- Choose Degree of importance --</option>
+                                <option>Critical</option>
+                                <option>Recommended</option>
+                                <option>Optional</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Image:</label>
+                            <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
+                            <input  type="file" onChange={(e) => handleFileUpload(e)} />
+                            <img width={75} src={step.image}/>
+                        </div>
+                        <div>
+                        <h3>Add Link Resources</h3>
+                        {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
+                        {linkFields.map((input, index) => {
+            return (
+                <div key={index} className="parent"> 
+                <input required
+                    name='name'
+                    placeholder='name your link resource'
+                    value={input.name}
+                    onChange={(event) => handleFieldsChange(index, event)}
+                />
+                <input required
+                    name='link'
+                    placeholder='link https:// ressource here'
+                    value={input.link}
+                    onChange={(event) => handleFieldsChange(index, event)}
+                />
+                <button name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
+                </div>
+            )
+            })}
+            <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
+            </div>
+
+
             <div>
-                <h1>Add a new Step</h1>
-                <form>
-                    <div>
-                        <label>Title:</label>
-                        <input required onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
-                    </div>
-                    <div>
-                        <label>Description:</label>
-                        <input required onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
-                    </div>
-                    <div>
-                        <label>Difficulty:</label>
-                        <select required onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
-                        <option disabled selected>-- Choose Difficulty of the Step --</option>
-                            <option default>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Importance:</label>
-                        <select required onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
-                        <option disabled selected>-- Choose Degree of importance --</option>
-                            <option>Critical</option>
-                            <option>Recommended</option>
-                            <option>Optional</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Image:</label>
-                        <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
-                        <input  type="file" onChange={(e) => handleFileUpload(e)} />
-                        <img width={75} src={step.image}/>
-                    </div>
-                    <div>
-                    <h3>Add Link Resources</h3>
-                    {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
-                    {linkFields.map((input, index) => {
-          return (
-            <div key={index} className="parent"> 
-              <input required
-                name='name'
-                placeholder='name your link resource'
-                value={input.name}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              <input required
-                name='link'
-                placeholder='link https:// ressource here'
-                value={input.link}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              <button name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
+                <h3>Add Notes</h3>
+                {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
+                {notesFields.map((input, index) => {
+            return (
+                <div key={index}>
+                <input required
+                    name='note'
+                    placeholder='write your note..'
+                    value={input.name}
+                    onChange={(event) => handleFieldsChange(index, event)}
+                />
+                <button name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+                </div>
+            )
+            })}
+            <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
             </div>
-          )
-        })}
-        <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
-        </div>
 
 
-        <div>
-            <h3>Add Notes</h3>
-            {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
-            {notesFields.map((input, index) => {
-          return (
-            <div key={index}>
-              <input required
-                name='note'
-                placeholder='write your note..'
-                value={input.name}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              <button name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+
+
+            {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
+            <button onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
+                    </form>
+                </div>
+                <button onClick={() => setAddStep(false)}>Close</button>
             </div>
-          )
-        })}
-        <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
-        </div>
-
-
-
-
-        {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
-        <button onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
-                </form>
-            </div>
-        </div>
+        </>
     )
 }
 

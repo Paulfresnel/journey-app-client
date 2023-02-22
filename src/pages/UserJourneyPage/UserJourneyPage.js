@@ -70,6 +70,14 @@ function UserJourneyPage() {
             setTag('')
         };
     }
+
+    // const handleBlockClick = (block) => {
+    //     console.log(block)
+    //     axios.get(`${API_ROUTE}/api/blocks/${block}`)
+    //         .then((response) => console.log(response.data))
+    //         .catch(error => setErrorMessage(error.response.data.message));
+    //     setBlockToDisplay(""); 
+    // }
         
 
     return(
@@ -127,9 +135,9 @@ function UserJourneyPage() {
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
                                         {block.steps && block.steps.map(step => {
-                                            return <h1>{step}</h1>
+                                            return <Link to={`/edit-step/${step._id}`}><button>{step.title}</button></Link>
                                         })}
-                                        {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id}/>}
+                                        {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep}/>}
                                         {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
                                     </div>)
                                 } else return (

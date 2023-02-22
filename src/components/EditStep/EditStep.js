@@ -2,26 +2,23 @@ import { useEffect, useState} from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./EditStep.css"
-
+const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
 
 function EditStep(){
-    const navigate = useNavigate()
-    const {stepId} = useParams()
-    const [isLoading, setIsLoading] = useState(true)
-    const [imageUrl, setImageUrl] = useState("")
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
-    const [linkMessage, setLinkMessage] = useState('')
-    const [noteMessage, setNoteMessage] = useState('')
-
-
-    const [linkFields, setLinkFields] = useState([
-        {name:"", link:""}
-    ])
-    const [notesFields, setNotesFields] = useState([
-        ""
-    ])
     
+    const navigate = useNavigate();
+    const {stepId} = useParams();
+    const [isLoading, setIsLoading] = useState(true);
+    const [imageUrl, setImageUrl] = useState("");
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
+    const [linkMessage, setLinkMessage] = useState('');
+    const [noteMessage, setNoteMessage] = useState('');
+    const [ fieldToEdit, setFieldToEdit ] = useState('');
+    const [linkFields, setLinkFields] = useState([{name:"", link:""}]);
+    const [notesFields, setNotesFields] = useState([""]);
+    const [updatedStep, setUpdatedStep] = useState(null);
+
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
         if (event.target.parentNode.parentNode.className === "parent flex-row"){
@@ -35,8 +32,7 @@ function EditStep(){
         data[index] = event.target.value
         setStep({...step, notes: data})
         setNotesFields(data) 
-        }
-        
+        }      
     }   
 
     const addFields = (e) =>{
@@ -84,24 +80,35 @@ function EditStep(){
      }  
     }
 
-    const handleChange = (e)=>{
-        const name = e.target.name;
-        const value = e.target.value;
-        setStep({...step, [name]: value})
-    }
+    // const handleChange = (e)=>{
+    //     const name = e.target.name;
+    //     const value = e.target.value;
+    //     setStep({...step, [name]: value})
+    // }
 
-    const handleFormSubmit =(e)=>{
-        e.preventDefault()
-        console.log("info sent:")
-        console.log(step)
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`, {step})
-            .then(response=>{
-                const data = response.data.step
-                console.log(data)
-                setStep(data)
-                navigate(-1)
-            })
-    }
+    const handleBlur = (event) => {
+        const name = event.target.name
+        if(event.target.value && event.target.value !== step.name){
+            axios.put(`${API_ROUTE}/api/steps/${step._id}`, {[name] : event.target.value})
+                .then(response => setUpdatedStep(response.data))
+            setFieldToEdit('')
+            } else setFieldToEdit('');
+        }
+
+
+    // const handleFormSubmit =(e)=>{
+    //     e.preventDefault()
+    //     console.log("info sent:")
+    //     console.log(step)
+    //     axios.put(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`, {step})
+    //         .then(response=>{
+    //             const data = response.data.step
+    //             console.log(data)
+    //             setStep(data)
+    //             navigate(-1)
+    //         })
+    // }
+
     const uploadImage = (file) => {
         return axios.post("http://localhost:5005/api/upload", file)
           .then(res => {
@@ -127,10 +134,8 @@ function EditStep(){
     }
 
     
-
-
     useEffect( ()=>{
-       axios.get(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`)
+       axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
                 console.log("response")
                 const data = response.data
@@ -140,7 +145,7 @@ function EditStep(){
                 setImageUrl(data.image)
                 setIsLoading(false)
             })
-    }, [stepId, setImageUrl])
+    }, [updatedStep])
 
    
     return(
@@ -148,30 +153,41 @@ function EditStep(){
             {isLoading ? <p>Data is Loading..</p> : 
 
             <div>
-            <h2>Edit your Step information</h2>
             
-            <form onSubmit={(e)=>handleFormSubmit(e)}>
-                    <div>
-                        <label>Title:</label>
-                        <input onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
-                    </div>
-                    <div>
-                        <label>Description:</label>
-                        <input onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
-                    </div>
+            {/* <form onSubmit={(e)=>handleFormSubmit(e)}> */}
                     
-                    <div>
+                        { fieldToEdit === 'journey-step-title' ? 
+                        <div>
+                            <label>Title:</label>                       
+                            <input type='text' name='title' defaultValue={step.title} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(e)=>handleBlur(e)}></input>
+                        </div>
+                        : <h1 id= 'journey-step-title' onClick={() => setFieldToEdit('journey-step-title')}>{step.title}</h1>
+                        }
+                    
+                        <label>Description: </label>
+                        { fieldToEdit === 'journey-step-description' ? 
+                           <input type='text-area' name= 'description' defaultValue={step.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(e)=>handleBlur(e)}></input>
+                         : <h2 id='journey-step-description' onClick={() => setFieldToEdit('journey-step-description')}>{step.description}</h2>
+                        }
+                    
+                
+                   
                         <label>Difficulty:</label>
-                        <select onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
-                        <option disabled selected defaultValue>-- Choose Difficulty of the Step --</option>
-                            <option default>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
-                        </select>
-                    </div>
+                        { fieldToEdit === 'journey-step-difficulty' ?
+                        <>
+                            <select name="difficulty" defaultValue={step.difficulty} autoFocus onFocus={(event) => event.currentTarget.select()} onChange={(e)=>handleBlur(e)} onBlur={(e)=>handleBlur(e)}>
+                            <option disabled selected defaultValue>-- Choose Difficulty of the Step --</option>
+                                <option default>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select>
+                        </> 
+                        : <h2 id='journey-step-difficulty' onClick={() => setFieldToEdit('journey-step-difficulty')}>{step.difficulty}</h2> 
+                        }
+               
                     <div>
                         <label>Importance:</label>
-                        <select onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
+                        <select  name="importance" value={step.importance}>
                         <option disabled selected>-- Choose Degree of importance --</option>
                             <option>Critical</option>
                             <option>Recommended</option>
@@ -181,7 +197,7 @@ function EditStep(){
                     <div className="flex-c">
                         <img style={{margin:"0 auto",width:'12rem'}} alt={step.description} className="step-image"  src={step.image}/>
                         <label style={{marginTop:'25px',marginBottom:"25px"}}>Update Image by URL:</label>
-                        <input onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
+                        <input  type='text' name="image" value={step.image}></input>
                         <input  type="file" onChange={(e) => handleFileUpload(e)} />
                     </div>  
 
@@ -242,7 +258,7 @@ function EditStep(){
 
 
                     <button type="submit">Submit Form</button>
-                    </form>
+        {/* </form> */}
 
                     </div>
                 }
