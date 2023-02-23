@@ -130,7 +130,7 @@ function CreateStep(props){
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                        console.log(response)
+                      navigate(`/steps/${response.data.step._id}`)
                     })
 
     }

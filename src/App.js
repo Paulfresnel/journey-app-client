@@ -41,7 +41,7 @@ function App() {
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
-        <Route path={"/edit-step/:stepId"} element={<EditStep/>}/>
+        <Route path={"/steps/:stepId"} element={<EditStep/>}/>
         
         <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>

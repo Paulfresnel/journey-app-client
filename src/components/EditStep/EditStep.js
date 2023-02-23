@@ -1,5 +1,5 @@
-import { useEffect, useState} from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useEffect, useState, useRef } from "react"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import axios from "axios"
 import "./EditStep.css"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
@@ -14,10 +14,14 @@ function EditStep(){
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
     const [linkMessage, setLinkMessage] = useState('');
     const [noteMessage, setNoteMessage] = useState('');
-    const [ fieldToEdit, setFieldToEdit ] = useState('');
+    const [fieldToEdit, setFieldToEdit] = useState('');
     const [linkFields, setLinkFields] = useState([{name:"", link:""}]);
     const [notesFields, setNotesFields] = useState([""]);
     const [updatedStep, setUpdatedStep] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const hiddenFileInput  = useRef(null);
+
+    console.log(linkFields)
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -32,8 +36,9 @@ function EditStep(){
         data[index] = event.target.value
         setStep({...step, notes: data})
         setNotesFields(data) 
-        }      
+        }  
     }   
+
 
     const addFields = (e) =>{
         e.preventDefault()
@@ -47,6 +52,20 @@ function EditStep(){
         }
         
     }
+    
+    const submitResources = () => {
+            axios.put(`${API_ROUTE}/api/steps/${step._id}`, {links : linkFields})
+                .then(response => setUpdatedStep(response.data))
+            setFieldToEdit('')
+           
+    }
+   
+    const submitNotes = () => {
+        axios.put(`${API_ROUTE}/api/steps/${step._id}`, {notes : notesFields})
+            .then(response => setUpdatedStep(response.data))
+        setFieldToEdit('')
+       
+}
 
     const removeFields = (index, event)=>{
         event.preventDefault()
@@ -108,37 +127,61 @@ function EditStep(){
     //             navigate(-1)
     //         })
     // }
+    
+    const handleImageUpload = () => {
+        hiddenFileInput.current.click();
+    }
 
-    const uploadImage = (file) => {
-        return axios.post("http://localhost:5005/api/upload", file)
-          .then(res => {
-            console.log("file url from cloudinary")
-            console.log(res.data)
-            setImageUrl(res.data.imageUrl)
-            setStep({...step, image: res.data.imageUrl})
-        })
-          .catch(err=>console.log(err));
-      }
-
-    const handleFileUpload= (e)=>{
+    const handleImageChange = async (event) => {
+        let newImageUrl = '';
         const uploadData = new FormData();
+        uploadData.append("imageUrl", event.target.files[0]);
+        const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
+            .then(response => newImageUrl = response.data.imageUrl)
+            .catch(error => setErrorMessage(error.response.data.message));
+
+        axios.put(`${API_ROUTE}/api/steps/${step._id}`, {image: newImageUrl}, {new: true})
+            .then((response) => setUpdatedStep(response.data))
+            .catch(error => setErrorMessage(error.response.data.message));
+
+    }
+
+    const taskCompleted = (event) => {
+        const isCompleted = event.target.checked;
+        axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
+        .then(response => setUpdatedStep(response.data));
+    }
+
+    // const uploadImage = (file) => {
+    //     return axios.post("http://localhost:5005/api/upload", file)
+    //       .then(res => {
+    //         console.log("file url from cloudinary")
+    //         console.log(res.data)
+    //         setImageUrl(res.data.imageUrl)
+    //         setStep({...step, image: res.data.imageUrl})
+    //     })
+    //       .catch(err=>console.log(err));
+    //   }
+
+    // const handleFileUpload= (e)=>{
+    //     const uploadData = new FormData();
  
 
-    uploadData.append("imageUrl", e.target.files[0]);
-    uploadImage(uploadData)
-        .then(response=>{
-            console.log("file url is returning...:")
-            console.log(response)
-        })
-        .catch(err=>console.log(err))
-    }
+    // uploadData.append("imageUrl", e.target.files[0]);
+    // uploadImage(uploadData)
+    //     .then(response=>{
+    //         console.log("file url is returning...:")
+    //         console.log(response)
+    //     })
+    //     .catch(err=>console.log(err))
+    // }
 
     
     useEffect( ()=>{
        axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
-                console.log("response")
-                const data = response.data
+                const data = response.data;
+                console.log(data);
                 setLinkFields(data.links)
                 setNotesFields(data.notes)
                 setStep(data)
@@ -163,15 +206,21 @@ function EditStep(){
                         </div>
                         : <h1 id= 'journey-step-title' onClick={() => setFieldToEdit('journey-step-title')}>{step.title}</h1>
                         }
-                    
+
+                        <div className="flex-c">
+                            <img src={step.image} style={{margin:"0 auto", width:'12rem'}} alt={step.description}  />
+                            <label for='update-step-image' style={{marginTop:'25px',marginBottom:"25px"}}>
+                                <button onClick={handleImageUpload}>Update Image</button>
+                                <input id = 'update-step-image' type='file' name="image" ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}></input>
+                            </label>
+                        </div>  
+
                         <label>Description: </label>
                         { fieldToEdit === 'journey-step-description' ? 
                            <input type='text-area' name= 'description' defaultValue={step.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(e)=>handleBlur(e)}></input>
                          : <h2 id='journey-step-description' onClick={() => setFieldToEdit('journey-step-description')}>{step.description}</h2>
                         }
                     
-                
-                   
                         <label>Difficulty:</label>
                         { fieldToEdit === 'journey-step-difficulty' ?
                         <>
@@ -185,79 +234,105 @@ function EditStep(){
                         : <h2 id='journey-step-difficulty' onClick={() => setFieldToEdit('journey-step-difficulty')}>{step.difficulty}</h2> 
                         }
                
-                    <div>
                         <label>Importance:</label>
-                        <select  name="importance" value={step.importance}>
-                        <option disabled selected>-- Choose Degree of importance --</option>
-                            <option>Critical</option>
-                            <option>Recommended</option>
-                            <option>Optional - Bonus Knowledge</option>
-                        </select>
-                    </div>
-                    <div className="flex-c">
-                        <img style={{margin:"0 auto",width:'12rem'}} alt={step.description} className="step-image"  src={step.image}/>
-                        <label style={{marginTop:'25px',marginBottom:"25px"}}>Update Image by URL:</label>
-                        <input  type='text' name="image" value={step.image}></input>
-                        <input  type="file" onChange={(e) => handleFileUpload(e)} />
-                    </div>  
+                        { fieldToEdit === 'journey-step-importance' ?
+                        <>
+                            <select name="importance" defaultValue={step.importance} autoFocus onFocus={(event) => event.currentTarget.select()} onChange={(e)=>handleBlur(e)} onBlur={(e)=>handleBlur(e)}>
+                            <option disabled selected>-- Choose Degree of importance --</option>
+                                <option>Critical</option>
+                                <option>Recommended</option>
+                                <option>Optional - Bonus Knowledge</option>
+                            </select>
+                        </>
+                        : <h2 id='journey-step-importance' onClick={() => setFieldToEdit('journey-step-importance')}>{step.importance}</h2> 
+                        }
 
                     <div>
-                    <h3>Edit your Link Resources</h3>
-                    {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
-                    {linkFields.map((input, index) => {
-          return (
-            <div key={index} className="parent flex-row">
-            <div className="flex-column">
-            <label>Change the Name:</label>
-              <input required
-                name='name'
-                placeholder='name your link resource'
-                value={input.name}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              </div>
-              <div className="flex-column">
-            <label>Change the Link:</label>
-              <input required
-                name='link'
-                placeholder='link https:// ressource here'
-                value={input.link}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              </div>
-              <button className="remove" name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
-            </div>
-          )
-        })}
-        <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
-        </div>
+                        <label>Resources</label>
+                        { fieldToEdit === 'journey-step-resources' ?
+                        <>
+                            {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
+                            {linkFields.map((input, index) => {
+                                return (
+                                    <div key={index} className="parent flex-row">
+                                        <div className="flex-column">
+                                        <label>Change the Name:</label>
+                                        <input required
+                                            name='name'
+                                            placeholder='name your link resource'
+                                            value={input.name}
+                                            onChange={(event) => handleFieldsChange(index, event)}/>
+                                        </div>
+                                        <div className="flex-column">
+                                            <label>Change the Link:</label>
+                                                <input required 
+                                                    name='link'
+                                                    placeholder='https:// resource here'
+                                                    value={input.link}
+                                                    onChange={(event) => handleFieldsChange(index, event)}
+                                                />
+                                        </div>
+                                    <button className="remove" name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
+                                </div>
+                                
+                                )
+                            })}
+                            <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
+                            <button onClick={(event) => submitResources(event)}>Update Resources</button>
+                        </>
+                        : 
+                        <>
+                            {step.links && step.links.map(link => {
+                                return(<Link to={`${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
+                                })
+                            }
+                            <br/>
+                            <button onClick={() => setFieldToEdit('journey-step-resources')}>Edit Resources</button>
+                        </>
+                        }
+                    </div>
+          
+            <label>Notes:</label>
+            { fieldToEdit === 'journey-step-notes' ?
+               <>
+                {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
+                {notesFields.map((input, index) => {
+                    return (
+                        <div key={index} className="flex-r">
+                        <textarea className="large" required
+                            rows="2" cols="35"
+                            name='notes'
+                            placeholder='write your note..'
+                            value={input}
+                            onChange={(event) => handleFieldsChange(index, event)}
+                        />
+                        <button className="remove" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+                        </div>
+                        )
+                    })}
+                    <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
+                    <button name="addNote" onClick={()=>submitNotes()}>Update Notes</button>
+                </>
+              :
+                <>
+                    {
+                        step.notes && step.notes.map(note => {
+                            return <p>{note}</p>
+                        })
+                    }
+                    <button onClick={() => setFieldToEdit('journey-step-notes')}>Edit Notes</button>
+                </>
+            }
+            
+            <label>Completed</label>
+            {step.isCompleted ?
+                <input type='checkbox' onChange={(event) => taskCompleted(event)} checked />
+              : <input type='checkbox' onChange={(event) => taskCompleted(event)}/>
+            }
+            
 
-        <div>
-            <h3>Edit your Notes</h3>
-            {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
-            {notesFields.map((input, index) => {
-          return (
-            <div key={index} className="flex-r">
-              <textarea className="large" required
-                rows="2" cols="35"
-                name='notes'
-                placeholder='write your note..'
-                value={input}
-                onChange={(event) => handleFieldsChange(index, event)}
-              />
-              <button className="remove" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
-            </div>
-          )
-        })}
-        <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
-        </div>
 
 
-
-
-
-
-                    <button type="submit">Submit Form</button>
         {/* </form> */}
 
                     </div>
