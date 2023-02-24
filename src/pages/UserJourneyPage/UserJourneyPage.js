@@ -71,6 +71,11 @@ function UserJourneyPage() {
         };
     }
 
+    const deleteBlock = (blockId) => {
+        axios.delete(`${API_ROUTE}/api/${userJourney._id}/blocks/${blockId}`)
+            .then(response => setUpdatedJourney(response))
+    }
+
     // const handleBlockClick = (block) => {
     //     console.log(block)
     //     axios.get(`${API_ROUTE}/api/blocks/${block}`)
@@ -139,6 +144,7 @@ function UserJourneyPage() {
                                         })}
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep}/>}
                                         {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
+                                        <button onClick={() => {deleteBlock(block._id)}}>Delete</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
