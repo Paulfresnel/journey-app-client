@@ -64,7 +64,7 @@ function PublicJourneysPage(){
     console.log('allPublicJourneys:', allPublicJourneys);
 
     return(
-        <div>
+        <div className='centered-journeys'>
         {!isLoading && allPublicJourneys.map((journey,index)=>{
             return ( <div className="card">
                     <img className="card-img-top" src={journey.image} alt="Card  cap"/>
@@ -72,7 +72,7 @@ function PublicJourneysPage(){
                     <h5 className="card-title">{journey.title}</h5> 
                     <div>
                     <p>{journey.upvoteUsers ? journey.upvoteUsers.length : "0"} Likes</p> 
-                    {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart"}> Like </i></button>}
+                    {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart fa-beat"}> Like </i></button>}
                     </div>
                     <p className="card-text">{journey.description}</p>
                     <p>Created by: {journey.author.username}</p>

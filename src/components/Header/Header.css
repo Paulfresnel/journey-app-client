@@ -1,0 +1,68 @@
+.navbar .in .nav li {
+    display: block;
+    float: none;
+    width:100%;
+ }
+
+ .navbar{
+    background-color:#dab785 ;
+    padding: 10px 15px 10px 15px
+ }
+
+ .navbar-brand{
+    margin-left: 15px;
+    color: #003566;
+    font-weight: bold;
+    font-family: 'Aubange Belgium', sans-serif;
+    text-shadow: 4px 4px #ffd60A 
+                                                
+ }
+
+ .bi-house{
+    margin: 0 auto;
+    width: 50px;
+    text-shadow: 4px 4px #ffd60A ;
+    color: #003566;
+    font-size: 2.4rem;
+ }
+
+ .blue{
+    color: #ffd60A;
+ }
+
+ .border-black{
+    border: 1px black solid;
+ }
+
+ .emphasized{
+    font-size: 2.5rem;
+ }
+
+ .nav-link{
+    text-decoration: none;
+    color: #003566;
+    font-weight: bold;
+    
+ }
+
+
+ a{
+    text-decoration: none;
+ }
+
+
+
+ .go-back{
+    border-radius: 15px;
+    background-color: #ffc300;
+    border: #003566 2px solid;
+ }
+
+
+
+
+ .navbar-collapse li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }

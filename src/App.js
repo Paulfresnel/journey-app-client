@@ -16,6 +16,8 @@ import JourneysList from "./components/JourneysList/JourneysList";
 import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
 import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
 import PublicJourneysPage from "./pages/PublicJourneysPage/PublicJourneysPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import Header from "./components/Header/Header";
 
 
 
@@ -30,16 +32,10 @@ function App() {
 
   return (
     <div className="App">
-    
-    <button onClick={goBack}>Go Back</button>
-    {isLoggedIn && <Link to={"/profile"}>
-    <button>Go to Profile</button>
-    </Link>}
-    <Link to={"/journeys"}>
-      <button>Check all Public Journeys</button>
-    </Link>
+    <Header/>
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
+      <Route path={"*"} element={<ErrorPage/>}/>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
         <Route path={"/steps/:stepId"} element={<EditStep/>}/>
         
