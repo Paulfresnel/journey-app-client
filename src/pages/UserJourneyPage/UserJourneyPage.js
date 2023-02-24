@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import CreateBlock from "../../components/CreateBlock/CreateBlock";
 import EditTags from "../../components/EditTags/EditTags";
 import CreateStep from "../../components/CreateStep/CreateStep";
+import UserProgress from "../../components/ProgressBar/ProgressBar";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -21,20 +22,36 @@ function UserJourneyPage() {
     const [ editTags, setEditTags ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
     const [ addStep, setAddStep ] = useState(false);
+    const [ activeBlock, setActiveBlock ] = useState('');
+    const [ blockProgress, setBlockProgress ] = useState([]);
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
     const allTags = [...tagArray];
+   
     const navigate = useNavigate();
+
 
     useEffect(() => {
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
             .then(foundJourney => {
                 if(foundJourney){
-                    console.log(foundJourney.data);
                 setUserJourney(foundJourney.data);
                 setIsLoading(false)}
             })
     }, [updatedJourney]);
+
+
+   useEffect(() => {
+        if(activeBlock){
+            let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
+            let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
+            if(completedPercentage){
+            setBlockProgress(completedPercentage)
+            } else setBlockProgress(0);
+        }
+
+     }, [activeBlock])
+
 
     const handleEditValue = (event) => {
         const name = event.target.name
@@ -141,7 +158,8 @@ function UserJourneyPage() {
                                 if(blockToDisplay === block._id){
                                  return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
-                                        <button onClick={() => setBlockToDisplay("")}><h2>{block.title}</h2></button>
+                                        <button onClick={() => setActiveBlock(block)}><h2>{block.title}</h2></button>
+                                        <UserProgress now={blockProgress}/>
                                         <p>{block.description}</p>
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
@@ -150,11 +168,11 @@ function UserJourneyPage() {
                                         })}
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep}/>}
                                         {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
-                                        <button onClick={() => {deleteBlock(block._id)}}>Delete</button>
+                                        <button onClick={() => setFieldToEdit('')}>Delete</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
-                                        <button onClick={() => setBlockToDisplay(block._id)}><h2>{block.title}</h2></button>
+                                        <button onClick={() => {setBlockToDisplay(block._id); setActiveBlock(block)}}><h2>{block.title}</h2></button>
                                     </div>
                                     )}
                                 )}
