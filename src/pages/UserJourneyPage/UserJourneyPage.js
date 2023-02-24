@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from 'react'
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import CreateBlock from "../../components/CreateBlock/CreateBlock";
 import EditTags from "../../components/EditTags/EditTags";
 import CreateStep from "../../components/CreateStep/CreateStep";
@@ -24,6 +24,7 @@ function UserJourneyPage() {
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
     const allTags = [...tagArray];
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
@@ -73,7 +74,12 @@ function UserJourneyPage() {
 
     const deleteBlock = (blockId) => {
         axios.delete(`${API_ROUTE}/api/${userJourney._id}/blocks/${blockId}`)
-            .then(response => setUpdatedJourney(response))
+            .then(response => setUpdatedJourney(response));
+    }
+
+    const deleteJourney = () => {
+        axios.delete(`${API_ROUTE}/api/journeys/${userJourney._id}/`)
+            .then(response => console.log(response));
     }
 
     // const handleBlockClick = (block) => {
@@ -157,7 +163,8 @@ function UserJourneyPage() {
                 <div>  
                     {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} setShowForm={setShowForm}/>
                             : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
-                </div>           
+                </div>
+                <button onClick={() => deleteJourney()}>Delete</button>           
             </>} 
        </div> 
     )
