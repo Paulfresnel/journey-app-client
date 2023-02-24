@@ -37,7 +37,7 @@ function App() {
       <Route path={"/"} element={<HomePage/>}/>
       <Route path={"*"} element={<ErrorPage/>}/>
         <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
-        <Route path={"/steps/:stepId"} element={<EditStep/>}/>
+        <Route path={"/:blockId/:stepId"} element={<EditStep/>}/>
         
         <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         <Route path={"/sign-up"} element={<SignupPage/>}/>

@@ -135,7 +135,7 @@ function UserJourneyPage() {
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
                                         {block.steps && block.steps.map(step => {
-                                            return <Link to={`/steps/${step._id}`}><button>{step.title}</button></Link>
+                                            return <Link to={`/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep}/>}
                                         {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}

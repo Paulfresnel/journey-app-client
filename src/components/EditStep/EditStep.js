@@ -8,7 +8,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function EditStep(){
     
     const navigate = useNavigate();
-    const {stepId} = useParams();
+    const {blockId, stepId} = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [imageUrl, setImageUrl] = useState("");
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
@@ -18,10 +18,11 @@ function EditStep(){
     const [linkFields, setLinkFields] = useState([{name:"", link:""}]);
     const [notesFields, setNotesFields] = useState([""]);
     const [updatedStep, setUpdatedStep] = useState(null);
+    const [journeyId, setJourneyId] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const hiddenFileInput  = useRef(null);
 
-    console.log(linkFields)
+    console.log(step.image)
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -176,8 +177,20 @@ function EditStep(){
     //     .catch(err=>console.log(err))
     // }
 
-    
-    useEffect( ()=>{
+    const deleteStep = () => {
+        console.log('delete step is working')
+        axios.delete(`${API_ROUTE}/api/steps/${blockId}/${stepId}`)
+            .then(() => navigate(`/profile/journeys/${journeyId}`))
+            .catch(err => setErrorMessage(err.response.data.message));
+    };
+
+    useEffect(() => {
+        axios.get(`${API_ROUTE}/api/${blockId}`)
+            .then(response => setJourneyId(response.data._id))
+    }, []);
+
+ 
+    useEffect(() => {
        axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
                 const data = response.data;
@@ -188,7 +201,7 @@ function EditStep(){
                 setImageUrl(data.image)
                 setIsLoading(false)
             })
-    }, [updatedStep])
+    }, [updatedStep]);
 
    
     return(
@@ -324,12 +337,16 @@ function EditStep(){
                 </>
             }
             
+            <br/>
             <label>Completed</label>
             {step.isCompleted ?
                 <input type='checkbox' onChange={(event) => taskCompleted(event)} checked />
               : <input type='checkbox' onChange={(event) => taskCompleted(event)}/>
             }
             
+
+            <br/>
+            <button type='button' onClick={deleteStep}>Delete</button>
 
 
 
