@@ -1,5 +1,10 @@
-
+.centered-journeys{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
 
 .card{
+    margin: 10px 10px 10px 10px;
     width:18rem;
 }

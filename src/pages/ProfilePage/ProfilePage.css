@@ -1,0 +1,47 @@
+.main-container-carousel{
+    margin: 0 auto;
+    width:20rem;
+   margin-top: 55px;
+}
+
+.carousel-indicators{
+   background-color: rgba(41, 38, 38, 0.64);
+   margin-top: 25px;
+}
+
+.black{
+    color: black;
+}
+
+.carousel-caption{
+    background-color: #dab78549;
+    border-radius: 25px;
+}
+
+.upvote{
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #003566
+}
+
+.carousel-btn{
+    background-color: #FFC300;
+    color: #003566;
+    font-weight: bold;
+}
+
+.carousel-title{
+    color: #003566;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.divider{
+    margin: 25px 0px 25px 0px;
+    height: 3px;
+    background-color: #dab785da;
+}
+
+.carousel-item-active{
+    height: 500px;
+}
