@@ -131,10 +131,7 @@ function CreateStep(props){
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                      const stepsInBlock = response.data.steps;
-                      navigate(`/profile/journeys/${journeyId}`);
-                      setAddStep(false);
-                      setUpdatedJourney(stepsInBlock)
+                      navigate(`/steps/${response.data.step._id}`)
                     })
 
     }
@@ -150,6 +147,8 @@ function CreateStep(props){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/blocks/${blockId}`)
             .then(response=>{
+                console.log("response")
+                console.log(response)
                 const {block} = response.data
                 setBlock(block)
                 console.log(block)
