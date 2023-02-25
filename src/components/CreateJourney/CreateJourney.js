@@ -5,8 +5,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
-const allTags = [];
-
 
 function CreateJourney(){
 
@@ -14,19 +12,9 @@ function CreateJourney(){
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
-    const [tag, setTag] = useState('');
     const [tagArray, setTagArray] = useState([]);
     const [isPublic, setIsPublic] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-
-
-    const handleClick = () => {
-        if(tag){
-            allTags.push(tag);
-            setTagArray(allTags);
-            setTag('')
-        };
-    }
 
     const handleUpload = (event) => {
         
@@ -70,13 +58,8 @@ function CreateJourney(){
                 </label>
                 <br/>
 
-                {tagArray && <EditTags tagArray={tagArray} allTags={allTags} setTagArray={setTagArray}/>}
+                {tagArray && <EditTags />}
 
-                <label>Tags:
-                    <input type='text' name='tags' onChange={(event) => setTag(event.target.value)}/>
-                </label>
-                <button type="button" onClick={handleClick}>Add tag</button>
-                <br/>
                 <label>Make Journey Public:
                     <input type='checkbox' name='isPublic' onChange={(event) => setIsPublic(event.target.checked)}/>
                 </label>
