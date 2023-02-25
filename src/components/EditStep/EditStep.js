@@ -10,8 +10,8 @@ function EditStep(){
     const navigate = useNavigate();
     const {blockId, stepId} = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    const [imageUrl, setImageUrl] = useState("");
     const [isCompleted, setIsCompleted] = useState(false);
+    const [imageUrl, setImageUrl] = useState("");
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
     const [linkMessage, setLinkMessage] = useState('');
     const [noteMessage, setNoteMessage] = useState('');
@@ -21,9 +21,8 @@ function EditStep(){
     const [updatedStep, setUpdatedStep] = useState(null);
     const [journeyId, setJourneyId] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
+    const isFirstRender = useRef(true);
     const hiddenFileInput  = useRef(null);
-
-    console.log(step.image)
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -148,11 +147,7 @@ function EditStep(){
 
     }
 
-    const taskCompleted = (event) => {
-        setIsCompleted(event.target.checked);
-        axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
-        .then(response => setUpdatedStep(response.data));
-    }
+    
 
     // const uploadImage = (file) => {
     //     return axios.post("http://localhost:5005/api/upload", file)
@@ -190,12 +185,10 @@ function EditStep(){
             .then(response => setJourneyId(response.data._id))
     }, []);
 
- 
     useEffect(() => {
        axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
                 const data = response.data;
-                console.log(data);
                 setLinkFields(data.links)
                 setNotesFields(data.notes)
                 setStep(data)
@@ -204,7 +197,17 @@ function EditStep(){
                     setIsLoading(false)
                 },500) 
             })
-    }, [updatedStep]);
+    }, [updatedStep]); 
+    
+    
+    useEffect(() => {
+        if(isFirstRender.current){
+            isFirstRender.current = false;
+            return;
+        }
+            axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
+                    .then(response => console.log(response.data));
+    }, [isCompleted])
 
    
     return(
@@ -342,8 +345,8 @@ function EditStep(){
             <br/>
             <label>Completed</label>
             {step.isCompleted ?
-                <input type='checkbox' onChange={(event) => taskCompleted(event)} checked />
-              : <input type='checkbox' onChange={(event) => taskCompleted(event)}/>
+                <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)} checked />
+              : <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
             }
             
 
