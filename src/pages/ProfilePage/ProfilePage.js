@@ -28,7 +28,9 @@ function ProfilePage() {
             .then(foundUser => {
                 setJourneys(foundUser.data.journeysCreated)
                 setJourneysCopied(foundUser.data.journeysCopied)
-                setIsLoading(false)
+                setTimeout(()=>{
+                    setIsLoading(false)
+                }, 1000) 
             })}
             
     }, [user])
@@ -38,7 +40,7 @@ function ProfilePage() {
     return(
         <div className='main-container-carousel'>
     <h1>Journeys Created</h1>
-    {isLoading && <h1>Loading...</h1>}
+    {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
 {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
         {journeys.map((journey,index)=>{
@@ -93,6 +95,7 @@ function ProfilePage() {
 <div className="divider"></div>
 
 <h1>Journeys Upvoted</h1>
+{isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
 {!isLoading && <div id="journeysCopied" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
         {journeysCopied.map((journey,index)=>{

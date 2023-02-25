@@ -12,6 +12,7 @@ function PublicJourneysPage(){
     const [allPublicJourneys, setAllPublicJourneys] = useState([])
     const {user} = useContext(AuthContext)
 
+
     const likeJourney = async (e) => {
         e.preventDefault();
         const journeyId = e.target.dataset.journeyid;
@@ -41,7 +42,14 @@ function PublicJourneysPage(){
           console.log(error);
         }
       };
-    
+
+      const toggleBlocks = (index) => {
+        setAllPublicJourneys((prevJourneys) =>
+          prevJourneys.map((journey, i) =>
+            i === index ? { ...journey, showBlocks: !journey.showBlocks } : journey
+          )
+        );
+      };  
 
     useEffect(()=>{
         console.log('useEffect');
@@ -53,7 +61,9 @@ function PublicJourneysPage(){
                 let journeysArrayReceived = journeysArray.data.publicJourneys
                 await setAllPublicJourneys(journeysArrayReceived)
                 console.log(allPublicJourneys)
-                setIsLoading(false)
+                setTimeout(()=>{
+                  setIsLoading(false)
+                },1000)  
             })
             .catch(err=>console.log(err))
         }
@@ -62,10 +72,12 @@ function PublicJourneysPage(){
     }, [])
 
     console.log('allPublicJourneys:', allPublicJourneys);
-
+    let showBlocks;
     return(
         <div className='centered-journeys'>
+    {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
         {!isLoading && allPublicJourneys.map((journey,index)=>{
+          console.log(journey)
             return ( <div className="card">
                     <img className="card-img-top" src={journey.image} alt="Card  cap"/>
                 <div className="card-body">
@@ -79,7 +91,8 @@ function PublicJourneysPage(){
                     {journey.tags.length !==0 && <p>Tags: {journey.tags}</p>}
                     
                 </div>
-             <ul className="list-group list-group-flush">
+                <button value={showBlocks} onClick={() => toggleBlocks(index)} >Show Blocks</button>
+             {journey.showBlocks  && <ul className="list-group list-group-flush">
              {allPublicJourneys[index].blocks.map(block=>{
                 return (
                     <li className="list-group-item">
@@ -88,7 +101,7 @@ function PublicJourneysPage(){
                     </li>
                 )
              })}
-             </ul>
+             </ul>}
              <div className="card-body">
              <Link to={`/journeys/${journey._id}`}>
                <button href="#" className="card-link">Journey link</button>
