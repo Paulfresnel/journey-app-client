@@ -10,8 +10,8 @@ function EditStep(){
     const navigate = useNavigate();
     const {blockId, stepId} = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    const [imageUrl, setImageUrl] = useState("");
     const [isCompleted, setIsCompleted] = useState(false);
+    const [imageUrl, setImageUrl] = useState("");
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
     const [linkMessage, setLinkMessage] = useState('');
     const [noteMessage, setNoteMessage] = useState('');
@@ -22,8 +22,6 @@ function EditStep(){
     const [journeyId, setJourneyId] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const hiddenFileInput  = useRef(null);
-
-    console.log(step.image)
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -148,11 +146,12 @@ function EditStep(){
 
     }
 
-    const taskCompleted = (event) => {
-        setIsCompleted(event.target.checked);
+    useEffect(() => {
         axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
-        .then(response => setUpdatedStep(response.data));
-    }
+            .then(response => console.log(response.data));
+    }, [isCompleted])
+        
+    
 
     // const uploadImage = (file) => {
     //     return axios.post("http://localhost:5005/api/upload", file)
@@ -340,9 +339,9 @@ function EditStep(){
             
             <br/>
             <label>Completed</label>
-            {step.isCompleted ?
-                <input type='checkbox' onChange={(event) => taskCompleted(event)} checked />
-              : <input type='checkbox' onChange={(event) => taskCompleted(event)}/>
+            {isCompleted ?
+                <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)} checked />
+              : <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
             }
             
 
