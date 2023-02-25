@@ -30,6 +30,7 @@ function CreateStep(props){
     const [formMessage, setFormMessage] = useState('')
     const [isLoading,setIsLoading] = useState(true)
 
+
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
         setFormMessage('')
@@ -130,7 +131,9 @@ function CreateStep(props){
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                      navigate(`/steps/${response.data.step._id}`)
+                      const stepsInBlock = response.data.steps;
+                      navigate(`/profile/journeys/${journeyId}`);
+                      setAddStep(false);
                     })
 
     }

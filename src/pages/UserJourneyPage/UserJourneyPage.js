@@ -96,7 +96,7 @@ function UserJourneyPage() {
 
     const deleteJourney = () => {
         axios.delete(`${API_ROUTE}/api/journeys/${userJourney._id}/`)
-            .then(response => console.log(response));
+            .then(() => navigate('/profile'));
     }
 
     // const handleBlockClick = (block) => {
