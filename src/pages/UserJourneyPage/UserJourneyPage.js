@@ -12,6 +12,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function UserJourneyPage() {
 
     const [ userJourney, setUserJourney ] = useState({});
+    const [ journeyBlocks, setJourneyBlocks ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ showForm, setShowForm ] = useState(false);
     const [ updatedJourney, setUpdatedJourney ] = useState({});
@@ -32,16 +33,15 @@ function UserJourneyPage() {
 
 
     useEffect(() =>  {
-     const fetchData = async () => {
-        const userJourney = await axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
+     
+        axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
             .then(foundJourney => {
                 if(foundJourney){
                 setUserJourney(foundJourney.data);
-                setIsLoading(false)
-                const completedBlocks = userJourney.blocks.filter(block => block.isCompleted)
-                console.log(completedBlocks.length);}
-            })};
-            fetchData()
+                setJourneyBlocks(foundJourney.data.blocks);
+                setIsLoading(false)}
+            });
+    
     }, [updatedJourney]);
 
 
@@ -49,17 +49,26 @@ function UserJourneyPage() {
         if(activeBlock){
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
             let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
-            if(completedPercentage){
-            setBlockProgress(Math.round(completedPercentage));
-            } else if(blockProgress === 100) {
-                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-                .then((response) => setUpdatedJourney(response.data))
-            }
-            else setBlockProgress(0);
+             if(completedPercentage){
+                setBlockProgress(Math.round(completedPercentage));
+                if(blockProgress === 100) {
+                    axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                    .then((response) => setUpdatedJourney(response.data))}
+                else if(blockProgress !== 100) {
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+                .then((response) => setUpdatedJourney(response.data))}
+            } else setBlockProgress(0);
         }
-     }, [activeBlock]);
+     }, [activeBlock]);   
+     
+     
+    //  useEffect(() => {
+    //     if(journeyBlocks){
+    //         const completedBlocks = journeyBlocks.filter(block => block.isCompleted);
+    //         console.log(completedBlocks)
+    //     }
+    // }, [activeBlock])
 
-   
 
 
     const handleEditValue = (event) => {

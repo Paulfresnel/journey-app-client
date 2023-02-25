@@ -11,6 +11,7 @@ function EditStep(){
     const {blockId, stepId} = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [imageUrl, setImageUrl] = useState("");
+    const [isCompleted, setIsCompleted] = useState(false);
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
     const [linkMessage, setLinkMessage] = useState('');
     const [noteMessage, setNoteMessage] = useState('');
@@ -148,7 +149,7 @@ function EditStep(){
     }
 
     const taskCompleted = (event) => {
-        const isCompleted = event.target.checked;
+        setIsCompleted(event.target.checked);
         axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
         .then(response => setUpdatedStep(response.data));
     }
