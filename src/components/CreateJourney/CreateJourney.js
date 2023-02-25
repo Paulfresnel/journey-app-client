@@ -37,7 +37,7 @@ function CreateJourney(props){
             .then(response => {
                 console.log(response.data)   
                 setUser(response.data.user);
-                navigate(`/profile/journeys/${response.data.journey._id}`);
+                navigate(`/profile`);
                 setAddJourney(false);
                 })
         } else {
