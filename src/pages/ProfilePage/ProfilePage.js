@@ -14,8 +14,9 @@ function ProfilePage() {
     const [showForm, setShowForm] = useState(false);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
+    const [addJourney, setAddJourney] = useState(false);
     const [journeysCopied, setJourneysCopied] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
 
 
 
@@ -38,10 +39,11 @@ function ProfilePage() {
     
 
     return(
-        <div className='main-container-carousel'>
-    <h1>Journeys Created</h1>
-    {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
-{!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
+         <div className='main-container-carousel'>
+            <h1>{journeys ? 'Journeys Created' : 'Get started and create your first journey'}</h1>
+            {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+            
+            {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
         {journeys.map((journey,index)=>{
             if (index===0){ 
@@ -91,7 +93,9 @@ function ProfilePage() {
   </button>
 </div>}
 
+{addJourney && <CreateJourney setAddJourney={setAddJourney}/>}
 
+{!addJourney && <button onClick={() => setAddJourney(true)}>Create New Journey</button>}
 <div className="divider"></div>
 
 <h1>Journeys Upvoted</h1>
