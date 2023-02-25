@@ -8,8 +8,8 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
 function CreateStep(props){
 
-    const { blockId, setAddStep } = props;
-    const {journeyId} = useParams()
+    const { blockId, journeyId, setAddStep, setUpdatedJourney } = props;
+    // const {blockId, journeyId} = useParams()
     const navigate = useNavigate()
     
     const [imageUrl,setImageUrl] = useState('')
@@ -29,6 +29,7 @@ function CreateStep(props){
     const [noteMessage, setNoteMessage] = useState('')
     const [formMessage, setFormMessage] = useState('')
     const [isLoading,setIsLoading] = useState(true)
+
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
@@ -88,7 +89,7 @@ function CreateStep(props){
 }
 
     const uploadImage = (file) => {
-        return axios.post("http://localhost:5005/api/upload", file)
+        return axios.post(`${API_ROUTE}/api/upload`, file)
           .then(res => {
             console.log("file url from cloudinary")
             console.log(res.data)
@@ -102,13 +103,13 @@ function CreateStep(props){
     const handleFileUpload= (e)=>{
         const uploadData = new FormData();
  
-
-    uploadData.append("imageUrl", e.target.files[0]);
-    uploadImage(uploadData)
-        .then(response=>{
-            console.log(response)
-        })
-        .catch(err=>console.log(err))
+        
+        uploadData.append("imageUrl", e.target.files[0]);
+            uploadImage(uploadData)
+                .then(response=>{
+                    console.log(response)
+                })
+                .catch(err=>console.log(err))
     }
 
     // const formHandleSubmit = async (e)=>{
@@ -130,8 +131,7 @@ function CreateStep(props){
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                console.log(response)
-                      navigate(`/profile/journeys/${journeyId}`)
+                      navigate(`/steps/${response.data.step._id}`)
                     })
 
     }
@@ -223,7 +223,7 @@ function CreateStep(props){
                         <div>
                             <label>Image:</label>
                             <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
-                            <input  type="file" onChange={(e) => handleFileUpload(e)} />
+                            <input type="file" onChange={(e) => handleFileUpload(e)} />
                             <img width={75} src={step.image}/>
                         </div>
                         <div>

@@ -31,13 +31,18 @@ function UserJourneyPage() {
     const navigate = useNavigate();
 
 
-    useEffect(() => {
-        axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
+    useEffect(() =>  {
+     const fetchData = async () => {
+        const userJourney = await axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
             .then(foundJourney => {
                 if(foundJourney){
                 setUserJourney(foundJourney.data);
                 setIsLoading(false)}
-            })
+            })};
+    
+        const completedBlocks = userJourney.blocks.filter(block => block.isCompleted);
+        console.log(completedBlocks.length)
+        
     }, [updatedJourney]);
 
 
@@ -46,11 +51,16 @@ function UserJourneyPage() {
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
             let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
             if(completedPercentage){
-            setBlockProgress(completedPercentage)
-            } else setBlockProgress(0);
+            setBlockProgress(Math.round(completedPercentage));
+            } else if(blockProgress === 100) {
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                .then((response) => setUpdatedJourney(response.data))
+            }
+            else setBlockProgress(0);
         }
+     }, [activeBlock]);
 
-     }, [activeBlock])
+   
 
 
     const handleEditValue = (event) => {
@@ -96,7 +106,7 @@ function UserJourneyPage() {
 
     const deleteJourney = () => {
         axios.delete(`${API_ROUTE}/api/journeys/${userJourney._id}/`)
-            .then(response => console.log(response));
+            .then(() => navigate('/profile'));
     }
 
     // const handleBlockClick = (block) => {
@@ -166,7 +176,7 @@ function UserJourneyPage() {
                                         {block.steps && block.steps.map(step => {
                                             return <Link to={`/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
-                                        {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep}/>}
+                                        {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
                                         {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
                                         <button onClick={() => setFieldToEdit('')}>Delete</button>
                                     </div>)
