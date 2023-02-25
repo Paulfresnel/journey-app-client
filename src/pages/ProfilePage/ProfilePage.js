@@ -14,8 +14,9 @@ function ProfilePage() {
     const [showForm, setShowForm] = useState(false);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
+    const [addJourney, setAddJourney] = useState(false);
     const [journeysCopied, setJourneysCopied] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
 
 
 
@@ -36,10 +37,11 @@ function ProfilePage() {
     
 
     return(
-        <div className='main-container-carousel'>
-    <h1>Journeys Created</h1>
-    {isLoading && <h1>Loading...</h1>}
-{!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
+         <div className='main-container-carousel'>
+            <h1>{journeys ? 'Journeys Created' : 'Get started and create your first journey'}</h1>
+            {isLoading && <h1>Loading...</h1>}
+            
+            {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
         {journeys.map((journey,index)=>{
             if (index===0){ 
@@ -89,7 +91,9 @@ function ProfilePage() {
   </button>
 </div>}
 
+{addJourney && <CreateJourney setAddJourney={setAddJourney}/>}
 
+{!addJourney && <button onClick={() => setAddJourney(true)}>Create New Journey</button>}
 <div className="divider"></div>
 
 <h1>Journeys Upvoted</h1>
