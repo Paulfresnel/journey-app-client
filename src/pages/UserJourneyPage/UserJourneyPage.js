@@ -46,7 +46,7 @@ function UserJourneyPage() {
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
             let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
             if(completedPercentage){
-            setBlockProgress(completedPercentage)
+            setBlockProgress(Math.round(completedPercentage))
             } else setBlockProgress(0);
         }
 
