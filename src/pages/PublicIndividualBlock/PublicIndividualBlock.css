@@ -1,0 +1,16 @@
+.importance{
+    text-align: left;
+    color: gray;
+}
+
+.description{
+    margin: 5px 20px 5px 20px;
+    color: #003556;
+    text-align: left;
+    font-style: italic;
+}
+
+.space-r{
+    margin-right: 15rem;
+    margin-bottom: 15px;
+}

@@ -200,19 +200,20 @@ function EditStep(){
                 setNotesFields(data.notes)
                 setStep(data)
                 setImageUrl(data.image)
-                setIsLoading(false)
+                setTimeout(()=>{
+                    setIsLoading(false)
+                },500) 
             })
     }, [updatedStep]);
 
    
     return(
         <div>
-            {isLoading ? <p>Data is Loading..</p> : 
+            {isLoading ? <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>
+ : 
 
             <div>
-            
-            {/* <form onSubmit={(e)=>handleFormSubmit(e)}> */}
-                    
+            <button onClick={()=>navigate(-1)} className="btn btn-primary">Go Back</button>                 
                         { fieldToEdit === 'journey-step-title' ? 
                         <div>
                             <label>Title:</label>                       

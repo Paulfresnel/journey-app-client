@@ -41,7 +41,7 @@
 
 @media (min-width: 1000px) {
     .img-fluid {
-      max-width: 40%;
+      max-width: 20%;
     }
   }
 
@@ -84,3 +84,13 @@
 }
 
 
+.margin-b{
+    margin-bottom: 25px;
+}
+
+.warning{
+    color: red;
+    margin-top: 25px;
+    border: 1px red dotted;
+    padding: 5px;
+}

@@ -42,6 +42,13 @@
     background-color: #dab785da;
 }
 
-.carousel-item-active{
-    height: 500px;
+.carousel-item{
+    min-height: 480px;
+}
+
+.category{
+    font-size: 1.5rem;
+    color: #ffc300;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #003566;
 }

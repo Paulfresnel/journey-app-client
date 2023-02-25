@@ -39,7 +39,7 @@ function App() {
       <Route path={"/"} element={<HomePage/>}/>
       <Route path={"*"} element={<ErrorPage/>}/>
         <Route path={"/blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
-        <Route path={"/:blockId/:stepId"} element={<EditStep/>}/>
+        <Route path={"/profile/journeys/:journeyId/:blockId/:stepId"} element={<EditStep/>}/>
 
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>

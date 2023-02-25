@@ -11,7 +11,8 @@ function PublicJourneysPage(){
     const [isLoading, setIsLoading] = useState(true)
     const [allPublicJourneys, setAllPublicJourneys] = useState([])
     const {user} = useContext(AuthContext)
-
+    const todayMilliseconds = new Date().getTime()  
+    const twoDaysMilliseconds = 86400000*2
 
     const likeJourney = async (e) => {
         e.preventDefault();
@@ -28,8 +29,6 @@ function PublicJourneysPage(){
           let copyOfJourneys = await [...allPublicJourneys]
           copyOfJourneys.map(journey=>{
             if (journey._id === updatedJourney._id) {
-                console.log("updating here")
-                console.log(journey)
                 journey.upvoteUsers = updatedJourney.upvoteUsers;
                 return journey
               } else {
@@ -56,11 +55,26 @@ function PublicJourneysPage(){
         async function fetchData(){
           await  axios.get(`${API_ROUTE}/api/journeys`)
             .then(async (journeysArray)=>{
-                console.log("api response")
-                console.log(journeysArray)
                 let journeysArrayReceived = journeysArray.data.publicJourneys
-                await setAllPublicJourneys(journeysArrayReceived)
-                console.log(allPublicJourneys)
+               let newArray = journeysArrayReceived.map((journey,index)=>{
+                  let counter=0
+                  let creationDate = journey.createdAt
+                  let creationDateMillisecondsLength = new Date(creationDate).getTime()
+                  let updatedDate = journey.updatedAt
+                  let updatedDateMillisecondsLength = new Date(updatedDate).getTime()
+                  journey.dateCreated = creationDateMillisecondsLength
+                  journey.dateUpdated = updatedDateMillisecondsLength
+
+                  journey.blocks.map(block=>{
+                    if (block.steps){
+                    counter += block.steps.length
+                    return counter }
+                  })
+                  journey.stepsLength = counter
+                  console.log(counter)
+                  return journey
+                })
+                await setAllPublicJourneys(newArray)
                 setTimeout(()=>{
                   setIsLoading(false)
                 },1000)  
@@ -79,34 +93,38 @@ function PublicJourneysPage(){
         {!isLoading && allPublicJourneys.map((journey,index)=>{
           console.log(journey)
             return ( <div className="card">
-                    <img className="card-img-top" src={journey.image} alt="Card  cap"/>
+                    <img className="min-height card-img-top" src={journey.image} alt="Card cap"/>
                 <div className="card-body">
-                    <h5 className="card-title">{journey.title}</h5> 
-                    <div>
-                    <p>{journey.upvoteUsers ? journey.upvoteUsers.length : "0"} Likes</p> 
-                    {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart fa-beat"}> Like </i></button>}
+                
+                    <h5 className="card-title">{journey.title}{(todayMilliseconds - journey.dateCreated<twoDaysMilliseconds) && <span class="badge bg-warning new-badge">New</span>}{(todayMilliseconds - journey.dateUpdated<twoDaysMilliseconds) && <span class="badge bg-success new-badge">Recently Updated</span>}{journey.stepsLength === 0 && <span class="badge bg-danger new-badge">Empty Journey</span>}</h5> 
+                    <div className='flex-col'>
+                    <p className='btn btn-outline-primary like'><span className='bold'>{journey.upvoteUsers ? journey.upvoteUsers.length : "0"}</span> Upvotes</p> 
+                    {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart fa-beat"}> {journey.upvoteUsers && journey.upvoteUsers.includes(user._id)? "Upvoted" : "Not Upvoted"} </i></button>}
                     </div>
                     <p className="card-text">{journey.description}</p>
-                    <p>Created by: {journey.author.username}</p>
+                    <p>Created by: <Link to={`/profile/${journey.author._id}`}> {journey.author.username}</Link></p>
+                    <p>Learning Blocks: {journey.blocks.length}</p>
+                    <p>Total Steps: {journey.stepsLength}</p>
                     {journey.tags.length !==0 && <p>Tags: {journey.tags}</p>}
                     
                 </div>
-                <button value={showBlocks} onClick={() => toggleBlocks(index)} >Show Blocks</button>
+                {journey.blocks.length !==0  && <button className='show-blocks btn btn-info' value={showBlocks} onClick={() => toggleBlocks(index)} >Show Blocks</button>}
              {journey.showBlocks  && <ul className="list-group list-group-flush">
              {allPublicJourneys[index].blocks.map(block=>{
                 return (
                     <li className="list-group-item">
                     <p>{block.title}</p>
-                    <p>{block.steps.length}</p>
+                    <p>Number of Steps : {block.steps.length}</p>
                     </li>
                 )
              })}
              </ul>}
+             {journey.category && <h6 className="btn-outline-dark category sized">{journey.category}</h6>}
              <div className="card-body">
+             <br/>
              <Link to={`/journeys/${journey._id}`}>
-               <button href="#" className="card-link">Journey link</button>
+               <button href="#" className="btn btn-warning card-link">Journey link</button>
                </Link>
-               <button href="#" className="card-link">Another link</button>
              </div>
             </div>)
         })}
