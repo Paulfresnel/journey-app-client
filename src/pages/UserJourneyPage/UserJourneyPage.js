@@ -169,7 +169,7 @@ function UserJourneyPage() {
                     : <div>
                         <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:</h2> 
                             
-                                {userJourney.tags.length !==0 && userJourney.tags.map(tag => {
+                                {userJourney.tags && userJourney.tags.map(tag => {
                                     return <h3 key={Math.random()*10}>{tag}</h3>
                             })}
                     </div>}
