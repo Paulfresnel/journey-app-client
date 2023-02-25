@@ -21,6 +21,7 @@ function EditStep(){
     const [updatedStep, setUpdatedStep] = useState(null);
     const [journeyId, setJourneyId] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
+    const isFirstRender = useRef(true);
     const hiddenFileInput  = useRef(null);
 
     const handleFieldsChange = (index, event)=>{
@@ -146,11 +147,6 @@ function EditStep(){
 
     }
 
-    useEffect(() => {
-        axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
-            .then(response => console.log(response.data));
-    }, [isCompleted])
-        
     
 
     // const uploadImage = (file) => {
@@ -189,19 +185,27 @@ function EditStep(){
             .then(response => setJourneyId(response.data._id))
     }, []);
 
- 
     useEffect(() => {
        axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
                 const data = response.data;
-                console.log(data);
                 setLinkFields(data.links)
                 setNotesFields(data.notes)
                 setStep(data)
                 setImageUrl(data.image)
                 setIsLoading(false)
             })
-    }, [updatedStep]);
+    }, [updatedStep]); 
+    
+    
+    useEffect(() => {
+        if(isFirstRender.current){
+            isFirstRender.current = false;
+            return;
+        }
+            axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
+                    .then(response => console.log(response.data));
+    }, [isCompleted])
 
    
     return(
@@ -339,7 +343,7 @@ function EditStep(){
             
             <br/>
             <label>Completed</label>
-            {isCompleted ?
+            {step.isCompleted ?
                 <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)} checked />
               : <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
             }
