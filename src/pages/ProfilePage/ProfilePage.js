@@ -72,6 +72,7 @@ function ProfilePage() {
         <div className="carousel-caption">
             <h1 className="carousel-title">{journey.title}</h1>
             {journey.upvoteUsers && <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>}
+            {journey.category && <h6 className="category">{journey.category}</h6>}
             <Link to={`/profile/journeys/${journey._id}`}>
             <button className="btn btn-primary carousel-btn">Edit Journey</button>
             </Link>
@@ -93,7 +94,7 @@ function ProfilePage() {
   </button>
 </div>}
 
-{addJourney && <CreateJourney setAddJourney={setAddJourney}/>}
+{addJourney && <CreateJourney setAddJourney={setAddJourney} setJourneys={setJourneys} journeys={journeys}/>}
 
 {!addJourney && <button onClick={() => setAddJourney(true)}>Create New Journey</button>}
 <div className="divider"></div>
@@ -116,6 +117,7 @@ function ProfilePage() {
         <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
         <div className="carousel-caption">
              <h1 className="carousel-title">{journey.title}</h1>
+             {journey.category && <h6 className="category">{journey.category}</h6>}
              {journey.author && <p className="upvote">Created by: <Link to={`/profile/${journey.author._id}`}>{journey.author.username}</Link></p>}
              <p className="upvote">Total upvotes: {journey.upvoteUsers.length}</p>
             <Link to={`/journeys/${journey._id}`}>

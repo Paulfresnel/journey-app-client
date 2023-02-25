@@ -5,6 +5,7 @@ import CreateBlock from "../../components/CreateBlock/CreateBlock";
 import EditTags from "../../components/EditTags/EditTags";
 import CreateStep from "../../components/CreateStep/CreateStep";
 import UserProgress from "../../components/ProgressBar/ProgressBar";
+import './UserJourneyPage.css'
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -42,7 +43,7 @@ function UserJourneyPage() {
                 setIsLoading(false)}
             });
     
-    }, [updatedJourney]);
+    }, [journeyId, addStep]);
 
 
    useEffect(() => {
@@ -89,7 +90,10 @@ function UserJourneyPage() {
         const uploadData = new FormData();
         uploadData.append("imageUrl", event.target.files[0]);
         const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
-            .then(response => newImageUrl = response.data.imageUrl)
+            .then(response => {
+                newImageUrl = response.data.imageUrl
+                setUserJourney({...userJourney, image: newImageUrl})
+            })
             .catch(error => setErrorMessage(error.response.data.message));
 
         axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {image: newImageUrl})
@@ -165,42 +169,41 @@ function UserJourneyPage() {
                     : <div>
                         <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:</h2> 
                             
-                                {userJourney.tags && userJourney.tags.map(tag => {
+                                {userJourney.tags.length !==0 && userJourney.tags.map(tag => {
                                     return <h3 key={Math.random()*10}>{tag}</h3>
                             })}
                     </div>}
                     {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers.length}</h2>}
-                    {userJourney.isPublic && <h2>Copied {userJourney.usersCopying.length} times</h2>}
                     <div>
                         {userJourney.blocks && userJourney.blocks.map(block => {
                                 if(blockToDisplay === block._id){
                                  return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
-                                        <button onClick={() => setActiveBlock(block)}><h2>{block.title}</h2></button>
+                                        <button className="btn btn-outline-warning" onClick={() => setActiveBlock(block)}><h2 className="colored" >Block: {block.title}</h2></button>
                                         <UserProgress now={blockProgress}/>
                                         <p>{block.description}</p>
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
                                         {block.steps && block.steps.map(step => {
-                                            return <Link to={`/${block._id}/${step._id}`}><button>{step.title}</button></Link>
+                                            return <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
-                                        {!addStep && <button onClick={() => setAddStep(true)}>Add a Step to {block.title}</button>}
-                                        <button onClick={() => setFieldToEdit('')}>Delete</button>
+                                        {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step</button>}
+                                        <button className="btn btn-outline-danger alligned" onClick={() => setFieldToEdit('')}>Delete</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
-                                        <button onClick={() => {setBlockToDisplay(block._id); setActiveBlock(block)}}><h2>{block.title}</h2></button>
+                                        <button className="btn btn-outline-warning" onClick={() => {setBlockToDisplay(block._id); setActiveBlock(block)}}><h2  className="colored">{block.title}</h2></button>
                                     </div>
                                     )}
                                 )}
                     </div>
                 </div>
                 <div>  
-                    {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} setShowForm={setShowForm}/>
-                            : <button type="button" onClick={() => setShowForm(true)}>New Block</button>}
+                    {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} userJourney={userJourney} setUserJourney={setUserJourney} setShowForm={setShowForm}/>
+                            : <button className="btn btn-dark margined" type="button" onClick={() => setShowForm(true)}>New Block</button>}
                 </div>
-                <button onClick={() => deleteJourney()}>Delete</button>           
+                <button className="btn btn-danger" onClick={() => deleteJourney()}>Delete</button>           
             </>} 
        </div> 
     )

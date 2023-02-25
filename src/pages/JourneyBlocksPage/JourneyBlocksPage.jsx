@@ -21,7 +21,7 @@ function JourneyBlocksPage(){
 
     const [block, setBlock] = useState('');
     const [blocksInJourney, setBlocksInJourney] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');   
 
 
     const handleChange = (event) => {
