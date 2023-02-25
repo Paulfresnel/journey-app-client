@@ -194,7 +194,8 @@ function EditStep(){
                 setStep(data)
                 setImageUrl(data.image)
                 setTimeout(()=>{
-                    setIsLoading(false)
+                setIsLoading(false)
+                setIsCompleted(response.data.isCompleted)
                 },500) 
             })
     }, [updatedStep]); 
@@ -206,7 +207,7 @@ function EditStep(){
             return;
         }
             axios.put(`${API_ROUTE}/api/steps/${step._id}`, {isCompleted : isCompleted})
-                    .then(response => console.log(response.data));
+                    .then(response => setUpdatedStep(response.data));
     }, [isCompleted])
 
    
@@ -343,10 +344,17 @@ function EditStep(){
             }
             
             <br/>
-            <label>Completed</label>
+            
             {step.isCompleted ?
-                <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)} checked />
-              : <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
+                <>  
+                    <p>Step Completed!</p>
+                   <p>Not really...<span><button onClick={() => setIsCompleted(false)}>Uncheck</button></span></p> 
+                </>
+                
+              : <>
+                    <label>Completed</label>
+                    <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
+                </>
             }
             
 
