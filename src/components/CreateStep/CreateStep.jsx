@@ -8,8 +8,8 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
 function CreateStep(props){
 
-    const { blockId, journeyId, setAddStep } = props;
-    // const {blockId, journeyId} = useParams()
+    const { blockId, setAddStep } = props;
+    const {journeyId} = useParams()
     const navigate = useNavigate()
     
     const [imageUrl,setImageUrl] = useState('')
@@ -130,7 +130,8 @@ function CreateStep(props){
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                      navigate(`/steps/${response.data.step._id}`)
+                console.log(response)
+                      navigate(`/profile/journeys/${journeyId}`)
                     })
 
     }
@@ -146,6 +147,8 @@ function CreateStep(props){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/blocks/${blockId}`)
             .then(response=>{
+                console.log("response")
+                console.log(response)
                 const {block} = response.data
                 setBlock(block)
                 console.log(block)
