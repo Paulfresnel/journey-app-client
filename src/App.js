@@ -19,6 +19,7 @@ import PublicJourneysPage from "./pages/PublicJourneysPage/PublicJourneysPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import Header from "./components/Header/Header";
 import PublicIndividualJourney from "./pages/PublicIndividualJourney/PublicIndividualJourney";
+import PublicIndividualBlock from "./pages/PublicIndividualBlock/PublicIndividualBlocks";
 
 
 
@@ -37,14 +38,18 @@ function App() {
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
       <Route path={"*"} element={<ErrorPage/>}/>
-        <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
-        <Route path={"/:blockId/:stepId"} element={<EditStep/>}/>
-        
-        <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
+        <Route path={"/blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
+        <Route path={"/profile/journeys/:journeyId/:blockId/:stepId"} element={<EditStep/>}/>
+
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
+
+        <Route exact path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
+        
         <Route path={"/journeys"} element={<PublicJourneysPage/>}/>
         <Route path={"/journeys/:journeyId"} element={<PublicIndividualJourney/>}/>
+        <Route path={"/journeys/:journeyId/:blockId"} element={<PublicIndividualBlock/>}/>
+
         <Route path={"/profile"} element={<ProfilePage/>}/>
         <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>

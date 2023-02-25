@@ -41,7 +41,7 @@
 
 @media (min-width: 1000px) {
     .img-fluid {
-      max-width: 40%;
+      max-width: 20%;
     }
   }
 
@@ -63,4 +63,34 @@
 .log-info{
     color: #003566b0;
     font-size: 1.25rem;
+}
+
+.card-links{
+    display: flex;
+    justify-content: space-around;
+}
+
+.second-link{
+    color: #dab785;
+    font-weight: bold;
+}
+
+
+.journey-blocks-info{
+    margin: 15px 35px 15px 35px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+.margin-b{
+    margin-bottom: 25px;
+}
+
+.warning{
+    color: red;
+    margin-top: 25px;
+    border: 1px red dotted;
+    padding: 5px;
 }

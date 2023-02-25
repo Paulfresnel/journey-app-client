@@ -9,7 +9,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
  */
 function CreateBlock(props) {
 
-    const {journeyId, setJourney, journey, setUpdatedJourney, setShowForm} = props
+    const {journeyId, setJourney, journey, setUpdatedJourney, setUserJourney, userJourney, setShowForm} = props
     const navigate = useNavigate()
 
     const [block, setBlock] = useState('');
@@ -28,14 +28,11 @@ function CreateBlock(props) {
         axios.post(`${API_ROUTE}/api/${journeyId}/blocks`, block)
 
             .then((apiResponse) => {
-                // console.log("new block received")
-                let updatedBlock = apiResponse.data
-                // console.log(updatedBlock)
-                setUpdatedJourney({...journey, blocks: updatedBlock})
+                let updatedJourney = apiResponse.data
+                console.log(apiResponse)
+                /* setUpdatedJourney({...journey, blocks: updatedBlock}) */
                 // setJourney({...journey, blocks: updatedBlock})
-                
-                // console.log("copy array after block push")
-                // console.log(journey)
+                setUserJourney(updatedJourney)
                 setShowForm(false);
 
             })

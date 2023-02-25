@@ -8,3 +8,46 @@
     margin: 10px 10px 10px 10px;
     width:18rem;
 }
+
+.card-text{
+    font-style: italic;
+}
+
+.min-height{
+    min-height: 350px;
+}
+
+
+.new-badge{
+    margin-left: 10px;
+    font-size: 0.85rem;
+    text-shadow: 2px 2px 2px #003556;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+.show-blocks{
+    margin: 0 auto;
+    width: 40%;
+    color: #003556;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+
+.btn-warning{
+    border: 1px #003556 solid;
+}
+
+.sized{
+    margin: 0 auto;
+    width: 55%;
+}
+
+.card-link{
+    font-weight: bold;
+    color: #003556;
+}
