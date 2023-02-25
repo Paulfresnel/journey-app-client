@@ -37,12 +37,11 @@ function UserJourneyPage() {
             .then(foundJourney => {
                 if(foundJourney){
                 setUserJourney(foundJourney.data);
-                setIsLoading(false)}
+                setIsLoading(false)
+                const completedBlocks = userJourney.blocks.filter(block => block.isCompleted)
+                console.log(completedBlocks.length);}
             })};
-    
-        const completedBlocks = userJourney.blocks.filter(block => block.isCompleted);
-        console.log(completedBlocks.length)
-        
+            fetchData()
     }, [updatedJourney]);
 
 

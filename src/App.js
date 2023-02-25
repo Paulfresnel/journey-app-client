@@ -38,13 +38,13 @@ function App() {
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
       <Route path={"*"} element={<ErrorPage/>}/>
-        <Route path={"blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
+        <Route path={"/blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
         <Route path={"/:blockId/:stepId"} element={<EditStep/>}/>
 
         <Route path={"/sign-up"} element={<SignupPage/>}/>
         <Route path={"/log-in"} element={<LoginPage/>}/>
 
-        <Route path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
+        <Route exact path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
         
         <Route path={"/journeys"} element={<PublicJourneysPage/>}/>
         <Route path={"/journeys/:journeyId"} element={<PublicIndividualJourney/>}/>
