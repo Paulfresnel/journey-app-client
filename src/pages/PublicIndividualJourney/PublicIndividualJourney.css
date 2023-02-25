@@ -64,3 +64,23 @@
     color: #003566b0;
     font-size: 1.25rem;
 }
+
+.card-links{
+    display: flex;
+    justify-content: space-around;
+}
+
+.second-link{
+    color: #dab785;
+    font-weight: bold;
+}
+
+
+.journey-blocks-info{
+    margin: 15px 35px 15px 35px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
