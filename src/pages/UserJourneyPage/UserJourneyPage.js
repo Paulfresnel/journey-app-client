@@ -48,6 +48,7 @@ function UserJourneyPage() {
 
    useEffect(() => {
         if(activeBlock){
+            console.log(activeBlock)
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
             let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
              if(completedPercentage){
