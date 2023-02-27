@@ -7,3 +7,9 @@
 .colored{
     color: #003566;
 }
+
+.bi {
+    font-size: 0.3em;
+    padding: 5px;
+    margin-bottom: 2px;
+} 

@@ -11,6 +11,7 @@ function CreateJourney(props){
 
     const { user, setUser } = useContext(AuthContext);
     const { setAddJourney, journeys, setJourneys } = props;
+    const [journeyTags, setJourneyTags] = useState([]);
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -80,7 +81,7 @@ function CreateJourney(props){
                     </label>
                     <br/>
 
-                    <EditTags setTagArray={setTagArray}/>
+                    <EditTags setTagArray={setTagArray} setJourneyTags={setJourneyTags} journeyTags={journeyTags}/>
 
                     <label>Make Journey Public:
                         <input type='checkbox' name='isPublic' onChange={(event) => setIsPublic(event.target.checked)}/>

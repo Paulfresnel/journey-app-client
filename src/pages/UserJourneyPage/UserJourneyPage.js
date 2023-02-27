@@ -14,24 +14,26 @@ function UserJourneyPage() {
 
     const [ userJourney, setUserJourney ] = useState({});
     const [ journeyBlocks, setJourneyBlocks ] = useState([]);
+    const [journeyTags, setJourneyTags] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ showForm, setShowForm ] = useState(false);
     const [ updatedJourney, setUpdatedJourney ] = useState({});
-    const [ blockToDisplay, setBlockToDisplay ] = useState(''); 
+    const [ blockToDisplay, setBlockToDisplay ] = useState('');
+    const [blockCompleted, setBlockCompleted] = useState(false); 
     const [ fieldToEdit, setFieldToEdit ] = useState('');
-    const [tag, setTag] = useState('');
+    const [ tag, setTag] = useState('');
     const [ tagArray, setTagArray ] = useState([]);
     const [ editTags, setEditTags ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
     const [ addStep, setAddStep ] = useState(false);
     const [ activeBlock, setActiveBlock ] = useState('');
-    const [ blockProgress, setBlockProgress ] = useState([]);
+    const [ blockProgress, setBlockProgress ] = useState('');
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
+    const isFirstRender = useRef(true);
     const allTags = [...tagArray];
    
     const navigate = useNavigate();
-
 
     useEffect(() =>  {
      
@@ -40,41 +42,55 @@ function UserJourneyPage() {
                 if(foundJourney){
                 setUserJourney(foundJourney.data);
                 setJourneyBlocks(foundJourney.data.blocks);
+                setJourneyTags(foundJourney.data.tags);
                 setIsLoading(false)}
             });
+           
     
-    }, [journeyId, addStep]);
+    }, [journeyId, addStep, updatedJourney]);
 
 
    useEffect(() => {
+    if(isFirstRender.current){
+        isFirstRender.current = false;
+        return;
+    }
         if(activeBlock){
             console.log(activeBlock)
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
             let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
              if(completedPercentage){
-                setBlockProgress(Math.round(completedPercentage));
-                if(blockProgress === 100) {
-                    axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-                    .then((response) => setUpdatedJourney(response.data))}
-                else if(blockProgress !== 100) {
-                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-                .then((response) => setUpdatedJourney(response.data))}
-            } else setBlockProgress(0);
+                setBlockProgress(Math.round(completedPercentage))};
+        if(blockProgress === 100){
+            setBlockCompleted(true);            
         }
-     }, [activeBlock]);   
+            //     if(blockProgress === 100) {
+            //         axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+            //         .then((response) => setUpdatedJourney(response.data))}
+            //     else{
+            //         axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+            //         .then((response) => setUpdatedJourney(response.data))}
+            // } else setBlockProgress(0);
+        }
+     }, [activeBlock, blockProgress]);   
      
      
-    //  useEffect(() => {
-    //     if(journeyBlocks){
-    //         const completedBlocks = journeyBlocks.filter(block => block.isCompleted);
-    //         console.log(completedBlocks)
-    //     }
-    // }, [activeBlock])
+   useEffect(()=> {
+
+    if(activeBlock){
+        if(blockCompleted){
+            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                    .then((response) => setUpdatedJourney(response.data))
+        } else {
+            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+                    .then((response) => setUpdatedJourney(response.data))
+        }}
+   }, [blockCompleted, activeBlock])
 
 
 
     const handleEditValue = (event) => {
-        const name = event.target.name
+        const name = event.target.name;
         if(event.target.value && event.target.value !== userJourney.name){
             axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {[name] : event.target.value})
                 .then(response => setUpdatedJourney(response.data))
@@ -103,6 +119,15 @@ function UserJourneyPage() {
 
     }
 
+    const updateTags = (event) => {
+        event.preventDefault();
+        if(journeyTags && journeyTags !== userJourney.tags){
+            axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {tags : journeyTags})
+                .then(response => setUpdatedJourney(response.data))
+            setFieldToEdit('')
+            } else setFieldToEdit('');
+    }
+
     const handleTagButton = () => {
         if(tag){
             allTags.push(tag);
@@ -121,6 +146,8 @@ function UserJourneyPage() {
         axios.delete(`${API_ROUTE}/api/journeys/${userJourney._id}/`)
             .then(() => navigate('/profile'));
     }
+
+    
 
     // const handleBlockClick = (block) => {
     //     console.log(block)
@@ -142,7 +169,7 @@ function UserJourneyPage() {
                             <input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
-                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}</h1>}             
+                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
                     
                     <div>
                         <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
@@ -154,24 +181,34 @@ function UserJourneyPage() {
                     </div>
 
                     {fieldToEdit === 'user-journey-description' ? 
-                        <div>
-                            <input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {if(!editTags){handleEditValue(event)}}}/>    
+                        <div className=' w-75 d-flex justify-content-center'>
+                            <textarea defaultValue={userJourney.description} name="description" className="form-control" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditValue(event)}}/>    
                             <br/>
                         </div> 
-                    : <h2 id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}</h2>}
+                    : <p id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}<span><i className="bi bi-pencil-fill pencil" ></i></span></p>}
                    
                    
                     {fieldToEdit === 'user-journey-tags' ?
                       <div>
-                        <EditTags tag={tag} setTag={setTag} allTags={userJourney.tags} setTagArray={setTagArray} tagArray={tagArray} setEditTags={setEditTags}/>
-                            <input type="text" name="tags" autoFocus onChange={(event) => setTag(event.target.value)} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/> 
-                        <button type="button" onClick={handleTagButton}>Add tag</button>
+                        <EditTags setTagArray={setTagArray} journeyTags={journeyTags} setJourneyTags={setJourneyTags}/>
+                        <form onSubmit={(event) => updateTags(event)}>
+                            <input type='hidden' value={tagArray} name='tags'/>
+                            <button type="submit">Update Tags</button>
+                        </form>
+                        
                       </div>
                     : <div>
-                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:</h2> 
+                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:<span><i className="bi bi-pencil-fill pencil" ></i></span></h2> 
                             
                                 {userJourney.tags && userJourney.tags.map(tag => {
-                                    return <h3 key={Math.random()*10}>{tag}</h3>
+                                    if(tag){
+                                        return  (
+                                            <>
+                                                <button type="button" class="btn btn-primary">
+                                                    {tag} <span class="badge badge-light"/>
+                                                </button>
+                                            </>
+                                        )}
                             })}
                     </div>}
                     {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers.length}</h2>}
