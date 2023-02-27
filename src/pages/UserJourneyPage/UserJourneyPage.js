@@ -137,6 +137,7 @@ function UserJourneyPage() {
             {userJourney &&
             <>
                 <div>
+                <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
                     {fieldToEdit === 'user-journey-title' ? 
                         <div>
                             <input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
@@ -148,11 +149,13 @@ function UserJourneyPage() {
                         <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
                         <br/>
                         <label for='update-journey-image'>
+                        <br/>
                             <button onClick={handleImageUpload}>Update Image</button>
                             <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
                         </label>
+                        
                     </div>
-
+                    <br/>
                     {fieldToEdit === 'user-journey-description' ? 
                         <div>
                             <input type="text" defaultValue={userJourney.description} name="description" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {if(!editTags){handleEditValue(event)}}}/>    
@@ -181,16 +184,22 @@ function UserJourneyPage() {
                                  return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
                                         <button className="btn btn-outline-warning" onClick={() => setActiveBlock(block)}><h2 className="colored" >Block: {block.title}</h2></button>
-                                        <UserProgress now={blockProgress}/>
+                                       <div className="flex-progress">
+                                        <p className="progress-t">Progress:</p>
+                                        <p className="progress-bar"><UserProgress now={blockProgress}/></p>
+                                        </div>
                                         <p>{block.description}</p>
                                         <p>{block.category}</p>
                                         <p>{block.importance}</p>
                                         {block.steps && block.steps.map(step => {
                                             return <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
+                                        
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
-                                        {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step</button>}
-                                        <button className="btn btn-outline-danger alligned" onClick={() => setFieldToEdit('')}>Delete</button>
+                                        <br/>
+                                        {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step to Block</button>}
+                                        <br/>
+                                        <button className="btn btn-outline-danger alligned" onClick={() => setFieldToEdit('')}>Delete Block</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
@@ -200,11 +209,13 @@ function UserJourneyPage() {
                                 )}
                     </div>
                 </div>
-                <div>  
+                <div className="margin-t">  
                     {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} userJourney={userJourney} setUserJourney={setUserJourney} setShowForm={setShowForm}/>
-                            : <button className="btn btn-dark margined" type="button" onClick={() => setShowForm(true)}>New Block</button>}
+                            : <button className="btn btn-dark margined" type="button" onClick={() => setShowForm(true)}>Create a New Block</button>}
                 </div>
-                <button className="btn btn-danger" onClick={() => deleteJourney()}>Delete</button>           
+                <br/>
+                <button className="btn btn-danger m-bottom" onClick={() => deleteJourney()}>Delete Journey</button>
+                <br/>           
             </>} 
        </div> 
     )

@@ -80,11 +80,12 @@ useEffect(()=>{
                 </div>}                    
                     <img className="img-fluid" src={journey.image}/>
                     <h4 className="italic">{journey.description}</h4>
+                    <br/>
                     {journey.blocks.length !==0 && <div><h5>Total learning Blocks in Journey: {journey.blocks.length}</h5>
-                    <h6>Total Steps in Journey : {counter}</h6></div>}
+                    <h6 className="italic">Total Steps in Journey : {counter}</h6></div>}
                 
             </div>
-            
+            <br/>
             {journey.blocks.length!==0 ? <h2>Learning Blocks</h2> : <div>
             <h2 className="warning">This journey has currently no learning blocks</h2>
             <button  className="btn btn-outline-danger" onClick={()=>navigate(-1)} >Go Back</button>
@@ -97,6 +98,7 @@ useEffect(()=>{
                       
                        <h6 className="card-subtitle mb-2 text-muted">{block.importance}</h6>
                        <p className="card-text">{block.description}</p>
+                       <p className="italic">{block.steps.length===1 ? `${block.steps.length} Step` : `${block.steps.length} Steps`}</p>
                        <div className="card-links">
                       <Link to={`/journeys/${journeyId}/${block._id}`}> <p  className="btn btn-outline-dark card-link">Block link</p></Link>
                        <p className="card-link second-link">{block.category}</p>

@@ -20,6 +20,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import Header from "./components/Header/Header";
 import PublicIndividualJourney from "./pages/PublicIndividualJourney/PublicIndividualJourney";
 import PublicIndividualBlock from "./pages/PublicIndividualBlock/PublicIndividualBlocks";
+import PublicIndividualStep from "./pages/PublicIndividualStep/PublicIndividualStep";
 
 
 
@@ -49,6 +50,8 @@ function App() {
         <Route path={"/journeys"} element={<PublicJourneysPage/>}/>
         <Route path={"/journeys/:journeyId"} element={<PublicIndividualJourney/>}/>
         <Route path={"/journeys/:journeyId/:blockId"} element={<PublicIndividualBlock/>}/>
+        <Route path={"/journeys/:journeyId/:blockId/:stepId"} element={<PublicIndividualStep/>}/>
+
 
         <Route path={"/profile"} element={<ProfilePage/>}/>
         <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>

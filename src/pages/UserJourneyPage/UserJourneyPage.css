@@ -1,9 +1,34 @@
 .alligned{
     margin: 0 auto;
-    width: 30%;
+    width: 45%;
     margin-bottom: 5px;
 }
 
 .colored{
     color: #003566;
+}
+
+.margin-t{
+    margin: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #003566;
+}
+
+.margin-top{
+    margin-top: 15px;
+}
+
+.flex-progress{
+    margin: 5px 15px 5px 15px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #003566;
+}
+
+.progress-t{
+    width: 5rem;
+}
+
+.progress-bar{
+    width: 15rem;
 }

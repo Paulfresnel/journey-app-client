@@ -1,0 +1,22 @@
+
+.centered{
+    margin: 0 auto;
+    width: 20rem;
+}
+
+.space-td{
+    width: 10rem;
+}
+
+.t-a-center{
+    text-align: center;
+}
+
+.description{
+    font-style: italic;
+    color: #003566;
+}
+
+.m-bottom{
+    margin-bottom: 20px;
+}
