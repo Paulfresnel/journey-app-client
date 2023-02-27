@@ -201,7 +201,7 @@ function UserJourneyPage() {
                         
                       </div>
                     : <div>
-                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:<span><i className="bi bi-pencil-fill pencil" ></i></span></h2> 
+                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:<span><i className="bi bi-pencil-fill pencil" style={{fontSize: '0.7em'}} ></i></span></h2> 
                             
                                 {userJourney.tags && userJourney.tags.map(tag => {
                                     if(tag){
