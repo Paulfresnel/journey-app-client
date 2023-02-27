@@ -51,13 +51,16 @@ function PublicIndividualStep(){
           
                 <h1 className="t-a-center m-bottom">{step.title}</h1>
            
-            <img src={step.image}/>
+            <img className="img-fluid margin-b" src={step.image}/>
+            <br/>
             <h6 className="importance t-a-center">Importance: {step.importance}</h6>
+            <br/>
             <h6 className="importance t-a-center">Learning Difficulty: {step.difficulty}</h6>
-            <p className="description t-a-center">{step.description}</p>
+            <br/>
+            <p className="description t-a-center bordered">{step.description}</p>
             </div>
             <div>
-            <h3>Step Links:</h3>
+            <h3>Step Resources:</h3>
             <table className="centered">
             <thead>
                 <tr>

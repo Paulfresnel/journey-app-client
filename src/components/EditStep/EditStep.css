@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     padding-top: 25px;
-    padding-bottom: 35px;
+    padding-bottom: 15px;
 }
 
 .large{
@@ -28,7 +28,6 @@
 
 .flex-row{
     margin: 0 auto;
-    width: 55%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -37,6 +36,39 @@
     margin-bottom: 15px;
     border-radius: 35px;
 
+}
+
+
+
+.margin-l{
+    margin-left: 15px;
+}
+.completed{
+    color: green;
+    font-weight: bold;
+}
+
+.margined-delete{
+    margin: 0 auto;
+    width: 40%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.padding{
+    padding: 15px;
+}
+
+.underlined{
+    text-decoration: underline;
+}
+
+.title-step{
+    color: #003566;
+    text-shadow: 1px 1px 2px #dab785;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 10px;
 }
 
 .flex-column{
