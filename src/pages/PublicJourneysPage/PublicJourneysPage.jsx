@@ -50,6 +50,7 @@ function PublicJourneysPage(){
         );
       };  
 
+
     useEffect(()=>{
         console.log('useEffect');
         async function fetchData(){
@@ -69,6 +70,8 @@ function PublicJourneysPage(){
                     if (block.steps){
                     counter += block.steps.length
                     return counter }
+                    else {counter +=0 
+                    return counter}
                   })
                   journey.stepsLength = counter
                   console.log(counter)
@@ -89,11 +92,11 @@ function PublicJourneysPage(){
     let showBlocks;
     return(
         <div className='centered-journeys'>
-    {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+    {isLoading && <img alt="loading spinner" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
         {!isLoading && allPublicJourneys.map((journey,index)=>{
           console.log(journey)
-            return ( <div className="card">
-                    <img className="min-height card-img-top" src={journey.image} alt="Card cap"/>
+            return ( <div className="card" key={journey._id}> 
+                    <img className="min-height card-img-top" src={journey.image} alt={journey.title}/>
                 <div className="card-body">
                 
                     <h5 className="card-title">{journey.title}{(todayMilliseconds - journey.dateCreated<twoDaysMilliseconds) && <span class="badge bg-warning new-badge">New</span>}{(todayMilliseconds - journey.dateUpdated<twoDaysMilliseconds) && <span class="badge bg-success new-badge">Recently Updated</span>}{journey.stepsLength === 0 && <span class="badge bg-danger new-badge">Empty Journey</span>}</h5> 
