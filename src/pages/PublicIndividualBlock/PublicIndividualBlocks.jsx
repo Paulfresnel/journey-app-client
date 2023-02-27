@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import axios from "axios";
 import './PublicIndividualBlock.css'
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -54,10 +55,28 @@ useEffect(()=>{
                 <h1>{block.title}</h1>
                 <h2 className="second-link">{block.category}</h2>
             </div>
-            <h6 className="importance">{block.importance}</h6>
-            <p className="description">{block.description}</p>
+            <h6 className="importance border-imp">{block.importance}</h6>
+            <p className="description bordered">{block.description}</p>
             <div>
-
+                <table className="centered">
+                    <thead>
+                        <tr>
+                            <td>Step title</td>
+                            <td># of links</td>
+                            <td>Step link</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {block.steps.map((step)=>{
+                            return (
+                            <tr>
+                                <td>{step.title}</td>
+                                <td>{step.links.length}</td>
+                                <td><Link to={`/journeys/${journeyId}/${blockId}/${step._id}`}> Check Step</Link></td>
+                            </tr>
+                        )})}
+                    </tbody>
+                </table>
 
             </div>
         </div>

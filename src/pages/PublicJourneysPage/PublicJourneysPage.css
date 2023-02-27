@@ -31,10 +31,14 @@
 
 .show-blocks{
     margin: 0 auto;
-    width: 40%;
+    width: 50%;
     color: #003556;
     font-size: 0.9rem;
     font-weight: bold;
+    border: 2px #003556 solid;
+}
+.underline{
+    text-decoration: underline;
 }
 
 
@@ -45,9 +49,14 @@
 .sized{
     margin: 0 auto;
     width: 55%;
+    margin-bottom: 25px;
 }
 
 .card-link{
     font-weight: bold;
     color: #003556;
+}
+
+.no-m{
+    margin-bottom: 0;
 }
