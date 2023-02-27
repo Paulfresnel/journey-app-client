@@ -11,7 +11,6 @@ function ProfilePage() {
     
     
     const { user } =  useContext(AuthContext);
-    const [showForm, setShowForm] = useState(false);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
     const [addJourney, setAddJourney] = useState(false);
@@ -96,7 +95,7 @@ function ProfilePage() {
 
 {addJourney && <CreateJourney setAddJourney={setAddJourney} setJourneys={setJourneys} journeys={journeys}/>}
 
-{!addJourney && <button onClick={() => setAddJourney(true)}>Create New Journey</button>}
+{!addJourney && <button className="btn btn-success create-journey" onClick={() => setAddJourney(true)}>Create New Journey</button>}
 <div className="divider"></div>
 
 <h1>Journeys Upvoted</h1>
@@ -110,7 +109,7 @@ function ProfilePage() {
            return <button style={{color:"black"}} type="button" data-bs-target="#journeysCopied" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
         }})}
         </div>  
-  <div className="carousel-inner">
+  <div className="carousel-inner margin-b">
      <div> {journeysCopied.map((journey,index)=>{
         if (index===0){
     return (<div className="carousel-item active">
@@ -152,40 +151,7 @@ function ProfilePage() {
     <span className="carousel-control-next-icon" aria-hidden="true"></span>
     <span className="visually-hidden black">Next</span>
   </button>
-</div>}
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* {user && 
-                <>
-                    <h1>Hello {user.username}</h1>
-                    {journeys.map(journey => {
-                        return (
-                            <div key={journey._id}>
-                                <Link to={`/profile/journeys/${journey._id}`}>
-                                    <h1>{journey.title}</h1>
-                                </Link>
-                                <img src={journey.image} alt={`${journey.title}`} style={{width: '300px', height: 'auto'}}/>
-                                <h2>{journey.description}</h2>
-                            </div>)
-                    })}
-                    <div>
-                        <button onClick={()=>setShowForm(!showForm)}>Show Form</button> 
-                            {showForm && <CreateJourney/>}
-                    </div>
-                </>}
-
-                 */}
-                
+</div>}      
         </div>
     )
 }

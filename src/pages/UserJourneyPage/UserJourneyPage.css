@@ -32,3 +32,58 @@
 .progress-bar{
     width: 15rem;
 }
+
+.italic-c{
+    font-style: italic;
+}
+
+.importance-c{
+    color: gray;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.index{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.index-num{
+    border: 1px #003566 solid;
+    padding: 5px 10px 5px 10px;
+    border-radius: 25px;
+    
+}
+
+.step-btn{
+    border-radius: 15px;
+    padding: 5px;
+    background-color: #ffb10a;
+    font-weight: bold;
+    color: #003566;
+    border: 2px #003566 solid;
+}
+
+.update-img{
+    color: #003566;
+    border: #003566 solid 1px;
+}
+
+.tags-display{
+    margin: 5px 10px 15px 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.tag-map{
+    width: 8rem;
+    font-weight: bold;
+
+}
+
+.tag-map:hover{
+    background-color: #dab785;
+    color: #003566;
+    border: 1px #003566 solid
+}

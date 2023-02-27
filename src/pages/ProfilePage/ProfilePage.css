@@ -52,3 +52,10 @@
     font-weight: bold;
     text-shadow: 2px 2px 2px #003566;
 }
+
+.create-journey{
+    margin: 15px 0px 15px 0px;
+    border: 2px #FFC300 solid;
+    outline: 0.2px #003566 solid;
+    background-color: #003566;
+}

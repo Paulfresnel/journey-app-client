@@ -29,3 +29,10 @@
     border-radius: 5px;
     border: 1px #003556 solid;
 }
+
+
+.second-link{
+    color: #003556;
+    font-size: 1.75rem;
+    text-shadow: 2px 2px 1px #ffd60a;
+}
