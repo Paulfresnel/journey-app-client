@@ -106,7 +106,7 @@ function UserJourneyPage() {
         let newImageUrl = '';
         const uploadData = new FormData();
         uploadData.append("imageUrl", event.target.files[0]);
-        await axios.post(`${API_ROUTE}/api/upload`, uploadData)
+        const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
             .then(response => {
                 newImageUrl = response.data.imageUrl
                 setUserJourney({...userJourney, image: newImageUrl})
@@ -139,31 +139,7 @@ function UserJourneyPage() {
 
     const deleteBlock = (blockId) => {
         axios.delete(`${API_ROUTE}/api/${userJourney._id}/blocks/${blockId}`)
-            .then(response => {
-                console.log(response)
-                /* let copyOfUserJourney = userJourney
-                copyOfUserJourney.blocks.map((block,index)=>{
-                        if (block._id === blockId){
-                            
-                           copyOfUserJourney.blocks.splice(index, 1)
-                        }
-                        else {
-                            return block
-                        }
-                        return copyOfUserJourney
-                    })  */
-                    /* setUserJourney((prevJourney)=>{
-                        prevJourney.blocks.map((block,index)=>{
-                            if (block._id === blockId){
-                                prevJourney.blocks.splice(index, 1)
-                                return prevJourney.blocks
-                             }
-                             else {
-                                 return prevJourney.blocks
-                             }
-                        })
-                    }) */
-            });
+            .then(response => setUpdatedJourney(response));
     }
 
     const deleteJourney = () => {
@@ -201,7 +177,7 @@ function UserJourneyPage() {
                         <br/>
                         <label for='update-journey-image'>
                         <br/>
-                            <button className="btn btn-outline-light update-img" onClick={handleImageUpload}>Update Block Image</button>
+                            <button onClick={handleImageUpload}>Update Image</button>
                             <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
                         </label>
                         
@@ -216,7 +192,6 @@ function UserJourneyPage() {
                    
                    
                     {fieldToEdit === 'user-journey-tags' ?
-                      
                       <div>
                         <EditTags setTagArray={setTagArray} journeyTags={journeyTags} setJourneyTags={setJourneyTags}/>
                         <form onSubmit={(event) => updateTags(event)}>
@@ -238,7 +213,6 @@ function UserJourneyPage() {
                                             </>
                                         )}
                             })}
-                            </div>
                     </div>}
                     {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers.length}</h2>}
                     <div>
@@ -251,19 +225,18 @@ function UserJourneyPage() {
                                         <p className="progress-t">Progress:</p>
                                         <p className="progress-bar"><UserProgress now={blockProgress}/></p>
                                         </div>
-                                        <p className="italic-c">{block.description}</p>
-                                        
-                                        <p className="importance-c">{block.importance}</p>
-                                        <h5>Blocks Steps:</h5>
-                                        {block.steps && block.steps.map((step,index) => {
-                                            return <div className="flex-r index"><p className="index-num">{index+1}</p><Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button className="step-btn">{step.title}</button></Link></div>
+                                        <p>{block.description}</p>
+                                        <p>{block.category}</p>
+                                        <p>{block.importance}</p>
+                                        {block.steps && block.steps.map(step => {
+                                            return <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
                                         
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
                                         <br/>
                                         {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step to Block</button>}
                                         <br/>
-                                        <button className="btn btn-outline-danger alligned" onClick={() => deleteBlock(block._id)}>Delete Block</button>
+                                        <button className="btn btn-outline-danger alligned" onClick={() => setFieldToEdit('')}>Delete Block</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
