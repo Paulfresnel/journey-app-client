@@ -105,21 +105,24 @@ function PublicJourneysPage(){
                     <p>Created by: <Link to={`/profile/${journey.author._id}`}> {journey.author.username}</Link></p>
                     <p>Learning Blocks: {journey.blocks.length}</p>
                     <p>Total Steps: {journey.stepsLength}</p>
+                  {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized">{journey.category}</h6></div>}
                     {journey.tags.length !==0 && <p>Tags: {journey.tags}</p>}
                     
                 </div>
-                {journey.blocks.length !==0  && <button className='show-blocks btn btn-info' value={showBlocks} onClick={() => toggleBlocks(index)} >Show Blocks</button>}
+                
+                {journey.blocks.length !==0  && <button className='show-blocks btn btn-info' value={showBlocks} onClick={() => toggleBlocks(index)} > Show/Hide Blocks </button>}
              {journey.showBlocks  && <ul className="list-group list-group-flush">
              {allPublicJourneys[index].blocks.map(block=>{
                 return (
                     <li className="list-group-item">
-                    <p>{block.title}</p>
-                    <p>Number of Steps : {block.steps.length}</p>
+                    <p className='bold underline'>{block.title}</p>
+                    <p className='italic'>Number of Steps : {block.steps.length}</p>
+                    {block.steps.length!==0 && <button className='btn btn-outline-warning'><Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link></button>}
                     </li>
                 )
              })}
              </ul>}
-             {journey.category && <h6 className="btn-outline-dark category sized">{journey.category}</h6>}
+             
              <div className="card-body">
              <br/>
              <Link to={`/journeys/${journey._id}`}>

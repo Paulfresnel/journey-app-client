@@ -15,7 +15,7 @@ function Header(){
         <div className="header-div">
 
 <nav className="navbar navbar-expand-lg navbar-light">
-  <a className="navbar-brand" href="/"><span className="emphasized">S</span>kill  Road </a>
+  <a className="navbar-brand" href="/"><span className="emphasized">S</span>kill  <span className="emphasized">R</span>oad </a>
   <button className="navbar-toggler border-black" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
   <span class="navbar-toggler-icon"></span>
   </button>
