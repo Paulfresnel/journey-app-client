@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 
 function EditTags(props){
 
-    const { setTagArray } = props;
-    const [journeyTags, setJourneyTags] = useState([]);
+    const { setTagArray, journeyTags, setJourneyTags } = props;
     const [tag, setTag] = useState('');
     const currentTags = [...journeyTags];
-    console.log(currentTags);
+    console.log(journeyTags);
     
     const addTag = () => {
        currentTags.push(tag);
@@ -19,19 +18,20 @@ function EditTags(props){
     }
 
     useEffect(() => {
-        setTagArray(journeyTags)
-    },[journeyTags])
-
+         setTagArray(journeyTags);
+    }, [journeyTags])
+    
     return(
         <>
             <div>
                 {journeyTags && journeyTags.map(tag => {
-                    return(
+                    return (
                             <button type="button" class="btn btn-primary">
                                 {tag} <span class="badge badge-light" onClick={removeTag}>x</span>
                             </button>)
                      })}
             </div>
+      
             <label>Add tags:</label>
             <div>
                 <input type='text' onChange={(event) => setTag(event.target.value)}/>
