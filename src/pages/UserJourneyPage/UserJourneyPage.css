@@ -76,10 +76,42 @@
     flex-wrap: wrap;
 }
 
+.tag{
+    width: 30%;
+}
+
+.description-journey{
+    color: #003566;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+
+.img-upload-btn{
+    color: #003566;
+    border: #003566 1px solid;
+}
+
 .tag-map{
     width: 8rem;
     font-weight: bold;
+    color: #003566;
+    border: #ffb10a 1px solid;
+    outline: 1px #003566 solid;
+    box-shadow: 5px 5px 1px #dab785;
 
+}
+
+.div-block-short{
+    margin: 20px 55px 5px 55px;
+    height: 1px;
+    background-color: #003566;
+}
+
+.label-journey{
+    color: #003566;
+    text-decoration: underline;
+    font-style: italic;
 }
 
 .tag-map:hover{
