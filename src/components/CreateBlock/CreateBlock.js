@@ -57,31 +57,32 @@ function CreateBlock(props) {
                     })}
                 </div> */}
                 <form onSubmit={(event) => handleSubmit(event)}>
-                    <label> Title:
-                        <input type='text' name='title' onChange={(event) => handleChange(event)}/>
-                    </label>  
-                    <br/> 
-                    <label> Description:
-                        <input type='text' name='description' onChange={(event) => handleChange(event)}/>
-                    </label>
-                    <br/>  
-                    <label>Category:
-                        <input type='text' name='category' onChange={(event) => handleChange(event)}/>
-                    </label>
-                    <br/> 
-                    <label> Importance Level:
-                        <select name='importance' defaultValue={'default'} onChange={(event) => handleChange(event)}>
+                    <div className='form-floating mb-3'>
+                        <input className='form-control' type='text' name='title' placeholder='title' onChange={(event) => handleChange(event)}/>
+                        <label> Title:</label> 
+                    </div>
+                    <div className='form-floating mb-3'>
+                        <textarea className='form-control' type='text' name='description' placeholder='description' style={{height: '100px'}} onChange={(event) => handleChange(event)}/>
+                    <label>Description:</label>
+                    </div>
+                    <div className='form-floating mb-3'>
+                        <input className='form-control' type='text' name='category' placeholder='category' onChange={(event) => handleChange(event)}/>
+                        <label>Category:</label>
+                    </div>
+                    <div className='form-floating mb-3'>
+                        <select className='form-control' name='importance' placeholder='priority' defaultValue={'default'} onChange={(event) => handleChange(event)}>
                             <option value={'default'} disabled>Select Priority</option>
                             <option value='Critical'>Critical</option>
                             <option value='Recommended'>Recommended</option>
                             <option value='Optional'>Critical</option>
                         </select>
-                    </label>
+                        <label>Importance Level:</label>
+                    </div>
                     <br/> 
-                    <button>Add Block</button>
+                    <button className='btn btn-success create-journey'>Add Block</button>
                 </form>
                 {errorMessage && <h2>{errorMessage}</h2>}
-                <button onClick={() => setShowForm(false)}>Close</button>
+                <button className='btn btn-link' onClick={() => setShowForm(false)}>Close</button>
             </div>
         </>
 
