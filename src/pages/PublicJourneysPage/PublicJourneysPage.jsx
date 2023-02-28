@@ -207,13 +207,13 @@ function PublicJourneysPage(){
                   journey.dateCreated = creationDateMillisecondsLength
                   journey.dateUpdated = updatedDateMillisecondsLength
 
+                 
                 
                   if(journey.category){
                   if (pushedCategories.indexOf(journey.category) < 0){
                     pushedCategories.push(journey.category)
                   }
                 }
-                
                 setCategories(pushedCategories)
                   journey.blocks.map(block=>{
                     if (block.steps){
