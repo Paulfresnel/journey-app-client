@@ -98,6 +98,16 @@ function UserJourneyPage() {
             } else setFieldToEdit('');
         }
 
+    const handleEditBlock = (event) => {
+        const name = event.target.name;
+        if(event.target.value && event.target.value !== activeBlock.name){
+            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, {[name] : event.target.value})
+                .then(response => setUpdatedJourney(response.data))
+            setFieldToEdit('')
+            } else setFieldToEdit('');
+        }
+
+
     const handleImageUpload = () => {
         hiddenFileInput.current.click();
     }
@@ -201,7 +211,7 @@ function UserJourneyPage() {
                         
                       </div>
                     : <div>
-                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags:<span><i className="bi bi-pencil-fill pencil" style={{fontSize: '0.7em'}} ></i></span></h2> 
+                        <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags<span><i className="bi bi-pencil-fill pencil"></i></span></h2> 
                             
                                 {userJourney.tags && userJourney.tags.map(tag => {
                                     if(tag){
@@ -220,14 +230,37 @@ function UserJourneyPage() {
                                 if(blockToDisplay === block._id){
                                  return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
-                                        <button className="btn btn-outline-warning" onClick={() => setActiveBlock(block)}><h2 className="colored" >Block: {block.title}</h2></button>
-                                       <div className="flex-progress">
+                                        {fieldToEdit === "journey-block-title" ?
+                                         <input name="title" defaultValue={block.title} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/> 
+                                         : <button className="btn btn-outline-warning" onClick={() => setActiveBlock(block)}><h2 id="journey-block-title" className="colored">{block.title}</h2><span><i onClick={() => setFieldToEdit("journey-block-title")} className="bi bi-pencil-fill pencil" ></i></span></button>}
+                                        <div className="flex-progress">
                                         <p className="progress-t">Progress:</p>
                                         <p className="progress-bar"><UserProgress now={blockProgress}/></p>
                                         </div>
-                                        <p>{block.description}</p>
-                                        <p>{block.category}</p>
-                                        <p>{block.importance}</p>
+                                        <label>Description:</label>
+                                        {fieldToEdit === "journey-block-description" ? 
+                                         <input type="text" name="description" defaultValue={block.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/>
+                                         : <p id="journey-block-description" onClick={() => setFieldToEdit('journey-block-description')}>{block.description} </p>}
+                                        <label>Category:</label>
+                                        {fieldToEdit === "journey-block-category" ?
+                                            <select name="category" required onChange={(event) => handleEditBlock(event)}>
+                                                <option disabled selected>-- Choose a category --</option>
+                                                <option value="Finance">Finance</option>
+                                                <option value="Programming">Programming</option>
+                                                <option value="Blockchain">Blockchain</option>
+                                                <option value="Culture">Culture</option>
+                                                <option value="Languages">Languages</option>
+                                            </select>
+                                        : <p id="journey-block-category" onClick={() => setFieldToEdit('journey-block-category')}>{block.category}</p>}
+                                        <label>Priority:</label>
+                                        {fieldToEdit === "journey-block-importance" ? 
+                                            <select name='importance' onChange={(event) => handleEditBlock(event)}>
+                                                <option value={'default'} disabled>Select Priority</option>
+                                                <option value='Critical'>Critical</option>
+                                                <option value='Recommended'>Recommended</option>
+                                                <option value='Optional'>Critical</option>
+                                            </select>
+                                         : <p id="journey-block-importance" onClick={() => setFieldToEdit('journey-block-importance')}>{block.importance}</p>}
                                         {block.steps && block.steps.map(step => {
                                             return <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button>{step.title}</button></Link>
                                         })}
