@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
+import ReactDOM  from "react-dom"
 import { /* Link, */ useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
@@ -159,7 +160,7 @@ function CreateStep(props){
     },[])
 
     
-    return(
+    return ReactDOM.createPortal(
         <>
             <div className="overlay-style"/>
             <div className="modal-style">
@@ -196,94 +197,112 @@ function CreateStep(props){
                 <div>
                     <h1>Add a new Step</h1>
                     <form>
-                        <div>
+                        <div className='form-floating mb-3'>
+                            <input className='form-control' required placeholder='title' onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
                             <label>Title:</label>
-                            <input required onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
                         </div>
-                        <div>
+                        <div className='form-floating mb-3'>
+                            <textarea className='form-control' required  placeholder='description' name="description" value={step.description} style={{height:'100px'}} onChange={(e)=>handleChange(e)}  />
                             <label>Description:</label>
-                            <input required onChange={(e)=>handleChange(e)} type='text-area' name="description" value={step.description}></input>
                         </div>
-                        <div>
-                            <label>Difficulty:</label>
-                            <select required onChange={(e)=>handleChange(e)} name="difficulty" value={step.difficulty}>
-                            <option disabled selected>-- Choose Difficulty of the Step --</option>
-                                <option default>High</option>
-                                <option>Medium</option>
-                                <option>Low</option>
+                        <div className='form-floating mb-3'>
+                            <select className='form-control' name='difficulty' defaultValue='default' placeholder='difficulty' required onChange={(e)=>handleChange(e)} >
+                                <option value='default' disabled>-- Choose Difficulty of the Step --</option>
+                                <option value='High'>High</option>
+                                <option value='Medium'>Medium</option>
+                                <option value='Low'>Low</option>
                             </select>
+                            <label>Difficulty:</label>
                         </div>
-                        <div>
-                            <label>Importance:</label>
-                            <select required onChange={(e)=>handleChange(e)} name="importance" value={step.importance}>
-                            <option disabled selected>-- Choose Degree of importance --</option>
+                        <div className='form-floating mb-3'>
+                            <select className='form-control' name="importance" defaultValue='default' placeholder='importance' required onChange={(e)=>handleChange(e)} >
+                            <option value='default' disabled>-- Choose Degree of importance --</option>
                                 <option>Critical</option>
                                 <option>Recommended</option>
                                 <option>Optional</option>
                             </select>
+                            <label>Importance:</label>
                         </div>
-                        <div>
-                            <label>Image:</label>
-                            <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input>
-                            <input type="file" onChange={(e) => handleFileUpload(e)} />
-                            <img width={75} src={step.image}/>
+                        <div className='form-floating mb-3'>
+                            
+                            {/* <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input> */}
+                            <input className='form-control' type="file" placeholder='image' onChange={(e) => handleFileUpload(e)} />
+                            <img width={75} src={step.image} style={{paddingTop:'10px'}}/>
+                            <label>Add a Photo:</label>
                         </div>
                         <div>
                         <h3>Add Link Resources</h3>
                         {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                         {linkFields.map((input, index) => {
-            return (
-                <div key={index} className="parent"> 
-                <input required
-                    name='name'
-                    placeholder='name your link resource'
-                    value={input.name}
-                    onChange={(event) => handleFieldsChange(index, event)}
-                />
-                <input required
-                    name='link'
-                    placeholder='link https:// ressource here'
-                    value={input.link}
-                    onChange={(event) => handleFieldsChange(index, event)}
-                />
-                <button name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
-                </div>
-            )
-            })}
-            <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
-            </div>
+                            return (
+                            <>
+                                <div key={index} className='form-floating mb-3 parent'> 
+                                    <input required
+                                        className='form-control'
+                                        name='name'
+                                        placeholder='name your link resource'
+                                      
+                                        onChange={(event) => handleFieldsChange(index, event)}
+                                    />
+                                    <label>Resource Name: </label>
+                                </div>
+                                <div className='form-floating mb-3 parent'>
+                                    <input required
+                                        className='form-control'
+                                        name='link'
+                                        placeholder='link https:// ressource here'
+                                        
+                                        onChange={(event) => handleFieldsChange(index, event)}
+                                    />
+                                    <label>http://</label>
+                                    <button className="btn btn-secondary btn-sm active" name="removeLink" style={{marginTop:'20px'}} onClick={(event) => removeFields(index,event)}>Remove Link</button>
+                                </div>
+                            </>
+                            )
+                            })}
+                        <button className="btn btn-primary btn-sm active" name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
+                        </div>
 
 
-            <div>
+            <div style={{marginTop: '20px'}}>
                 <h3>Add Notes</h3>
                 {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
                 {notesFields.map((input, index) => {
-            return (
-                <div key={index}>
-                <input required
-                    name='note'
-                    placeholder='write your note..'
-                    value={input.name}
-                    onChange={(event) => handleFieldsChange(index, event)}
-                />
-                <button name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
-                </div>
-            )
-            })}
-            <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
+                return (
+                    <>
+                        <div className='form-floating mb-3' key={index}>
+                            <textarea required
+                                className='form-control'
+                                name='note'
+                                placeholder='write your note..'
+                                value={input.name}
+                                style={{height: '100px', marginTop: '20px'}}
+                                onChange={(event) => handleFieldsChange(index, event)}
+                            />
+                            <label>Note:</label>
+                        </div>
+                        <button className="btn btn-secondary btn-sm active" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+                        
+                    </>
+                    )
+                })}
+                <br/>
+            <button className="btn btn-primary btn-sm active" name="addNote" style={{marginTop: '20px'}} onClick={(e)=>addFields(e)}>Add another Note</button>
             </div>
 
 
 
 
             {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
-            <button onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
+            <button className='btn btn-success create-journey' onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
                     </form>
                 </div>
-                <button onClick={() => setAddStep(false)}>Close</button>
+                <button className='btn btn-link' onClick={() => setAddStep(false)}>Close</button>
             </div>
-        </>
-    )
+        </>,
+        document.getElementById('portal')  
+    ) 
+   
 }
 
 export default CreateStep

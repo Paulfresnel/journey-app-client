@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import './EditTags.css'
 
 function EditTags(props){
 
@@ -32,11 +33,13 @@ function EditTags(props){
                      })}
             </div>
       
-            <label>Add tags:</label>
-            <div>
-                <input type='text' onChange={(event) => setTag(event.target.value)}/>
-                <button type='button' onClick={addTag}>Add tag</button>
+            
+            <div className='form-floating mb-3'>
+                <input type='text' className='form-control' placeholder='labels' onChange={(event) => setTag(event.target.value)}/>
+                <label>Add tag:</label>
             </div>
+            <button className='btn btn-primary carousel-btn' type='button' onClick={addTag} style={{paddingTop: '5px'}}>Add tag</button>
+            <br/>
         </>
     )
 

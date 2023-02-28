@@ -4,6 +4,7 @@ import axios from "axios";
 import EditTags from "../EditTags/EditTags";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
+import './CreateJourney.css'
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -58,38 +59,41 @@ function CreateJourney(props){
             <div className='modal-style'>
                 <h1>Create a Journey</h1>
                 <form onSubmit={(event) => handleSubmit(event)}>
-                    <label>Title:
-                        <input type='text' name='title' onChange={(event) => setTitle(event.target.value)}/>
-                    </label>
-                    <br/>
-                    <label>Description:
-                        <input type='text' name='description' onChange={(event) => setDescription(event.target.value)}/>
-                    </label>
-                    <br/>
-                    <label>Category: 
-                    <select required onChange={(e)=>setCategory(e.target.value)} name="category">
-                        <option disabled selected>-- Choose a category --</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Programming">Programming</option>
-                        <option value="Blockchain">Blockchain</option>
-                        <option value="Culture">Culture</option>
-                        <option value="Languages">Languages</option>
-                    </select></label>
-                    <br/>
-                    <label>Image:
-                        <input type='file' name='imageUrl' onChange={(event) => handleUpload(event)}/>
-                    </label>
-                    <br/>
+                    <div className='form-floating mb-3' >
+                        <input className='form-control' type='text' name='title' placeholder='title' onChange={(event) => setTitle(event.target.value)}/>
+                        <label>Title:</label>
+                    </div>
+                    <div className='form-floating mb-3'>
+                        <textarea className='form-control' type='text' name='description' placeholder='description' style={{height: '100px'}} onChange={(event) => setDescription(event.target.value)}/>
+                        <label>Description:</label>
+                    </div>
+                    <div className='form-floating mb-3'>
+                        <select className='form-control' placeholder='category' required onChange={(e)=>setCategory(e.target.value)} name="category">
+                            <option disabled selected>-- Choose a category --</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Programming">Programming</option>
+                            <option value="Blockchain">Blockchain</option>
+                            <option value="Culture">Culture</option>
+                            <option value="Languages">Languages</option>
+                        </select> 
+                        <label>Category: </label>
+                    </div>
+                    <div className='mb-3'>
+                        <input type='file' className='form-control' name='imageUrl' onChange={(event) => handleUpload(event)}/>
+                        <label>Image:</label>
+                    </div>
 
                     <EditTags setTagArray={setTagArray} setJourneyTags={setJourneyTags} journeyTags={journeyTags}/>
 
-                    <label>Make Journey Public:
-                        <input type='checkbox' name='isPublic' onChange={(event) => setIsPublic(event.target.checked)}/>
-                    </label>
+                    <div className='form-check' style={{paddingTop: '10px'}}>
+                        <label className='form-check-label'> Make Journey Public
+                            <input className='form-check-input' type='checkbox' name='isPublic' onChange={(event) => setIsPublic(event.target.checked)}/>
+                        </label>
+                    </div>
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    <button className='btn btn-success create-journey'>Create Journey</button>
                     <br/>
-                    {errorMessage && <h2>{errorMessage}</h2>}
-                    <button>Create Journey</button>
-                    <button onClick={()=>setAddJourney(false)}>Close</button>
+                    <button className='btn btn-link' onClick={()=>setAddJourney(false)}>Close</button>
                 </form>
             </div>
         </>

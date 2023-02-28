@@ -123,3 +123,16 @@
 .pencil{
     font-size: 1rem;
 }
+
+.title-block{
+    color: #003566;
+    text-shadow: 1px 1px 2px #dab785;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+
+.block-display{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
