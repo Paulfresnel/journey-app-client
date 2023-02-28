@@ -219,8 +219,8 @@ function UserJourneyPage() {
                                         )}
                             })}
                     </div>}
-                    {userJourney.isPublic && <h2>Upvotes: {userJourney.upvoteUsers.length}</h2>}
-                    <div>
+                    {userJourney.isPublic && <p>Upvotes: {userJourney.upvoteUsers.length}</p>}
+                    <div className="block-display" >
                         {userJourney.blocks && userJourney.blocks.map(block => {
                                 if(blockToDisplay === block._id){
                                  return (
@@ -232,11 +232,11 @@ function UserJourneyPage() {
                                         <p className="progress-t">Progress:</p>
                                         <p className="progress-bar"><UserProgress now={blockProgress}/></p>
                                         </div>
-                                        <label>Description:</label>
+                                        <label className="title-block">Description:</label>
                                         {fieldToEdit === "journey-block-description" ? 
                                          <input type="text" name="description" defaultValue={block.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/>
                                          : <p id="journey-block-description" onClick={() => setFieldToEdit('journey-block-description')}>{block.description} </p>}
-                                        <label>Category:</label>
+                                        <label className="title-block">Category:</label>
                                         {fieldToEdit === "journey-block-category" ?
                                             <select name="category" required onChange={(event) => handleEditBlock(event)}>
                                                 <option disabled selected>-- Choose a category --</option>
@@ -247,7 +247,7 @@ function UserJourneyPage() {
                                                 <option value="Languages">Languages</option>
                                             </select>
                                         : <p id="journey-block-category" onClick={() => setFieldToEdit('journey-block-category')}>{block.category}</p>}
-                                        <label>Priority:</label>
+                                        <label className="title-block">Priority:</label>
                                         {fieldToEdit === "journey-block-importance" ? 
                                             <select name='importance' onChange={(event) => handleEditBlock(event)}>
                                                 <option value={'default'} disabled>Select Priority</option>

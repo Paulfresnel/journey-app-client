@@ -1,0 +1,13 @@
+
+.carousel-btn{
+    background-color: #FFC300;
+    color: #003566;
+    font-weight: bold;
+}
+
+.create-journey{
+    margin: 15px 0px 15px 0px;
+    border: 2px #FFC300 solid;
+    outline: 0.2px #003566 solid;
+    background-color: #003566;
+}
