@@ -51,43 +51,45 @@ function UserJourneyPage() {
 
 
    useEffect(() => {
-    if(isFirstRender.current){
-        isFirstRender.current = false;
-        return;
-    }
+    // if(isFirstRender.current){
+    //     isFirstRender.current = false;
+    //     return;
+    // }
         if(activeBlock){
-            console.log(activeBlock)
-            let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted)
-            let completedPercentage = stepsCompleted.length/activeBlock.steps.length * 100;
-             if(completedPercentage){
-                setBlockProgress(Math.round(completedPercentage))};
+            let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted);
+            let completedPercentage = stepsCompleted.length ? stepsCompleted.length/activeBlock.steps.length * 100 : 0;
+             if(completedPercentage !== 0){
+                setBlockProgress(Math.round(completedPercentage))
+            } else setBlockProgress(0)};
+        
         if(blockProgress === 100){
-            setBlockCompleted(true);            
-        } 
-            //     if(blockProgress === 100) {
-            //         axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-            //         .then((response) => setUpdatedJourney(response.data))}
-            //     else{
-            //         axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-            //         .then((response) => setUpdatedJourney(response.data))}
-            // } else setBlockProgress(0);
-        }
-     }, [blockProgress, activeBlock]);   
-     
-     
-   useEffect(()=> {
-    if(isFirstRender.current){
-        isFirstRender.current = false;
-        return;
-    }
-        if(blockCompleted){
             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
                     .then((response) => setUpdatedJourney(response.data))
         } else {
             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
                     .then((response) => setUpdatedJourney(response.data))
-        }
-   }, [blockCompleted, updatedJourney])
+        }  
+                    
+                // if(blockProgress === 100) {
+                //     axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                //     .then((response) => setUpdatedJourney(response.data))}
+                // else{
+                //     axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+                //     .then((response) => setUpdatedJourney(response.data))}
+          
+        
+     }, [blockProgress, activeBlock]);   
+     
+     
+//    useEffect(()=> {
+//         if(blockCompleted){
+//             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+//                     .then((response) => setUpdatedJourney(response.data))
+//         } else {
+//             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+//                     .then((response) => setUpdatedJourney(response.data))
+//         }
+//    }, [blockCompleted, updatedJourney, activeBlock, blockProgress])
 
 
 
@@ -138,15 +140,6 @@ function UserJourneyPage() {
                 .then(response => setUpdatedJourney(response.data))
             setFieldToEdit('')
             } else setFieldToEdit('');
-    }
-
-    const handleTagButton = () => {
-        if(tag){
-            allTags.push(tag);
-            setTagArray(allTags);
-
-            setTag('')
-        };
     }
 
     const deleteBlock = () => {
