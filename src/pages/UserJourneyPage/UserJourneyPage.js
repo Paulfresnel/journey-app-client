@@ -63,7 +63,7 @@ function UserJourneyPage() {
                 setBlockProgress(Math.round(completedPercentage))};
         if(blockProgress === 100){
             setBlockCompleted(true);            
-        }
+        } 
             //     if(blockProgress === 100) {
             //         axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
             //         .then((response) => setUpdatedJourney(response.data))}
@@ -72,20 +72,22 @@ function UserJourneyPage() {
             //         .then((response) => setUpdatedJourney(response.data))}
             // } else setBlockProgress(0);
         }
-     }, [activeBlock, blockProgress]);   
+     }, [blockProgress, activeBlock]);   
      
      
    useEffect(()=> {
-
-    if(activeBlock){
+    if(isFirstRender.current){
+        isFirstRender.current = false;
+        return;
+    }
         if(blockCompleted){
             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
                     .then((response) => setUpdatedJourney(response.data))
         } else {
             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
                     .then((response) => setUpdatedJourney(response.data))
-        }}
-   }, [blockCompleted, activeBlock])
+        }
+   }, [blockCompleted, updatedJourney])
 
 
 
@@ -147,8 +149,8 @@ function UserJourneyPage() {
         };
     }
 
-    const deleteBlock = (blockId) => {
-        axios.delete(`${API_ROUTE}/api/${userJourney._id}/blocks/${blockId}`)
+    const deleteBlock = () => {
+        axios.delete(`${API_ROUTE}/api/${userJourney._id}/blocks/${activeBlock._id}`)
             .then(response => setUpdatedJourney(response));
     }
 
@@ -269,7 +271,7 @@ function UserJourneyPage() {
                                         <br/>
                                         {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step to Block</button>}
                                         <br/>
-                                        <button className="btn btn-outline-danger alligned" onClick={() => setFieldToEdit('')}>Delete Block</button>
+                                        <button className="btn btn-outline-danger alligned" onClick={() => deleteBlock()}>Delete Block</button>
                                     </div>)
                                 } else return (
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column', justifyItems: 'center'}}>
