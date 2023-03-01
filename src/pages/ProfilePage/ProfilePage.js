@@ -10,7 +10,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function ProfilePage() {
     
     const navigate = useNavigate()
-    const { user } =  useContext(AuthContext);
+    const { user, isLoggedIn } =  useContext(AuthContext);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
     const [addJourney, setAddJourney] = useState(false);
@@ -25,7 +25,7 @@ function ProfilePage() {
 
     useEffect(() => {
 
-    if(user){
+    if(isLoggedIn){
         let counter =0
         setUserLogged(user);
         axios.get(`${API_ROUTE}/api/users/${user._id}/`)
