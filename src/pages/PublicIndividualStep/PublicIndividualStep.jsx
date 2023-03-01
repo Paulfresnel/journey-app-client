@@ -35,11 +35,11 @@ function PublicIndividualStep(){
                     setIsLoading(false)
                 },1000)
             })
-    },[])
+    },[stepId])
 
     return(
         <div>
-            {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+            {isLoading && <img alt="spinner loader" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
             {!isLoading && <div>
                 <div className="margined">
              <button onClick={()=>navigate(-1)} className="btn btn-primary space-r">Go Back</button>
@@ -51,7 +51,7 @@ function PublicIndividualStep(){
           
                 <h1 className="t-a-center m-bottom">{step.title}</h1>
            
-            <img className="img-fluid margin-b" src={step.image}/>
+            <img alt={step.title} className="img-fluid margin-b" src={step.image}/>
             <br/>
             <h6 className="importance t-a-center">Importance: {step.importance}</h6>
             <br/>
