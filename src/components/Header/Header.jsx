@@ -21,7 +21,7 @@ function Header(){
   </button>
   <div className="collapse navbar-collapse " id="navbarNav">
     <ul className="navbar-nav">
-    <i className="bi bi-house"></i>
+   <i class="bi bi-mortarboard"></i>
       <li className="nav-item active nav-link">
       
       <Link to={"/"}>
