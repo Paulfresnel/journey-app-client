@@ -10,7 +10,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function ProfilePage() {
     
     const navigate = useNavigate()
-    const { user } =  useContext(AuthContext);
+    const { user, isLoggedIn } =  useContext(AuthContext);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
     const [addJourney, setAddJourney] = useState(false);
@@ -25,7 +25,7 @@ function ProfilePage() {
 
     useEffect(() => {
 
-    if(user){
+    if(isLoggedIn){
         let counter =0
         setUserLogged(user);
         axios.get(`${API_ROUTE}/api/users/${user._id}/`)
@@ -66,160 +66,159 @@ function ProfilePage() {
     
 
     return(
-         <div>
-
-        <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
-
+        <div>
+            <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
+            
+            {isLoading && 
+            <>
+                <div className='text-center'>
+                    <div className="spinner-border spinner-border-lg">
+                        <span className="sr-only"></span>
+                    </div>
+                </div>
+                <p>Loading...</p>
+                </>
+            }
+        {!isLoading &&
+        <> 
             <div className='main-container-carousel no-padding'>
-                        <div className="div-block"/>
-
-            {creationDate && <div> <i className="bi bi-info-circle-fill log-info"></i>
-                <ul className="hide">
-                        <li>Last updated on <span className="bold">{creationDate}</span></li>
-                </ul>
+            <div className="div-block"/>
+            {creationDate && 
+                <div> <i className="bi bi-info-circle-fill log-info"></i>
+                    <ul className="hide">
+                            <li>Last updated on <span className="bold">{creationDate}</span></li>
+                    </ul>
                 </div>}
-            {!isLoading &&<h2><span className="bold username">{username}</span>'s Profile Page</h2>}
+            <h2><span className="bold username">{username}</span>'s Profile Page</h2>
             <br/>
             <div className="flex-row-adjusted">
-            {!isLoading && <img className="small-pic img-fluid" src={userImg}/>}
-            
-            {!isLoading && <div className="flex-row-public">
-            <div className="flex-column-public green">
-                <h3 className="btn btn-outline-success upvotes-received">Upvotes</h3>
-                <h5 className="number">{totalUpvotes}</h5>
+                <img className="small-pic img-fluid" src={userImg}/>
+                <div className="flex-row-public">
+                    <div className="flex-column-public green">
+                        <h3 className="btn btn-outline-success upvotes-received">Upvotes</h3>
+                        <h5 className="number">{totalUpvotes}</h5>
+                    </div>
+                    <div className="flex-column-public gray">
+                        <h3 className="btn btn-secondary total-journeys">Journeys</h3>
+                        <h5 className="number">{journeys.length}</h5>
+                    </div>
+                </div>
             </div>
-            <div className="flex-column-public gray">
-             <h3 className="btn btn-secondary total-journeys">Journeys</h3>
-             <h5 className="number">{journeys.length}</h5>
-            </div>
-             </div>}
-            
+                <>
+                    <div className="div-block"/>
+                    <br/>
+                    <h1>{journeys ? 'Journeys Created' : 'Get started and create your first journey'}</h1>
+                </>
+            {!isLoading && 
+            <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
+                <div className="carousel-indicators">
+                    {journeys.map((journey,index)=>{
+                        if (index===0){ 
+                            return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
+                        } else {
+                            return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
+                    }})}
+                </div>  
+                <div className="carousel-inner">
+                    <div> {journeys.map((journey,index)=>{
+                        if (index===0){
+                            return (
+                                <div className="carousel-item active">
+                                    <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                                    <div className="carousel-caption">
+                                        <h1 className="carousel-title">{journey.title}</h1>
+                                        <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>
+                                        <Link to={`/profile/journeys/${journey._id}`}>
+                                        <button className="btn btn-primary carousel-btn">Edit Journey</button>
+                                        </Link>
+                                    </div>
+                                </div>)
+                            } else {
+                    return (
+                            <div className="carousel-item">
+                                <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                                <div className="carousel-caption">
+                                    <h1 className="carousel-title">{journey.title}</h1>
+                                    {journey.upvoteUsers && <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>}
+                                    {journey.category && <h6 className="category">{journey.category}</h6>}
+                                    <Link to={`/profile/journeys/${journey._id}`}>
+                                    <button className="btn btn-primary carousel-btn">Edit Journey</button>
+                                    </Link>
+                                </div>
+                            </div>)
+                            }
+                        })}
+                    </div> 
+                </div>
+                <button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#journeysCreated" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden black">Next</span>
+                </button>   
+            </div>}
 
-            
-            </div>
-            {!isLoading && <div className="div-block"/>}
-            <br/>
+            {addJourney && <CreateJourney setAddJourney={setAddJourney} setJourneys={setJourneys} journeys={journeys}/>}
+            {!addJourney && <button className="btn btn-success create-journey" onClick={() => setAddJourney(true)}>Create New Journey</button>}
+            <div className="divider"></div>
 
-
-
-
-
-            <h1>{journeys ? 'Journeys Created' : 'Get started and create your first journey'}</h1>
-            {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
-            
-            {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-        {journeys.map((journey,index)=>{
-            if (index===0){ 
-                return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
-            } else {
-           return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
-        }})}
-        </div>  
-  <div className="carousel-inner">
-     <div> {journeys.map((journey,index)=>{
-        if (index===0){
-    return (<div className="carousel-item active">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-             <h1 className="carousel-title">{journey.title}</h1>
-            <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>
-            <Link to={`/profile/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Edit Journey</button>
-            </Link>
+            <h1>Journeys Upvoted</h1>
+            {!isLoading && 
+                <div id="journeysCopied" className="carousel slide" data-bs-ride="carousel">
+                    <div className="carousel-indicators">
+                        {journeysCopied.map((journey,index)=>{
+                            if (index===0){
+                                return <button style={{color:"black"}} type="button" data-bs-target="#journeysCopied" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
+                            } else {
+                                return <button style={{color:"black"}} type="button" data-bs-target="#journeysCopied" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
+                        }})}
+                    </div>  
+                    <div className="carousel-inner margin-b">
+                        <div> {journeysCopied.map((journey,index)=>{
+                            if (index===0){
+                                return (
+                                    <div className="carousel-item active">
+                                        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                                            <div className="carousel-caption">
+                                                <h1 className="carousel-title">{journey.title}</h1>
+                                                {journey.category && <h6 className="category">{journey.category}</h6>}
+                                                {journey.author && <p className="upvote">Created by: <Link to={`/profile/${journey.author._id}`}>{journey.author.username}</Link></p>}
+                                                <p className="upvote">Total upvotes: {journey.upvoteUsers.length}</p>
+                                                <Link to={`/journeys/${journey._id}`}>
+                                                <button className="btn btn-primary carousel-btn">Check the Journey</button>
+                                                </Link>
+                                            </div>
+                                    </div>)
+                            } else {
+                                return (<div className="carousel-item">
+                                    <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                                    <div className="carousel-caption">
+                                        <h1 className="carousel-title">{journey.title}</h1>
+                                        {journey.author && <p className="upvote">Created by: <Link to={`/profile/${journey.author._id}`}>{journey.author.username}</Link></p>}
+                                        <p className="upvote">Total upvotes: {journey.upvoteUsers.length}</p>
+                                        <Link to={`/journeys/${journey._id}`}>
+                                        <button className="btn btn-primary carousel-btn">Check the Journey</button>
+                                        </Link>
+                                    </div>
+                                </div>)
+                                }
+                            })}
+                        </div> 
+                    </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#journeysCopied" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#journeysCopied" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden black">Next</span>
+                    </button>
+              </div>}      
         </div>
+        </>} 
     </div>
-     )
-} else {
-    return (<div className="carousel-item">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-            <h1 className="carousel-title">{journey.title}</h1>
-            {journey.upvoteUsers && <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>}
-            {journey.category && <h6 className="category">{journey.category}</h6>}
-            <Link to={`/profile/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Edit Journey</button>
-            </Link>
-        </div>
-    </div>
-     )
-}
-     }) }
-     </div> 
-     
-  </div>
-  <button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
-    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span className="visually-hidden">Previous</span>
-  </button>
-  <button className="carousel-control-next" type="button" data-bs-target="#journeysCreated" data-bs-slide="next">
-    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-    <span className="visually-hidden black">Next</span>
-  </button>
-</div>}
-
-{addJourney && <CreateJourney setAddJourney={setAddJourney} setJourneys={setJourneys} journeys={journeys}/>}
-
-{!addJourney && <button className="btn btn-success create-journey" onClick={() => setAddJourney(true)}>Create New Journey</button>}
-<div className="divider"></div>
-
-<h1>Journeys Upvoted</h1>
-{isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
-{!isLoading && <div id="journeysCopied" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-        {journeysCopied.map((journey,index)=>{
-            if (index===0){
-                return <button style={{color:"black"}} type="button" data-bs-target="#journeysCopied" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
-            } else {
-           return <button style={{color:"black"}} type="button" data-bs-target="#journeysCopied" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
-        }})}
-        </div>  
-  <div className="carousel-inner margin-b">
-     <div> {journeysCopied.map((journey,index)=>{
-        if (index===0){
-    return (<div className="carousel-item active">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-             <h1 className="carousel-title">{journey.title}</h1>
-             {journey.category && <h6 className="category">{journey.category}</h6>}
-             {journey.author && <p className="upvote">Created by: <Link to={`/profile/${journey.author._id}`}>{journey.author.username}</Link></p>}
-             <p className="upvote">Total upvotes: {journey.upvoteUsers.length}</p>
-            <Link to={`/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Check the Journey</button>
-            </Link>
-            
-        </div>
-    </div>
-     )
-} else {
-    return (<div className="carousel-item">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-            <h1 className="carousel-title">{journey.title}</h1>
-            {journey.author && <p className="upvote">Created by: <Link to={`/profile/${journey.author._id}`}>{journey.author.username}</Link></p>}
-            <p className="upvote">Total upvotes: {journey.upvoteUsers.length}</p>
-            <Link to={`/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Check the Journey</button>
-            </Link>
-        </div>
-    </div>
-     )
-}
-     }) }
-     </div> 
-     
-  </div>
-  <button className="carousel-control-prev" type="button" data-bs-target="#journeysCopied" data-bs-slide="prev">
-    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span className="visually-hidden">Previous</span>
-  </button>
-  <button className="carousel-control-next" type="button" data-bs-target="#journeysCopied" data-bs-slide="next">
-    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-    <span className="visually-hidden black">Next</span>
-  </button>
-</div>}      
-        </div>
-        </div>
     )
 }
 

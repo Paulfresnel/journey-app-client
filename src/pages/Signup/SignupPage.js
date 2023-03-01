@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./SignupPage.css"
  
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
@@ -27,45 +28,56 @@ function SignupPage(props) {
  
   
   return (
-    <div>
-      <h1>Sign Up</h1>
- 
-      <form onSubmit={handleSignupSubmit}>
-        <label>Email:</label>
-        <input 
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmail}
-        />
-        <br/>
+    <div className="login-form">
+        <h1>Welcome!</h1>
+        <form onSubmit={handleSignupSubmit}>
+          <div className='form-floating mb-3'>
+            <input 
+              className='form-control'
+              type="email"
+              name="email"
+              value={email}
+              placeholder="email"
+              onChange={handleEmail}
+            />
+            <label>Email:</label>
+          </div>
 
-        <label>Userame:</label>
-        <input 
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleuserName}
-        />
-        <br/>
- 
-        <label>Password:</label>
-        <input 
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
-        <br/>
- 
-        <button type="submit">Sign Up</button>
-        <br/>
-      </form>
- 
-      { errorMessage && <p className="error-message">{errorMessage}</p> }
- 
-      <p>Already have account?</p>
-      <Link to={"/log-in"}> Login</Link>
+
+        <div className='form-floating mb-3'>
+            <input 
+              className='form-control'
+              type="text"
+              name="username"
+              value={username}
+              placeholder="username"
+              onChange={handleuserName}
+            />
+            <label>Userame:</label>
+          </div>
+  
+          <div className='form-floating mb-3'>
+            <input 
+              className='form-control'
+              type="password"
+              name="password"
+              value={password}
+              placeholder="password"
+              onChange={handlePassword}
+            />
+            <label>Password:</label>
+          </div>
+  
+          <button className='btn btn-success create-journey' type="submit">Sign Up</button>
+          <br/>
+        </form>
+  
+        { errorMessage && <p className="error-message">{errorMessage}</p> }
+      
+        <div className="signup-link">
+          <p>Already have account?</p>
+          <Link to={"/log-in"}> Login</Link>
+        </div>
     </div>
   )
 }
