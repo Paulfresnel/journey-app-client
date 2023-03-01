@@ -32,6 +32,7 @@ function UserJourneyPage() {
     const hiddenFileInput  = useRef(null);
     const isFirstRender = useRef(true);
     const allTags = [...tagArray];
+    const checkMark = "\u2713";
    
     const navigate = useNavigate();
 
@@ -106,8 +107,9 @@ function UserJourneyPage() {
         const name = event.target.name;
         if(event.target.value && event.target.value !== activeBlock.name){
             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, {[name] : event.target.value})
-                .then(response => setUpdatedJourney(response.data))
-            setFieldToEdit('')
+                .then(response => {
+                    setUpdatedJourney(response.data);
+                    setFieldToEdit('');})
             } else setFieldToEdit('');
         }
 
@@ -164,15 +166,23 @@ function UserJourneyPage() {
         
 
     return(
-        <div>
-            {isLoading && <h1>Loading...</h1>}   
-            {userJourney &&
-            <>
-                <div >
+        <div className="main-container">
+            {isLoading && 
+                <>  
+                    <div className='text-center'>
+                        <div className="spinner-border spinner-border-lg">
+                            <span className="sr-only"></span>
+                        </div>
+                    </div>
+                    <p>Loading...</p>
+                </>}   
+            {userJourney && !isLoading &&
+            <div className="user-journey-container">
+                <div>
                 <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
                     {fieldToEdit === 'user-journey-title' ? 
                         <div>
-                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
+                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', size: `${userJourney.title.length}`, fontSize: '1.8em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
                     : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
@@ -189,9 +199,8 @@ function UserJourneyPage() {
                     </div>
                     <br/>
                     {fieldToEdit === 'user-journey-description' ? 
-                        <div className=' w-75 d-flex justify-content-center'>
-                            <textarea defaultValue={userJourney.description} name="description" className="form-control" autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditValue(event)}}/>    
-                            <br/>
+                        <div>
+                            <textarea defaultValue={userJourney.description} name="description" className="form-control" style={{height:'75px', width: '400px', marginBottom: '15px'}} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditValue(event)}}/>    
                         </div> 
                     : <p className="description-journey" id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}<span><i className="bi bi-pencil-fill pencil" ></i></span></p>}
                    
@@ -201,28 +210,28 @@ function UserJourneyPage() {
                         <EditTags  setTagArray={setTagArray} journeyTags={journeyTags} setJourneyTags={setJourneyTags}/>
                         <form onSubmit={(event) => updateTags(event)}>
                             <input type='hidden' value={tagArray} name='tags'/>
-                            <button type="submit">Update Tags</button>
+                            <button className='btn btn-success create-journey' type="submit" style={{marginTop:'-20px'}}>Update Tags</button>
                         </form>
                         
                       </div>
-                    : <div>
+                    : <div style={{marginTop: '30px'}}>
                         <h2 id='user-journey-tags' onClick={() => setFieldToEdit('user-journey-tags')}>Tags<span><i className="bi bi-pencil-fill pencil"></i></span></h2> 
                             <br/>
-                            <div className="tags-display">
+                            <div className="tags-display" style={{marginTop: '-10px'}}>
                                 {userJourney.tags && userJourney.tags.map(tag => {
                                     if(tag){
                                         return  (
                                             <div >
-                                                <button type="button" class="btn btn-outline-primary tag-map">
+                                                <button type="button" class="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
                                                     {tag} <span class="badge badge-light"/>
                                                 </button>
                                             </div>
                                         )}
-                            })}
+                                })}
                             </div>
                             <br/>
                     </div>}
-                    {userJourney.isPublic && <p>Upvotes: {userJourney.upvoteUsers.length}</p>}
+                    {userJourney.isPublic && <p className='user-journey-upvotes'>Upvotes: {userJourney.upvoteUsers.length}</p>}
                     <div className="block-display" >
                         {userJourney.blocks && userJourney.blocks.map(block => {
                                 if(blockToDisplay === block._id){
@@ -230,10 +239,10 @@ function UserJourneyPage() {
                                     <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
                                         {fieldToEdit === "journey-block-title" ?
                                          <input name="title" defaultValue={block.title} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/> 
-                                         : <button className="btn btn-outline-warning" onClick={() => setActiveBlock(block)}><h2 id="journey-block-title" className="colored">{block.title}</h2><span><i onClick={() => setFieldToEdit("journey-block-title")} className="bi bi-pencil-fill pencil" ></i></span></button>}
+                                         : <button className="btn btn-outline-warning block-btn" onClick={() => setActiveBlock(block)}><h2 id="journey-block-title" className="colored">{block.title}</h2><span><i onClick={() => setFieldToEdit("journey-block-title")} className="bi bi-pencil-fill pencil" ></i></span></button>}
                                         <div className="flex-progress">
-                                        <p className="progress-t">Progress:</p>
-                                        <p className="progress-bar"><UserProgress now={blockProgress}/></p>
+                                            <p className="progress-t">Progress:</p>
+                                            <p className="progress-bar"><UserProgress now={blockProgress}/></p>
                                         </div>
                                         <label className="title-block">Description:</label>
                                         {fieldToEdit === "journey-block-description" ? 
@@ -262,7 +271,13 @@ function UserJourneyPage() {
                                          : <p id="journey-block-importance" onClick={() => setFieldToEdit('journey-block-importance')}>{block.importance}</p>}
                                          <p className="bold label-journey">Block Steps:</p>
                                         {block.steps && block.steps.map(step => {
-                                            return <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}><button className="btn btn-outline-primary">{step.title}</button></Link>
+                                            return (
+                                                <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}>
+                                                    <button type="button" class="btn btn-primary" style={{margin:'5px', width: '70%'}}>
+                                                    {step.title}<span class="badge badge-light">{step.isCompleted ? checkMark : "" }</span>
+                                                    </button>
+                                                {/* <button className="btn btn-outline-primary">{step.title}</button> */}
+                                                </Link>)
                                         })}
                                         <div className="div-block-short"/>
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
@@ -286,7 +301,7 @@ function UserJourneyPage() {
                 <br/>
                 <button className="btn btn-danger m-bottom" onClick={() => deleteJourney()}>Delete Journey</button>
                 <br/>           
-            </>} 
+            </div>} 
        </div> 
     )
 
