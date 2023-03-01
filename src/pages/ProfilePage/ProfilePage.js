@@ -2,30 +2,58 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/auth.context";
 import CreateJourney from "../../components/CreateJourney/CreateJourney";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './ProfilePage.css'
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
 function ProfilePage() {
     
-    
+    const navigate = useNavigate()
     const { user } =  useContext(AuthContext);
     const [userLogged, setUserLogged] = useState({user});
     const [journeys, setJourneys] = useState([]);
     const [addJourney, setAddJourney] = useState(false);
     const [journeysCopied, setJourneysCopied] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [totalUpvotes, setTotalUpvotes] = useState(0)
+    const [creationDate, setCreationDate] = useState('')
+    const [username, setUsername] =useState('')
+    const [userImg, setUserImg] =useState('')
 
 
 
     useEffect(() => {
 
     if(user){
-
+        let counter =0
         setUserLogged(user);
         axios.get(`${API_ROUTE}/api/users/${user._id}/`)
             .then(foundUser => {
+                let user = foundUser.data
+                if (user.createdAt){
+                    let userCreationDate = user.createdAt
+                let userCreationDateObject = new Date(userCreationDate)
+                const options = {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }
+            let readableUpdatedDate = userCreationDateObject.toLocaleDateString('en-US', options)
+              setCreationDate(readableUpdatedDate)
+                }
+                user.journeysCreated.map(journey=>{
+                    if (journey.upvoteUsers){
+                        return counter += journey.upvoteUsers.length
+                    }
+                })
+
+                setTotalUpvotes(counter)
+
+
+                let usernameMaj = user.username.charAt(0).toUpperCase() + user.username.slice(1)
+                setUserImg(user.profilePicture)
+                setUsername(usernameMaj)
                 setJourneys(foundUser.data.journeysCreated)
                 setJourneysCopied(foundUser.data.journeysCopied)
                 setTimeout(()=>{
@@ -38,7 +66,44 @@ function ProfilePage() {
     
 
     return(
-         <div className='main-container-carousel'>
+         <div>
+
+        <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
+
+            <div className='main-container-carousel no-padding'>
+                        <div className="div-block"/>
+
+            {creationDate && <div> <i className="bi bi-info-circle-fill log-info"></i>
+                <ul className="hide">
+                        <li>Last updated on <span className="bold">{creationDate}</span></li>
+                </ul>
+                </div>}
+            {!isLoading &&<h2><span className="bold username">{username}</span>'s Profile Page</h2>}
+            <br/>
+            <div className="flex-row-adjusted">
+            {!isLoading && <img className="small-pic img-fluid" src={userImg}/>}
+            
+            {!isLoading && <div className="flex-row-public">
+            <div className="flex-column-public green">
+                <h3 className="btn btn-outline-success upvotes-received">Upvotes</h3>
+                <h5 className="number">{totalUpvotes}</h5>
+            </div>
+            <div className="flex-column-public gray">
+             <h3 className="btn btn-secondary total-journeys">Journeys</h3>
+             <h5 className="number">{journeys.length}</h5>
+            </div>
+             </div>}
+            
+
+            
+            </div>
+            {!isLoading && <div className="div-block"/>}
+            <br/>
+
+
+
+
+
             <h1>{journeys ? 'Journeys Created' : 'Get started and create your first journey'}</h1>
             {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
             
@@ -122,6 +187,7 @@ function ProfilePage() {
             <Link to={`/journeys/${journey._id}`}>
             <button className="btn btn-primary carousel-btn">Check the Journey</button>
             </Link>
+            
         </div>
     </div>
      )
@@ -152,6 +218,7 @@ function ProfilePage() {
     <span className="visually-hidden black">Next</span>
   </button>
 </div>}      
+        </div>
         </div>
     )
 }

@@ -33,7 +33,7 @@ useEffect(()=>{
                 setIsLoading(false)
            }, 1000) 
         })
-}, [])
+}, [blockId])
     console.log(block)
 
 
@@ -41,7 +41,7 @@ useEffect(()=>{
 
         <div>
         
-        {isLoading && <img src='https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g'/>}
+        {isLoading && <img alt="spinner loader" src='https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g'/>}
         {!isLoading &&
          
         <div className="margined">
