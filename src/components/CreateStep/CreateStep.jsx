@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import './CreateStep.css'
 import ReactDOM  from "react-dom"
-import { /* Link, */ useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
@@ -10,7 +9,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
 function CreateStep(props){
 
     const { blockId, journeyId, setAddStep, setUpdatedJourney } = props;
-    // const {blockId, journeyId} = useParams()
+   
     const navigate = useNavigate()
     
     const [imageUrl,setImageUrl] = useState('')
@@ -113,20 +112,6 @@ function CreateStep(props){
                 .catch(err=>console.log(err))
     }
 
-    // const formHandleSubmit = async (e)=>{
-    //     e.preventDefault()
-    //     await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
-    //         .then(async (response)=>{
-    //             await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)   
-    //                 .then((blockUpdated)=>{
-    //                     setBlock(blockUpdated.data.block)
-    //                     setFormMessage(response.data.message)
-    //                     navigate(`/profile/journeys/${journeyId}/edit`)
-    //                 })
-                
-                
-    //         })
-    // }
 
     const formHandleSubmit = (e)=>{
         e.preventDefault()
@@ -164,39 +149,9 @@ function CreateStep(props){
         <>
             <div className="overlay-style"/>
             <div className="modal-style">
-                {/* <div>
-                {isLoading ? <p>Loading...</p> : <div>
-                    <h1>{block.title}</h1>
-                    <h2>{block.description}</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>#</td>
-                                <td>Link Title</td>
-                                <td># of Links</td>
-                                <td>Difficulty</td>
-                                <td>Importance</td>
-                            
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {block.steps.map((step,index)=>{
-                            return <tr>  
-                                <td>{index+1}</td>
-                                <td>{step.title}</td>
-                                <td>{step.links.length}</td>
-                                <td>{step.difficulty}</td>
-                                <td>{step.importance}</td>
-                        </tr> })}
-                        </tbody>
-                    </table>
-
-                </div>}
-
-                </div> */}
-                <div>
+                <div style={{marginTop: '20px'}}>
                     <h1>Add a new Step</h1>
-                    <form>
+                    <form style={{paddingTop: '20px'}}>
                         <div className='form-floating mb-3'>
                             <input className='form-control' required placeholder='title' onChange={(e)=>handleChange(e)}  type='text' name="title" value={step.title}></input>
                             <label>Title:</label>
@@ -224,8 +179,6 @@ function CreateStep(props){
                             <label>Importance:</label>
                         </div>
                         <div className='form-floating mb-3'>
-                            
-                            {/* <input required onChange={(e)=>handleChange(e)} type='text' name="image" value={step.image}></input> */}
                             <input className='form-control' type="file" placeholder='image' onChange={(e) => handleFileUpload(e)} />
                             <img width={75} src={step.image} style={{paddingTop:'10px'}}/>
                             <label>Add a Photo:</label>
@@ -264,40 +217,40 @@ function CreateStep(props){
                         </div>
 
 
-            <div style={{marginTop: '20px'}}>
-                <h3>Add Notes</h3>
-                {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
-                {notesFields.map((input, index) => {
-                return (
-                    <>
-                        <div className='form-floating mb-3' key={index}>
-                            <textarea required
-                                className='form-control'
-                                name='note'
-                                placeholder='write your note..'
-                                value={input.name}
-                                style={{height: '100px', marginTop: '20px'}}
-                                onChange={(event) => handleFieldsChange(index, event)}
-                            />
-                            <label>Note:</label>
+                        <div style={{marginTop: '20px'}}>
+                            <h3>Add Notes</h3>
+                            {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
+                            {notesFields.map((input, index) => {
+                            return (
+                                <>
+                                    <div className='form-floating mb-3' key={index}>
+                                        <textarea required
+                                            className='form-control'
+                                            name='note'
+                                            placeholder='write your note..'
+                                            value={input.name}
+                                            style={{height: '100px', marginTop: '20px'}}
+                                            onChange={(event) => handleFieldsChange(index, event)}
+                                        />
+                                        <label>Note:</label>
+                                    </div>
+                                    <button className="btn btn-secondary btn-sm active" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+                                    
+                                </>
+                                )
+                            })}
+                            <br/>
+                        <button className="btn btn-primary btn-sm active" name="addNote" style={{marginTop: '20px'}} onClick={(e)=>addFields(e)}>Add another Note</button>
                         </div>
-                        <button className="btn btn-secondary btn-sm active" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
-                        
-                    </>
-                    )
-                })}
-                <br/>
-            <button className="btn btn-primary btn-sm active" name="addNote" style={{marginTop: '20px'}} onClick={(e)=>addFields(e)}>Add another Note</button>
-            </div>
-
-
-
-
-            {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
-            <button className='btn btn-success create-journey' onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
+                        {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                            <button className='btn btn-success create-journey' onClick={(e)=>formHandleSubmit(e)}>Create Step</button>
+                        </div>
                     </form>
                 </div>
-                <button className='btn btn-link' onClick={() => setAddStep(false)}>Close</button>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <button className='btn btn-link' onClick={() => setAddStep(false)}>Close</button>
+                </div>
             </div>
         </>,
         document.getElementById('portal')  

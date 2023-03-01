@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 function Header(){
     const navigate = useNavigate()
     
-    const {user} = useContext(AuthContext)
+    const {user, isLoggedIn, logoutUser} = useContext(AuthContext)
 
     
     return (
@@ -29,31 +29,38 @@ function Header(){
         </Link>
       </li>
 
-      {user && <li className="nav-item ">
+      {isLoggedIn && <li className="nav-item ">
       <Link to={"/profile"}>
         <p className="nav-link">My Profile</p>
         </Link>
-      </li>}
+      </li>} 
+      
+      <li className="nav-item nav-link">
+        <Link to={"/journeys"}>
+          <p className="nav-link">Check Public Journeys</p> 
+        </Link>
+      </li> 
 
-      {!user && <li className="nav-item ">
+      {!isLoggedIn && <li className="nav-item ">
       
         <p className="nav-link"><Link to={"/sign-up"}>Sign Up</Link> /  <Link to={"/log-in"}>Log In </Link></p>
-        
-        
         <p className="nav-link"> </p>
         
       </li>}
 
-      <li className="nav-item nav-link">
-      <Link to={"/journeys"}>
-      <p className="nav-link">Check Public Journeys</p> 
-        </Link>
-      </li> 
+      {isLoggedIn && 
+        <li>
+          <p className="nav-link"><Link onClick={() => logoutUser()}>Log Out</Link></p>
+        </li>
+      }
+
+     
+      
       
 
-      {window.history.state.idx >= 1 && <li className="nav-item">
+      {/* {window.history.state.idx >= 1 && <li className="nav-item">
       <button className="go-back" onClick={() => navigate(-1)}>Go back</button>
-      </li>}
+      </li>} */}
     </ul>
   </div>
 </nav>

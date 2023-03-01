@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
+
  
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
@@ -29,32 +30,42 @@ function LoginPage() {
   };
   
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="login-form">
+      <h1>Welcome!</h1>
  
       <form onSubmit={handleLoginSubmit}>
-        <label>Email:</label>
-        <input 
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmail}
-        />
+        <div className='form-floating mb-3'>
+          <input 
+            className='form-control'
+            type="email"
+            name="email"
+            value={email}
+            placeholder="email"
+            onChange={handleEmail}
+          />
+          <label>Email:</label>
+        </div>
+
+        <div className='form-floating mb-3'>
+          <input
+            className='form-control'
+            type="password"
+            name="password"
+            value={password}
+            placeholder="password"
+            onChange={handlePassword}
+          />
+          <label>Password:</label>
+        </div>
  
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
- 
-        <button type="submit">Login</button>
+        <button className='btn btn-success create-journey' type="submit">Login</button>
       </form>
-      { errorMessage && <p>{errorMessage}</p> }
- 
-      <p>Don't have an account yet?</p>
-      <Link to={"/sign-up"}> Sign Up</Link>
+      { errorMessage && <p className="error-message">{errorMessage}</p> }
+    
+      <div className="signup-link">
+        <p>Don't have an account yet?</p>
+        <Link to={"/sign-up"}> Sign Up</Link>
+      </div>
     </div>
   )
 }
