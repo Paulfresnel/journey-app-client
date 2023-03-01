@@ -15,6 +15,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import JourneysList from "./components/JourneysList/JourneysList";
 import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
 import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
+import IsAnon from "./components/isAnon";
+import IsPrivate from "./components/isPrivate";
 
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import Header from "./components/Header/Header";
@@ -25,6 +27,7 @@ import PublicIndividualJourney from "./pages/PublicIndividualJourney/PublicIndiv
 import PublicIndividualBlock from "./pages/PublicIndividualBlock/PublicIndividualBlocks";
 import PublicIndividualStep from "./pages/PublicIndividualStep/PublicIndividualStep";
 import PublicUserPage from "./pages/PublicUserPage/PublicUserPage";
+
 
 
 
@@ -43,28 +46,20 @@ function App() {
       <Routes>
       <Route path={"/"} element={<HomePage/>}/>
       <Route path={"*"} element={<ErrorPage/>}/>
-        <Route path={"/blocks/:blockId/edit"} element={<BlocksStepsPage/>} />
-        <Route path={"/profile/journeys/:journeyId/:blockId/:stepId"} element={<EditStep/>}/>
-
-        <Route path={"/sign-up"} element={<SignupPage/>}/>
-        <Route path={"/log-in"} element={<LoginPage/>}/>
-
-        <Route exact path={"/profile/journeys/:journeyId"} element={<UserJourneyPage/>}/>
-        
+        <Route path={"/blocks/:blockId/edit"} element={<IsPrivate><BlocksStepsPage/></IsPrivate>} />
+        <Route path={"/profile/journeys/:journeyId/:blockId/:stepId"} element={<IsPrivate><EditStep/></IsPrivate>}/>
+        <Route path={"/sign-up"} element={<IsAnon><SignupPage/></IsAnon>}/>
+        <Route path={"/log-in"} element={<IsAnon><LoginPage/></IsAnon>}/>
+        <Route exact path={"/profile/journeys/:journeyId"} element={<IsPrivate><UserJourneyPage/></IsPrivate>}/>
         <Route path={"/journeys"} element={<PublicJourneysPage/>}/>
         <Route path={"/journeys/:journeyId"} element={<PublicIndividualJourney/>}/>
         <Route path={"/journeys/:journeyId/:blockId"} element={<PublicIndividualBlock/>}/>
         <Route path={"/journeys/:journeyId/:blockId/:stepId"} element={<PublicIndividualStep/>}/>
         <Route path={"/profile/:userId"} element={<PublicUserPage/>}/>
-
-
-
-        <Route path={"/profile"} element={<ProfilePage/>}/>
-        <Route exact path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
-        <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
-        <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<BlocksStepsPage/>}/>
-
-
+        <Route path={"/profile"} element={<IsPrivate><ProfilePage/></IsPrivate> }/>
+        <Route exact path={"/profile/:userId/journeys"} element={<IsPrivate><JourneysList/></IsPrivate>}/>
+        <Route path={"/profile/journeys/:journeyId/edit"} element={<IsPrivate><JourneyBlocksPage/></IsPrivate> }/>
+        <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<IsPrivate><BlocksStepsPage/></IsPrivate> }/>
       </Routes>
     </div>
   );
