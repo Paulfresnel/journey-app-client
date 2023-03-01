@@ -32,7 +32,7 @@ function HomePage(){
                 })
                 console.log(journeysNotEmpty)
 
-                let randomNumber = Math.round(Math.random()* journeysNotEmpty.length)
+                let randomNumber = Math.floor(Math.random()* journeysNotEmpty.length)
                 console.log(randomNumber)
                 setFeaturedJourney(journeysNotEmpty[randomNumber])
                 setIsLoading(false)
@@ -54,7 +54,7 @@ function HomePage(){
         {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">  
   <div className="carousel-inner">
      
-    <div className="carousel-item active bordered">
+    {featuredJourney && <div className="carousel-item active bordered">
         <img loading='lazy' src={featuredJourney.image} className=" w-100 h-100" alt="..."/>
         <div className="carousel-caption">
              <h1 className="carousel-title">{featuredJourney.title}</h1>
@@ -64,7 +64,7 @@ function HomePage(){
             <button className="btn btn-primary carousel-btn">Check Journey</button>
             </Link>
         </div>
-    </div>    
+    </div> }   
      
   </div>
 </div>}
