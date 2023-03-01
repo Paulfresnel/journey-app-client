@@ -25,6 +25,16 @@
     border-bottom: 1px solid #003566;
 }
 
+.margin-r{
+    margin-right: 15px;
+}
+
+.flex-centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .progress-t{
     width: 5rem;
 }

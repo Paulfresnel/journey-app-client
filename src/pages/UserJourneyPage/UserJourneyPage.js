@@ -28,6 +28,7 @@ function UserJourneyPage() {
     const [ addStep, setAddStep ] = useState(false);
     const [ activeBlock, setActiveBlock ] = useState('');
     const [ blockProgress, setBlockProgress ] = useState('');
+    const [isPublic, setIsPublic] = useState('')
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
     const isFirstRender = useRef(true);
@@ -44,6 +45,7 @@ function UserJourneyPage() {
                 setUserJourney(foundJourney.data);
                 setJourneyBlocks(foundJourney.data.blocks);
                 setJourneyTags(foundJourney.data.tags);
+                setIsPublic(foundJourney.data.isPublic)
                 setIsLoading(false)}
             });
            
@@ -113,6 +115,7 @@ function UserJourneyPage() {
             } else setFieldToEdit('');
         }
 
+    
 
     const handleImageUpload = () => {
         hiddenFileInput.current.click();
@@ -163,6 +166,16 @@ function UserJourneyPage() {
     //         .catch(error => setErrorMessage(error.response.data.message));
     //     setBlockToDisplay(""); 
     // }
+
+    const handleIsPublic = (e)=>{
+        let newState = e.target.checked
+        setIsPublic(newState)
+        console.log(newState)
+        axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {isPublic: newState})
+            .then(response=>{
+                console.log(response)
+            })
+    }
         
 
     return(
@@ -180,8 +193,15 @@ function UserJourneyPage() {
             <div className="user-journey-container">
                 <div>
                 <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
+                <div>
+                    <p>Your Journey is currently {isPublic ? "public" : "private"}</p>
+                    <div className="flex-centered">
+                    <p className="no-padding margin-r">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
+                    </div>
+                </div>
                     {fieldToEdit === 'user-journey-title' ? 
                         <div>
+                        
                             <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', size: `${userJourney.title.length}`, fontSize: '1.8em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
