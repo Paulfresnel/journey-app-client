@@ -1,0 +1,29 @@
+.login-form{
+  margin: 50px auto;
+  width: 80%;
+}
+
+form {
+    margin-top: 20px;
+}
+
+.error-message {
+    font-weight: bolder;
+    color: #F55050;
+}
+
+.signup-link {
+    padding-top: 10px;
+}
+
+h1{
+    color: #2B3A55;
+}
+
+@media only screen and (max-width: 768px) {
+    .login-form {
+        width: 100%;
+        padding: 30px;
+      };
+   
+}
