@@ -5,3 +5,26 @@
 .bold{
     font-weight: bold;
 }
+
+.author-name{
+    color: #003566;
+}
+
+.main-title{
+    text-align: left;
+    color: #003566;
+}
+
+.quest-font{
+        font-family: 'Aubange Belgium', sans-serif;
+}
+
+.second-title{
+    margin: 15px 10px 15px 10px;
+    color: #003566;
+}
+
+.main-menu-description{
+    font-size: 1.1rem;
+    text-align: center;
+}
