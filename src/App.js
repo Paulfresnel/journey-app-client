@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useNavigate} from "react-router-dom";
+import { Routes, Route, useNavigate} from "react-router-dom";
 import { useContext } from "react";
 
 import './App.css';
@@ -15,12 +15,16 @@ import HomePage from "./pages/HomePage/HomePage";
 import JourneysList from "./components/JourneysList/JourneysList";
 import JourneyBlocksPage from "./pages/JourneyBlocksPage/JourneyBlocksPage";
 import UserJourneyPage from "./pages/UserJourneyPage/UserJourneyPage";
-import PublicJourneysPage from "./pages/PublicJourneysPage/PublicJourneysPage";
+
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import Header from "./components/Header/Header";
+
+import PublicJourneysPage from "./pages/PublicJourneysPage/PublicJourneysPage";
+
 import PublicIndividualJourney from "./pages/PublicIndividualJourney/PublicIndividualJourney";
 import PublicIndividualBlock from "./pages/PublicIndividualBlock/PublicIndividualBlocks";
 import PublicIndividualStep from "./pages/PublicIndividualStep/PublicIndividualStep";
+import PublicUserPage from "./pages/PublicUserPage/PublicUserPage";
 
 
 
@@ -51,10 +55,12 @@ function App() {
         <Route path={"/journeys/:journeyId"} element={<PublicIndividualJourney/>}/>
         <Route path={"/journeys/:journeyId/:blockId"} element={<PublicIndividualBlock/>}/>
         <Route path={"/journeys/:journeyId/:blockId/:stepId"} element={<PublicIndividualStep/>}/>
+        <Route path={"/profile/:userId"} element={<PublicUserPage/>}/>
+
 
 
         <Route path={"/profile"} element={<ProfilePage/>}/>
-        <Route path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
+        <Route exact path={"/profile/:userId/journeys"} element={<JourneysList/>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<JourneyBlocksPage/>}/>
         <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<BlocksStepsPage/>}/>
 

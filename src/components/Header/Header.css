@@ -14,7 +14,8 @@
     color: #003566;
     font-weight: bold;
     font-family: 'Aubange Belgium', sans-serif;
-    text-shadow: 4px 4px #ffd60A 
+    text-shadow: 4px 4px #ffd60A ;
+    font-size: 1.1rem;
                                                 
  }
 
@@ -35,7 +36,7 @@
  }
 
  .emphasized{
-    font-size: 2.5rem;
+    font-size: 2rem;
  }
 
  .nav-link{
