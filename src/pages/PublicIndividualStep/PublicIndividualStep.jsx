@@ -36,7 +36,7 @@ function PublicIndividualStep(){
                 },1000)
             })
     },[stepId])
-
+    console.log(step)
     return(
         <div>
             {isLoading && <img alt="spinner loader" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
@@ -61,18 +61,18 @@ function PublicIndividualStep(){
             </div>
             <div>
             <h3>Step Resources:</h3>
-            <table className="centered">
+            <table className="centered table">
             <thead>
                 <tr>
-                    <td className="space-td">#</td>
-                    <td>Link Name</td>
+                    <td className="space-td table-row-odd">#</td>
+                    <td className="table-row-odd">Link Name</td>
                 </tr>
             </thead>
             <tbody>
                 {step.links.map((link,index)=>{
                     return <tr>
-                        <td>{index}</td>
-                        <td><Link to={link.link}> {link.name}</Link></td>
+                        <td className={index%2===0 ? " font-color table-row-par":"table-row-odd"}>{index}</td>
+                        <td className={index%2===0 ? "table-row-par":" font-colortable-row-odd"}><Link className={index%2===0 ? " font-color bold font-color":"bold"} to={link.link}> {link.name}</Link></td>
                     </tr>
                 })}
                 </tbody>

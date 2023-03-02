@@ -95,7 +95,7 @@ function PublicUserPage(){
             </div>
             <div className="div-block"/>
             <br/>
-            <h1>{journeys ? 'Public Journeys Created' : 'This user has currently no public Journeys'}</h1>
+            <h1>{journeys.length !==0 ? 'Public Journeys Created' : 'This user has currently no public Journeys'}</h1>
             {isLoading && <img alt="spinner loading" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
             
             {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
@@ -141,7 +141,7 @@ function PublicUserPage(){
      </div> 
      
   </div>
-  <button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
+  {journeys.length !== 0 && <div><button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
     <span className="visually-hidden">Previous</span>
   </button>
@@ -149,6 +149,7 @@ function PublicUserPage(){
     <span className="carousel-control-next-icon" aria-hidden="true"></span>
     <span className="visually-hidden black">Next</span>
   </button>
+  </div>}
 </div>
     }
     </div>
