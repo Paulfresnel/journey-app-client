@@ -89,7 +89,7 @@ function ProfilePage() {
                             <li>Last updated on <span className="bold">{creationDate}</span></li>
                     </ul>
                 </div>}
-            <h2>Welcome back,<span className="bold username">{username}</span></h2>
+            <h2>Welcome back,<span className="bold username"> {username}</span></h2>
             <br/>
             <div className="flex-row-adjusted">
                 <img className="small-pic img-fluid" src={userImg}/>
