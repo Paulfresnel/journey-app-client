@@ -310,7 +310,8 @@ function PublicJourneysPage(){
                     {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart fa-beat"}> {journey.upvoteUsers && journey.upvoteUsers.includes(user._id)? "Upvoted" : "Not Upvoted"} </i></button>}
                     </div>
                     <p className="card-text">{journey.description}</p>
-                    <p>Created by: {user._id !== journey.author._id ? <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase() + journey.author.username.slice(1)}</Link> : <Link className='author-name' to={`/profile/`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> }</p>
+                    {!user && <p>Created by: <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase() + journey.author.username.slice(1)}</Link> </p>}
+                    {user && <p>Created by: {user._id !== journey.author._id ? <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase() + journey.author.username.slice(1)}</Link> : <Link className='author-name' to={`/profile/`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> }</p>}
                     <p>Learning Blocks: {journey.blocks.length}</p>
                     <p>Total Steps: {journey.stepsLength}</p>
                   {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized journey-category smaller category-name ">{journey.category}</h6></div>}
@@ -335,7 +336,8 @@ function PublicJourneysPage(){
                     <li className="list-group-item">
                     <p className='bold underline'>{block.title}</p>
                     <p className='italic'>Number of Steps : {block.steps.length}</p>
-                    {block.steps.length!==0 && <button className='btn btn-outline-warning'>{user._id === journey.author._id ? <Link to={`/profile/journeys/${journey._id}`}> Edit Block</Link> : <Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link> }</button>}
+                    {!user && <div>{block.steps.length!==0 && <button className='btn btn-outline-warning'> <Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link> </button>}</div>}
+                    {user && <div>{block.steps.length!==0 && <button className='btn btn-outline-warning'>{user._id === journey.author._id ? <Link to={`/profile/journeys/${journey._id}`}> Edit Block</Link> : <Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link> }</button>}</div>}
                     </li>
                 )
              })}
@@ -343,6 +345,13 @@ function PublicJourneysPage(){
              
              <div className="card-body">
              <br/>
+             {!user && <div>
+               <Link to={`/journeys/${journey._id}`}>
+               <button href="#" className="btn btn-warning card-link">Check Journey</button>
+               </Link>
+               </div>}
+
+             {user && <div>
              {user._id === journey.author._id ? 
              <Link to={`/profile/journeys/${journey._id}`}>
                <button href="#" className="btn btn-warning card-link">Edit My Journey</button>
@@ -352,6 +361,7 @@ function PublicJourneysPage(){
                <button href="#" className="btn btn-warning card-link">Check Journey</button>
                </Link>
                }
+               </div>}
              </div>
             </div>
             </div>)

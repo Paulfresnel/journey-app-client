@@ -78,7 +78,8 @@ function UsersLeadBoard(){
                             return (
                                 <tr key={userInfo._id} className="table-row">
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{index+1}</td>
-                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"} >{user._id === userInfo._id ? <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link> : <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile/${userInfo._id}`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link>}</td>
+                            {!user && <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"} ><Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile/${userInfo._id}`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link></td>}
+                            {user && <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"} >{user._id === userInfo._id ? <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link> : <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile/${userInfo._id}`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link>}</td>}
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{userInfo.totalUpvotes}</td>
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{userInfo.journeysToDisplay.length}</td>
 
