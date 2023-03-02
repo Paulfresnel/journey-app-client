@@ -55,7 +55,7 @@ function HomePage(){
   <div className="carousel-inner">
      
     {featuredJourney && <div className="carousel-item active bordered">
-        <img loading='lazy' src={featuredJourney.image} className=" w-100 h-100" alt="..."/>
+        <img loading='lazy' src={featuredJourney.image} style={{objectFit: 'cover'}} className=" w-100 h-100" alt="..."/>
         <div className="carousel-caption">
              <h1 className="carousel-title">{featuredJourney.title}</h1>
              <p className='author-name'>By: <Link to={`/profile/${featuredJourney.author._id}`}> {featuredJourney.author.username}</Link></p>
