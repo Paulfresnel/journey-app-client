@@ -43,7 +43,7 @@ function Header(){
 
       <li className="nav-item nav-link">
       <Link to={"/leaderboard"}>
-       <p className="nav-link">Leaderboard</p> 
+       <p className="nav-link">Global Leaderboard</p> 
         </Link>
       </li> 
 
