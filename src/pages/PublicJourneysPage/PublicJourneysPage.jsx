@@ -53,33 +53,59 @@ function PublicJourneysPage(){
       };  
 
       const handleFilterByName = (e)=>{
-        let authorFilterName = e.target.value
+        let authorFilterName = e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1)
+        let categoryFilter  = document.getElementById('selector-category').value
+        console.log(categoryFilter)
         console.log(authorFilterName)
         
           // Declare variables
-          let authorName, txtValue, card,i;
+          let authorName, authorTxtValue, card,i, categoryTxtValue
           card = document.getElementsByClassName('card');
           // Loop through all list items, and hide those who don't match the search query
           for (i = 0; i < card.length; i++) {
             authorName = card[i].getElementsByClassName("author-name")[0]
-            txtValue = authorName.innerHTML
-
-            if (txtValue.indexOf(authorFilterName) >-1){
+            if(card[i].getElementsByClassName("category-name")[0]){
+            categoryTxtValue = card[i].getElementsByClassName("category-name")[0]
+          }
+            authorTxtValue = authorName.innerHTML
+            console.log(categoryTxtValue)
+            if(categoryTxtValue){
+              if (authorTxtValue.indexOf(authorFilterName) >-1 && categoryTxtValue.indexOf(categoryFilter) > -1){
               
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else if(authorFilterName==="All" && categoryTxtValue.indexOf(categoryFilter) > -1){
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else{
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
+              }
             }
-            else if(authorFilterName==="all"){
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
+            else {
+              if (authorTxtValue.indexOf(authorFilterName) >-1){
+              
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else if(authorFilterName==="All"){
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else{
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
+              }
             }
-            else{
-              card[i].parentElement.style.position="absolute"
-              card[i].parentElement.style.visibility = 'hidden'
-              card[i].parentElement.style.left = '-999em'
-            }
+            
           }
         
 
@@ -194,7 +220,6 @@ function PublicJourneysPage(){
           await  axios.get(`${API_ROUTE}/api/journeys`)
             .then(async (journeysArray)=>{
               let users = await axios.get(`${API_ROUTE}/api/users`)
-              console.log("here", users)
               setUsersArrayDisplay(users.data.users)
                 let journeysArrayReceived = journeysArray.data.publicJourneys
                 let pushedCategories = []
@@ -236,9 +261,9 @@ function PublicJourneysPage(){
          
     }, [])
 
-    console.log('allPublicJourneys:', allPublicJourneys);
+    /* console.log('allPublicJourneys:', allPublicJourneys);
     console.log("all users:", usersArrayDisplay)
-    console.log("all categories:", categories)
+    console.log("all categories:", categories) */
     let showBlocks;
     return(
         <div className='centered-journeys'>
@@ -251,12 +276,12 @@ function PublicJourneysPage(){
               <label>Author <select className='select-filter-author' onChange={(e)=>handleFilterByName(e)}>
               <option value="all">Show All</option>
                 {usersArrayDisplay && usersArrayDisplay.map(user=>{
-                  return <option value={user.username}>{user.username}</option>
+                  return <option value={user.username.charAt(0).toUpperCase()+user.username.slice(1)}>{user.username.charAt(0).toUpperCase()+user.username.slice(1)}</option>
                 })}
               </select> </label>
               </div>
               <div>
-              <label>Category <select className='select-filter-category' onChange={(e)=>handleFilterByCategory(e)}>
+              <label>Category <select id='selector-category' className='select-filter-category' onChange={(e)=>handleFilterByCategory(e)}>
               <option value="all">Show All</option>
                 {categories && categories.map(category=>{
                   return <option value={category}>{category}</option>
@@ -288,12 +313,15 @@ function PublicJourneysPage(){
                     <p>Created by: {user._id !== journey.author._id ? <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase() + journey.author.username.slice(1)}</Link> : <Link className='author-name' to={`/profile/`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> }</p>
                     <p>Learning Blocks: {journey.blocks.length}</p>
                     <p>Total Steps: {journey.stepsLength}</p>
-                  {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized journey-category smaller">{journey.category}</h6></div>}
+                  {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized journey-category smaller category-name ">{journey.category}</h6></div>}
                     {journey.tags.length !==0 && <div>
-                      <p>Tags:</p>
+                      {journey.tags && <p>Tags:</p>}
                       <div className='tags-flex'>
-                      {journey.tags.map(tag=>{
+                      {journey.tags.length!==0 && journey.tags.map(tag=>{
+                        if (tag){
+                          if (tag.length>2){
                         return <p className='btn btn-outline-primary tagged'>{tag}</p>
+                      }} return
                       })}
                       </div>
                     </div>}
@@ -307,7 +335,7 @@ function PublicJourneysPage(){
                     <li className="list-group-item">
                     <p className='bold underline'>{block.title}</p>
                     <p className='italic'>Number of Steps : {block.steps.length}</p>
-                    {block.steps.length!==0 && <button className='btn btn-outline-warning'><Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link></button>}
+                    {block.steps.length!==0 && <button className='btn btn-outline-warning'>{user._id === journey.author._id ? <Link to={`/profile/journeys/${journey._id}`}> Edit Block</Link> : <Link to={`/journeys/${journey._id}/${block._id}`}> Check Block</Link> }</button>}
                     </li>
                 )
              })}
@@ -315,9 +343,15 @@ function PublicJourneysPage(){
              
              <div className="card-body">
              <br/>
-             <Link to={`/journeys/${journey._id}`}>
-               <button href="#" className="btn btn-warning card-link">Journey link</button>
+             {user._id === journey.author._id ? 
+             <Link to={`/profile/journeys/${journey._id}`}>
+               <button href="#" className="btn btn-warning card-link">Edit My Journey</button>
                </Link>
+               : 
+               <Link to={`/journeys/${journey._id}`}>
+               <button href="#" className="btn btn-warning card-link">Check Journey</button>
+               </Link>
+               }
              </div>
             </div>
             </div>)
