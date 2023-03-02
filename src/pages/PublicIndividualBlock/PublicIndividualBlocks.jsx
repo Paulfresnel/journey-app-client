@@ -57,22 +57,23 @@ useEffect(()=>{
             </div>
             <h6 className="importance border-imp">{block.importance}</h6>
             <p className="description bordered">{block.description}</p>
-            <div>
-                <table className="centered">
+            <br/>
+            <div className="margin-top">
+                <table className="centered table margin-top">
                     <thead>
                         <tr>
-                            <td>Step title</td>
-                            <td># of links</td>
-                            <td>Step link</td>
+                            <td className="table-row-odd">Step title</td>
+                            <td className="table-row-odd"># of links</td>
+                            <td className="table-row-odd">Step link</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {block.steps.map((step)=>{
+                        {block.steps.map((step,index)=>{
                             return (
                             <tr>
-                                <td>{step.title}</td>
-                                <td>{step.links.length}</td>
-                                <td><Link to={`/journeys/${journeyId}/${blockId}/${step._id}`}> Check Step</Link></td>
+                                <td className={index%2===0 ? " font-color table-row-par":"table-row-odd"} >{step.title}</td>
+                                <td className={index%2===0 ? " font-color table-row-par":"table-row-odd"}>{step.links.length}</td>
+                                <td className={index%2===0 ? " font-color table-row-par":"table-row-odd"}><Link className={index%2===0 ? " bold font-color underlined":"underlined bold"} to={`/journeys/${journeyId}/${blockId}/${step._id}`}> Check Step</Link></td>
                             </tr>
                         )})}
                     </tbody>
