@@ -39,6 +39,12 @@ function Header(){
         <Link to={"/journeys"}>
           <p className="nav-link">Check Public Journeys</p> 
         </Link>
+      </li>
+
+      <li className="nav-item nav-link">
+      <Link to={"/leaderboard"}>
+       <p className="nav-link">Leaderboard</p> 
+        </Link>
       </li> 
 
       {!isLoggedIn && <li className="nav-item ">

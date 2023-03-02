@@ -27,6 +27,7 @@ import PublicIndividualJourney from "./pages/PublicIndividualJourney/PublicIndiv
 import PublicIndividualBlock from "./pages/PublicIndividualBlock/PublicIndividualBlocks";
 import PublicIndividualStep from "./pages/PublicIndividualStep/PublicIndividualStep";
 import PublicUserPage from "./pages/PublicUserPage/PublicUserPage";
+import UserLeaderboard from "./pages/UsersLeaderboard/UsersLeaderboard";
 
 
 
@@ -56,7 +57,10 @@ function App() {
         <Route path={"/journeys/:journeyId/:blockId"} element={<PublicIndividualBlock/>}/>
         <Route path={"/journeys/:journeyId/:blockId/:stepId"} element={<PublicIndividualStep/>}/>
         <Route path={"/profile/:userId"} element={<PublicUserPage/>}/>
+        <Route path={"/leaderboard"} element={<UserLeaderboard/> }/>
+
         <Route path={"/profile"} element={<IsPrivate><ProfilePage/></IsPrivate> }/>
+
         <Route exact path={"/profile/:userId/journeys"} element={<IsPrivate><JourneysList/></IsPrivate>}/>
         <Route path={"/profile/journeys/:journeyId/edit"} element={<IsPrivate><JourneyBlocksPage/></IsPrivate> }/>
         <Route path={"/profile/journeys/:journeyId/edit/block/:blockId"} element={<IsPrivate><BlocksStepsPage/></IsPrivate> }/>

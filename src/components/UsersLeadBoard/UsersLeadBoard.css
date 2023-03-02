@@ -1,0 +1,23 @@
+.table-row-par {
+    background-color: #003566a9 !important
+}
+
+.table-row-odd{
+    background-color: #dab785 !important;
+}
+
+.font-color{
+    color: white !important
+}
+
+.table-row-heading{
+    background-color: #dab785 !important
+}
+
+.table > td{
+    text-align: center;
+}
+
+td{
+    vertical-align: middle;
+}
