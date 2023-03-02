@@ -22,9 +22,7 @@ function CreateStep(props){
     console.log(block)
     const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
 
-    const [notesFields, setNotesFields] = useState([
-        ""
-    ])
+    const [notesFields, setNotesFields] = useState([""])
     const [linkMessage, setLinkMessage] = useState('')
     const [noteMessage, setNoteMessage] = useState('')
     const [formMessage, setFormMessage] = useState('')
@@ -34,7 +32,7 @@ function CreateStep(props){
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
         setFormMessage('')
-        if (event.target.parentNode.className === "parent"){
+        if(event.target.parentNode.id === 'parent-resource-name' || event.target.parentNode.id === 'parent-resource-link'){
            let data = [...linkFields]
         data[index][event.target.name] = event.target.value
         setStep({...step, links: data})
@@ -187,24 +185,24 @@ function CreateStep(props){
                         <h3>Add Link Resources</h3>
                         {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                         {linkFields.map((input, index) => {
-                            return (
-                            <>
-                                <div key={index} className='form-floating mb-3 parent'> 
+                            return ( 
+                            <>  
+                                {console.log(input)}
+                                <div id='parent-resource-name' key={index} className='form-floating mb-3'> 
                                     <input required
                                         className='form-control'
                                         name='name'
                                         placeholder='name your link resource'
-                                      
+                                        defaultValue={input.name}
                                         onChange={(event) => handleFieldsChange(index, event)}
                                     />
                                     <label>Resource Name: </label>
                                 </div>
-                                <div className='form-floating mb-3 parent'>
+                                <div id='parent-resource-link' className='form-floating mb-3'>
                                     <input required
                                         className='form-control'
                                         name='link'
                                         placeholder='link https:// ressource here'
-                                        
                                         onChange={(event) => handleFieldsChange(index, event)}
                                     />
                                     <label>http://</label>

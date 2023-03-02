@@ -309,7 +309,7 @@ function EditStep(){
                         : 
                         <div>
                             {step.links && step.links.map(link => {
-                                return(<Link to={`${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
+                                return(<Link to={`http://${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
                                 })
                             }
                             <br/>
