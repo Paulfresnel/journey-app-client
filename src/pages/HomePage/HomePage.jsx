@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './HomePage.css'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/auth.context';
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
 function HomePage(){
-
+    const {user} = useContext(AuthContext)
     const [featuredJourney,setFeaturedJourney] = useState({})
     const [isLoading, setIsLoading] = useState(true)
 
@@ -58,7 +59,7 @@ function HomePage(){
         <img loading='lazy' src={featuredJourney.image} style={{objectFit: 'cover'}} className=" w-100 h-100" alt="..."/>
         <div className="carousel-caption">
              <h1 className="carousel-title">{featuredJourney.title}</h1>
-             <p className='author-name'>By: <Link to={`/profile/${featuredJourney.author._id}`}> {featuredJourney.author.username}</Link></p>
+             <p className='author-name'>By: {user._id ===featuredJourney.author._id ? <Link to={`/profile`}> {featuredJourney.author.username.charAt(0).toUpperCase()+featuredJourney.author.username.slice(1)}</Link> : <Link to={`/profile/${featuredJourney.author._id}`}> {featuredJourney.author.username.charAt(0).toUpperCase()+featuredJourney.author.username.slice(1)}</Link>}</p>
             <p className="upvote">Total Upvotes received: {featuredJourney.upvoteUsers.length}</p>
             <Link to={`/journeys/${featuredJourney._id}`}>
             <button className="btn btn-primary carousel-btn">Check Journey</button>

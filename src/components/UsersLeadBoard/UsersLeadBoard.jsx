@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom";
 import './UsersLeadBoard.css'
+import { AuthContext } from "../../context/auth.context";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -10,6 +11,7 @@ function UsersLeadBoard(){
 
     const [sortedUsersArray, setSortedUsersArray] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const {user} = useContext(AuthContext)
 
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/users`)
@@ -71,12 +73,12 @@ function UsersLeadBoard(){
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedUsersArray && sortedUsersArray.map((user,index)=>{
-                        return <tr key={user._id} className="table-row">
+                    {sortedUsersArray && sortedUsersArray.map((userInfo,index)=>{
+                        return <tr key={userInfo._id} className="table-row">
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{index+1}</td>
-                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"} ><Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile/${user._id}`}>{user.username.charAt(0).toUpperCase()+user.username.slice(1)}</Link></td>
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{user.totalUpvotes}</td>
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{user.journeysToDisplay.length}</td>
+                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"} >{user._id === userInfo._id ? <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link> : <Link className={index%2===0 ? "font-color bold" : "bold colored"} to={`/profile/${userInfo._id}`}>{userInfo.username.charAt(0).toUpperCase()+userInfo.username.slice(1)}</Link>}</td>
+                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{userInfo.totalUpvotes}</td>
+                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{userInfo.journeysToDisplay.length}</td>
 
                         </tr>
                     })}

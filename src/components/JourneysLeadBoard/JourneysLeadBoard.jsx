@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/auth.context";
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -9,6 +10,7 @@ function JourneysLeadBoard(){
 
     const [rankedJourneys, setRankedJourneys] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const {user} = useContext(AuthContext)
 
 
 
@@ -58,9 +60,9 @@ function JourneysLeadBoard(){
                     {rankedJourneys && rankedJourneys.map((journey,index)=>{
                         return <tr key={journey._id} className="table-row">
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd "}>{index+1}</td>
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}><Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/journeys/${journey._id}`}> {journey.title}</Link></td>
+                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/profile/journeys/${journey._id}`}> {journey.title}</Link> : <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/journeys/${journey._id}`}> {journey.title}</Link>}</td>
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{journey.upvoteUsers.length}</td>
-                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"}><Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link></td>
+                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> : <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link>}</td>
                         </tr>
                     })}
                 </tbody>
