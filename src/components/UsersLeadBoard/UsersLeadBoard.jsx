@@ -56,7 +56,13 @@ function UsersLeadBoard(){
                     })
                     return user
                 })
-               setSortedUsersArray(removeEmptyJourneys)
+                let journeysToDisplay = newArray.filter(user=>{
+                    if(user.journeysToDisplay.length>0){
+                        return user
+                    }
+                })
+                console.log(journeysToDisplay)
+               setSortedUsersArray(journeysToDisplay)
                setIsLoading(false)
             })
     },[])
@@ -74,7 +80,7 @@ function UsersLeadBoard(){
                 </thead>
                 <tbody>
                     {sortedUsersArray && sortedUsersArray.map((userInfo,index)=>{
-                        if (userInfo.journeysToDisplay.length>0){
+                        
                             return (
                                 <tr key={userInfo._id} className="table-row">
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{index+1}</td>
@@ -84,7 +90,7 @@ function UsersLeadBoard(){
                             <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{userInfo.journeysToDisplay.length}</td>
 
                         </tr>)
-                        }
+                        
                     })}
                 </tbody>
             </table>}
