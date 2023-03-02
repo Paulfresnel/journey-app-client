@@ -5,7 +5,7 @@
  }
 
  .navbar{
-    background-color:#dab785 ;
+    background-color:#D8E1E9;
     padding: 10px 15px 10px 15px
  }
 
@@ -46,6 +46,12 @@
     
  }
 
+ .nav-link:hover{
+   text-decoration: none;
+   color: #B3C5D7;
+   font-weight: bold;
+   
+}
 
  a{
     text-decoration: none;
@@ -58,8 +64,6 @@
     background-color: #ffc300;
     border: #003566 2px solid;
  }
-
-
 
 
  .navbar-collapse li{
