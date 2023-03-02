@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
-
+import './JourneysLeadBoard.css'
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
 
@@ -47,10 +47,10 @@ function JourneysLeadBoard(){
 
     return(
         <div>
-            {!isLoading && <table className="table table-stripped">
+            {!isLoading && <table className="">
                 <thead className="thead-dark">
-                    <tr>
-                        <td className="table-row-heading">Rank</td>
+                    <tr className="table2">
+                        <td className="table-row-heading table-journeys">Rank</td>
                         <td className="table-row-heading">Title</td>
                         <td className="table-row-heading">Upvoted</td>
                         <td className="table-row-heading">Author</td>
@@ -58,11 +58,11 @@ function JourneysLeadBoard(){
                 </thead>
                 <tbody>
                     {rankedJourneys && rankedJourneys.map((journey,index)=>{
-                        return <tr key={journey._id} className="table-row">
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd "}>{index+1}</td>
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/profile/journeys/${journey._id}`}> {journey.title}</Link> : <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/journeys/${journey._id}`}> {journey.title}</Link>}</td>
-                            <td className={index%2===0 ? "table-row-par font-color" : "table-row-odd"}>{journey.upvoteUsers.length}</td>
-                            <td className={index%2===0 ? "table-row-par font-color underlined" : "table-row-odd underlined"}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> : <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link>}</td>
+                        return <tr key={journey._id} className="table-row table-journeys table2">
+                            <td className={index%2===0 ? "table-row-par font-color " : "table-row-odd  "}>{index+1}</td>
+                            <td className={index%2===0 ? "table-row-par font-color " : "table-row-odd "}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/profile/journeys/${journey._id}`}> {journey.title}</Link> : <Link className={index%2===0 ?"font-color underlined" : "colored underlined"} to={`/journeys/${journey._id}`}> {journey.title}</Link>}</td>
+                            <td className={index%2===0 ? "table-row-par font-color " : "table-row-odd "}>{journey.upvoteUsers.length}</td>
+                            <td className={index%2===0 ? "table-row-par font-color  underlined" : "table-row-odd underlined"}>{user._id === journey.author._id ? <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> : <Link className={index%2===0 ?"font-color underlined bold" : "underlined bold"} to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link>}</td>
                         </tr>
                     })}
                 </tbody>

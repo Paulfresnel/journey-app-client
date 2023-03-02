@@ -14,8 +14,13 @@
     background-color: #dab785 !important
 }
 
-.table>td {
+.table2 > td {
     text-align: center;
+    padding: 5px !important;
+}
+
+.table2{
+    margin: 2px 5px 2px 5px;
 }
 
 td {
