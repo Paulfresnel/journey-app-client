@@ -26,7 +26,7 @@ function EditStep(){
 
     const handleFieldsChange = (index, event)=>{
         event.preventDefault()
-        if (event.target.parentNode.parentNode.className === "parent flex-row"){
+        if (event.target.parentNode.id === 'parent-resource-name' || event.target.parentNode.id === 'parent-resource-link'){
            let data = [...linkFields]
         data[index][event.target.name] = event.target.value
         setStep({...step, links: data})
@@ -212,8 +212,16 @@ function EditStep(){
 
    
     return(
-        <div>
-            {isLoading ? <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>
+        <div className='main-container-step'>
+            {isLoading ? 
+                <>  
+                    <div style={{marginTop: '150px'}} className='text-center'>
+                        <div className="spinner-border spinner-border-lg">
+                            <span className="sr-only"></span>
+                        </div>
+                    </div>
+                    <p>Loading...</p>
+                </>
  : 
 
             <div>
@@ -234,7 +242,7 @@ function EditStep(){
                         }
 
                         <div className="flex-c">
-                            <img  src={step.image} style={{margin:"0 auto", width:'12rem'}} alt={step.description}  />
+                            <img  src={step.image} style={{margin:"0 auto", width:'40%', height: 'auto'}} alt={step.description}  />
                             <label for='update-step-image' style={{marginTop:'25px',marginBottom:"25px"}}>
                                 <button className="btn btn-outline-light update-img" onClick={handleImageUpload}>Update Image</button>
                                 <input id = 'update-step-image' type='file' name="image" ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}></input>
@@ -244,7 +252,7 @@ function EditStep(){
                         <label  className="title-step">Description: </label>
                         { fieldToEdit === 'journey-step-description' ? 
                            <input type='text-area' name= 'description' defaultValue={step.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(e)=>handleBlur(e)}></input>
-                         : <h2 id='journey-step-description' onClick={() => setFieldToEdit('journey-step-description')}>{step.description}</h2>
+                         : <h2 className='step-content' id='journey-step-description' onClick={() => setFieldToEdit('journey-step-description')}>{step.description}</h2>
                         }
                         <br/>
                         <label  className="title-step">Difficulty:</label>
@@ -257,7 +265,7 @@ function EditStep(){
                                 <option>Low</option>
                             </select>
                         </> 
-                        : <h2 id='journey-step-difficulty' onClick={() => setFieldToEdit('journey-step-difficulty')}>{step.difficulty}</h2> 
+                        : <h2 className='step-content' id='journey-step-difficulty' onClick={() => setFieldToEdit('journey-step-difficulty')}>{step.difficulty}</h2> 
                         }
                         <br/>
                         <label  className="title-step">Importance:</label>
@@ -270,7 +278,7 @@ function EditStep(){
                                 <option>Optional - Bonus Knowledge</option>
                             </select>
                         </>
-                        : <h2 id='journey-step-importance' onClick={() => setFieldToEdit('journey-step-importance')}>{step.importance}</h2> 
+                        : <h2 className='step-content' id='journey-step-importance' onClick={() => setFieldToEdit('journey-step-importance')}>{step.importance}</h2> 
                         }
                         <br/>   
                     <div className="margined">
@@ -280,36 +288,38 @@ function EditStep(){
                             {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                             {linkFields.map((input, index) => {
                                 return (
-                                    <div key={index} className="parent flex-column">
-                                        <div className="flex-column">
-                                        <label>Change the Name:</label>
-                                        <input required
-                                            name='name'
-                                            placeholder='name your link resource'
-                                            value={input.name}
-                                            onChange={(event) => handleFieldsChange(index, event)}/>
+                                    <div key={index} className="flex-column edit-resources">
+                                        <div id='parent-resource-name' className="form-floating mb-3">
+                                            <input required
+                                                className='form-control'
+                                                name='name'
+                                                placeholder='name your link resource'
+                                                defaultValue={input.name}
+                                                onChange={(event) => handleFieldsChange(index, event)}/>
+                                            <label>Resource Name: </label>
                                         </div>
-                                        <div className="flex-column">
-                                            <label>Change the Link:</label>
+                                        <div id='parent-resource-link' className='form-floating mb-3'>
                                                 <input required 
+                                                    className='form-control'
                                                     name='link'
                                                     placeholder='https:// resource here'
-                                                    value={input.link}
+                                                    defaultValue={input.link}
                                                     onChange={(event) => handleFieldsChange(index, event)}
                                                 />
+                                            <label>http:// </label>
                                         </div>
                                     <button className="btn btn-outline-danger margined-delete" name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
                                 </div>
                                 
                                 )
                             })}
-                            <button name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
-                            <button onClick={(event) => submitResources(event)}>Update Resources</button>
+                            <button name="addLink" className="btn btn-outline-light update-img" style={{marginRight: '7px'}} onClick={(e)=>addFields(e)}>Add another Link</button>
+                            <button className="btn btn-outline-light update-img" onClick={(event) => submitResources(event)}>Update Resources</button>
                         </>
                         : 
                         <div>
                             {step.links && step.links.map(link => {
-                                return(<Link to={`${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
+                                return(<Link to={`http://${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
                                 })
                             }
                             <br/>
@@ -318,36 +328,37 @@ function EditStep(){
                         }
                     </div>
                     <br/>
-            <h5 className="title-step">Notes:</h5>
+            <h5 className='title-step'>Notes:</h5>
             { fieldToEdit === 'journey-step-notes' ?
-               <>
+               <div className='edit-resources'>
                 {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
                 {notesFields.map((input, index) => {
                     return (
-                        <div key={index} className="flex-r">
-                        <textarea className="large" required
-                            rows="2" cols="35"
+                        <div key={index} className='form-floating mb-3'>
+                        <textarea className='form-control' required
+                            rows="2" 
                             name='notes'
                             placeholder='write your note..'
                             value={input}
                             onChange={(event) => handleFieldsChange(index, event)}
                         />
-                        <button className="btn btn-outline-danger" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
+                        <label>Note</label>
+                        <button className="btn btn-outline-danger" name="removeNote" style={{marginTop: '10px'}} onClick={(event) => removeFields(index,event)}>Remove Note</button>
                         </div>
                         )
                     })}
-                    <button name="addNote" onClick={(e)=>addFields(e)}>Add another Note</button>
-                    <button name="addNote" onClick={()=>submitNotes()}>Update Notes</button>
-                </>
+                    <button className="btn btn-outline-light update-img" name="addNote" style={{marginRight:'7px'}} onClick={(e)=>addFields(e)}>Add another Note</button>
+                    <button className="btn btn-outline-light update-img" name="addNote" onClick={()=>submitNotes()}>Update Notes</button>
+                </div>
               :
-                <>
+                <div div className='edit-resources'>
                     {
                         step.notes && step.notes.map(note => {
-                            return <p>{note}</p>
+                            return <p className='step-content'>{note}</p>
                         })
                     }
                     <button className="btn btn-outline-info colored" onClick={() => setFieldToEdit('journey-step-notes')}>Edit Notes</button>
-                </>
+                </div>
             }
             
             <br/>
@@ -356,13 +367,14 @@ function EditStep(){
                 <>  <br/>
                     <p className="completed">Step Completed!</p>
                     <br/>
-                   <p>Not really...<span><button className="btn btn-warning margin-l" onClick={() => setIsCompleted(false)}>Uncheck</button></span></p> 
+                   <p className='step-content'><b>Not really...</b><span><button className="btn btn-warning margin-l" onClick={() => setIsCompleted(false)}>Uncheck</button></span></p> 
                 </>
                 
               : <>
               <br/>
-                    <label>Is Completed?</label>
-                    <input type='checkbox' onChange={(event) => setIsCompleted(event.target.checked)}/>
+                    <label className='title-step is-completed'>Mark As Completed
+                        <input type='checkbox' style={{marginLeft: '15px'}} onChange={(event) => setIsCompleted(event.target.checked)}/>
+                    </label>
                 </>
             }
             

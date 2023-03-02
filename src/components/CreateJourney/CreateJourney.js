@@ -4,6 +4,7 @@ import axios from "axios";
 import EditTags from "../EditTags/EditTags";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
+import ReactDOM  from "react-dom"
 import './CreateJourney.css'
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
@@ -53,7 +54,7 @@ function CreateJourney(props){
         }
     }
 
-    return(
+    return ReactDOM.createPortal(
         <> 
             <div className='overlay-style'/> 
             <div className='modal-style'>
@@ -96,7 +97,8 @@ function CreateJourney(props){
                     <button className='btn btn-link' onClick={()=>setAddJourney(false)}>Close</button>
                 </form>
             </div>
-        </>
+        </>,
+        document.getElementById('portal')
     )
 }
 
