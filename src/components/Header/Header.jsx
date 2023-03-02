@@ -18,7 +18,7 @@ function Header(){
             <button className="navbar-toggler border-black" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse " id="navbarNav">
+            <div className="collapse navbar-collapse " id="navbarNav" style={{marginTop: '10px'}}>
               <ul className="navbar-nav">
                 <i class="bi bi-mortarboard"></i>
                 <li className="nav-item active nav-link">
