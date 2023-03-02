@@ -193,22 +193,17 @@ function UserJourneyPage() {
             <div className="user-journey-container">
                 <div>
                 <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
-                <div>
-                    <p>Your Journey is currently {isPublic ? "public" : "private"}</p>
-                    <div className="flex-centered">
-                    <p className="no-padding margin-r">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
-                    </div>
-                </div>
+                    
                     {fieldToEdit === 'user-journey-title' ? 
                         <div>
                         
                             <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', size: `${userJourney.title.length}`, fontSize: '1.8em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
-                    : <h1 id='user-journey-title' onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
+                    : <h1 id='user-journey-title' style={{marginTop: '20px'}} onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
                     
                     <div>
-                        <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '300px', height: 'auto'}}/>
+                        <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '50%', height: 'auto'}}/>
                         <br/>
                         <label for='update-journey-image'>
                         <br/>
@@ -218,9 +213,20 @@ function UserJourneyPage() {
                         
                     </div>
                     <br/>
+                    <div className='d-flex justify-content-center'>
+                        <div className='card .text-{color}' style={{width: '100%', padding: '10px 10px'}}> 
+                            <div className='card-body d-flex flex-column align-items-center' style={{padding: '10px 10px'}}>
+                                <p className='is-public-p' style={{marginBottom: '-10px', paddingTop:'10px'}}>Your Journey is currently <b>{isPublic ? "public" : "private"}</b></p>
+                                <div className="flex-centered">
+                                    <p className="no-padding margin-r is-public-p">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {fieldToEdit === 'user-journey-description' ? 
                         <div>
-                            <textarea defaultValue={userJourney.description} name="description" className="form-control" style={{height:'75px', width: '400px', marginBottom: '15px'}} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditValue(event)}}/>    
+                            <textarea defaultValue={userJourney.description} name="description" className="form-control" style={{height:'75px', width: '100%', marginBottom: '15px'}} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditValue(event)}}/>    
                         </div> 
                     : <p className="description-journey" id='user-journey-description' onClick={() => setFieldToEdit('user-journey-description')}>{userJourney.description}<span><i className="bi bi-pencil-fill pencil" ></i></span></p>}
                    
@@ -243,63 +249,72 @@ function UserJourneyPage() {
                                         return  (
                                             <div >
                                                 <button type="button" class="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
-                                                    {tag} <span class="badge badge-light"/>
+                                                    {tag} <span className="badge badge-light"/>
                                                 </button>
                                             </div>
                                         )}
                                 })}
                             </div>
-                            <br/>
                     </div>}
                     {userJourney.isPublic && <p className='user-journey-upvotes'>Upvotes: {userJourney.upvoteUsers.length}</p>}
                     <div className="block-display" >
                         {userJourney.blocks && userJourney.blocks.map(block => {
                                 if(blockToDisplay === block._id){
                                  return (
-                                    <div key={block._id} style={{display:'flex', flexDirection: 'column'}}>
+                                    <div key={block._id} style={{display:'flex', flexDirection: 'column', marginBottom: '20px'}}>
                                         {fieldToEdit === "journey-block-title" ?
                                          <input name="title" defaultValue={block.title} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/> 
-                                         : <button className="btn btn-outline-warning block-btn" onClick={() => setActiveBlock(block)}><h2 id="journey-block-title" className="colored">{block.title}</h2><span><i onClick={() => setFieldToEdit("journey-block-title")} className="bi bi-pencil-fill pencil" ></i></span></button>}
-                                        <div className="flex-progress">
+                                         : <button className="btn btn-outline-warning block-btn"  onClick={() => setActiveBlock(block)}><h2 id="journey-block-title" className="colored">{block.title}</h2><span><i onClick={() => setFieldToEdit("journey-block-title")} className="bi bi-pencil-fill pencil" ></i></span></button>}
+                                        
+                                        <div className="flex-progress" style={{marginTop: '15px'}}>
                                             <p className="progress-t">Progress:</p>
                                             <p className="progress-bar"><UserProgress now={blockProgress}/></p>
                                         </div>
+                                        <hr style={{marginTop: '-10px'}}/>
                                         <label className="title-block">Description:</label>
                                         {fieldToEdit === "journey-block-description" ? 
                                          <input type="text" name="description" defaultValue={block.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(event) => {handleEditBlock(event)}}/>
-                                         : <p id="journey-block-description" onClick={() => setFieldToEdit('journey-block-description')}>{block.description} </p>}
+                                         : <p className="block-content" id="journey-block-description" onClick={() => setFieldToEdit('journey-block-description')}>{block.description} <span> <i className="bi bi-pencil-fill pencil" ></i></span> </p>}
                                         <label className="title-block">Category:</label>
 
                                         {fieldToEdit === "journey-block-category" ?
-                                            <select name="category" required onChange={(event) => handleEditBlock(event)}>
-                                                <option disabled selected>-- Choose a category --</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Programming">Programming</option>
-                                                <option value="Blockchain">Blockchain</option>
-                                                <option value="Culture">Culture</option>
-                                                <option value="Languages">Languages</option>
-                                            </select>
-                                        : <p id="journey-block-category" onClick={() => setFieldToEdit('journey-block-category')}>{block.category}</p>}
+                                            <div className='form-floating mb-3'>
+                                                <select className="form-control" name="category" placeholder="category" required onChange={(event) => handleEditBlock(event)}>
+                                                    <option disabled selected>-- Choose a category --</option>
+                                                    <option value="Finance">Finance</option>
+                                                    <option value="Programming">Programming</option>
+                                                    <option value="Blockchain">Blockchain</option>
+                                                    <option value="Culture">Culture</option>
+                                                    <option value="Languages">Languages</option>
+                                                </select>
+                                                <label>Category:</label>
+                                            </div>
+                                        : <p className="block-content" id="journey-block-category" onClick={() => setFieldToEdit('journey-block-category')}>{block.category} <span> <i className="bi bi-pencil-fill pencil" ></i></span></p>}
+
+                                        <label className="title-block">Priority Level:</label>
 
                                         {fieldToEdit === "journey-block-importance" ? 
-                                            <select name='importance' onChange={(event) => handleEditBlock(event)}>
-                                                <option value={'default'} disabled>Select Priority</option>
-                                                <option value='Critical'>Critical</option>
-                                                <option value='Recommended'>Recommended</option>
-                                                <option value='Optional'>Critical</option>
-                                            </select>
-                                         : <p id="journey-block-importance" onClick={() => setFieldToEdit('journey-block-importance')}>{block.importance}</p>}
-                                         <p className="bold label-journey">Block Steps:</p>
+                                            <div className='form-floating mb-3'>
+                                                <select className="form-control" name='importance' placeholder="importnace" onChange={(event) => handleEditBlock(event)}>
+                                                    <option value={'default'} disabled>Select Priority</option>
+                                                    <option value='Critical'>Critical</option>
+                                                    <option value='Recommended'>Recommended</option>
+                                                    <option value='Optional'>Critical</option>
+                                                </select>
+                                                <label>Priority:</label>
+                                            </div>
+                                         : <p className="block-content" id="journey-block-importance" onClick={() => setFieldToEdit('journey-block-importance')}>{block.importance}<span> <i className="bi bi-pencil-fill pencil" ></i></span> </p>}
+                                         <p className="title-block block-steps-label">Block Steps:</p>
                                         {block.steps && block.steps.map(step => {
                                             return (
                                                 <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}>
+                                                
                                                     <button type="button" class="btn btn-primary" style={{margin:'5px', width: '70%'}}>
-                                                    {step.title}<span class="badge badge-light">{step.isCompleted ? checkMark : "" }</span>
+                                                        {step.title}<span class="badge badge-light">{step.isCompleted ? checkMark : ""}</span>
                                                     </button>
-                                                {/* <button className="btn btn-outline-primary">{step.title}</button> */}
                                                 </Link>)
                                         })}
-                                        <div className="div-block-short"/>
+                                        <hr/>
                                         {addStep && <CreateStep journeyId = {userJourney._id} blockId = {block._id} setAddStep={setAddStep} setUpdatedJourney={setUpdatedJourney}/>}
                                         <br/>
                                         {!addStep && <button className="btn btn-outline-success alligned" onClick={() => setAddStep(true)}>Add a Step to Block</button>}
@@ -313,7 +328,10 @@ function UserJourneyPage() {
                                     )}
                                 )}
                     </div>
+                    <hr/>
                 </div>
+               
+                
                 <div className="margin-t">  
                     {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} userJourney={userJourney} setUserJourney={setUserJourney} setShowForm={setShowForm}/>
                             : <button className="btn btn-dark margined" type="button" onClick={() => setShowForm(true)}>Create a New Block</button>}

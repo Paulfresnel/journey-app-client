@@ -22,7 +22,7 @@
     margin: 5px 15px 5px 15px;
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid #003566;
+    
 }
 
 .margin-r{
@@ -37,6 +37,7 @@
 
 .progress-t{
     width: 5rem;
+    color: #003566;
 }
 
 .progress-bar{
@@ -91,9 +92,10 @@
 }
 
 .description-journey{
+    padding-top: 10px;
     color: #003566;
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 
@@ -106,9 +108,9 @@
     width: 8rem;
     font-weight: bold;
     color: #003566;
-    border: #ffb10a 1px solid;
+    border: #1b57db 1px solid;
     outline: 1px #003566 solid;
-    box-shadow: 5px 5px 1px #dab785;
+    box-shadow: 5px 5px 1px #C2EBFF;
 
 }
 
@@ -125,7 +127,7 @@
 }
 
 .tag-map:hover{
-    background-color: #dab785;
+    background-color: #C2EBFF;
     color: #003566;
     border: 1px #003566 solid
 }
@@ -178,6 +180,10 @@ i{
     margin-bottom: 0;
 }
 
+.block-btn{
+    margin-top: 20px;
+}
+
 .block-btn:focus{
   background-color: #ffc107;
 }
@@ -185,4 +191,17 @@ i{
 .user-journey-upvotes{
     font-size: larger;
     color:#2B3A55 ;
+}
+
+.block-content{
+    font-size: 1.5em;
+    color: #2B3A55;
+}
+
+.is-public-p {
+    color: #003566;
+}
+
+.block-steps-label{
+    font-size: 2em;
 }
