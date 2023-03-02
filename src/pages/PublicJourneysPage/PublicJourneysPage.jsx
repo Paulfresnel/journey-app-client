@@ -285,11 +285,18 @@ function PublicJourneysPage(){
                     {user && <button  onClick={(e)=>likeJourney(e)} value={journey.upvoteUsers && journey.upvoteUsers.includes(user._id)}  type="button" className="btn btn-primary btn-sm"><i data-journeyid={journey._id}  className={journey.upvoteUsers && journey.upvoteUsers.includes(user._id) ? "bi bi-balloon-heart-fill": "bi bi-balloon-heart fa-beat"}> {journey.upvoteUsers && journey.upvoteUsers.includes(user._id)? "Upvoted" : "Not Upvoted"} </i></button>}
                     </div>
                     <p className="card-text">{journey.description}</p>
-                    <p>Created by: <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username}</Link></p>
+                    <p>Created by: {user._id !== journey.author._id ? <Link className='author-name' to={`/profile/${journey.author._id}`}> {journey.author.username.charAt(0).toUpperCase() + journey.author.username.slice(1)}</Link> : <Link className='author-name' to={`/profile/`}> {journey.author.username.charAt(0).toUpperCase()+journey.author.username.slice(1)}</Link> }</p>
                     <p>Learning Blocks: {journey.blocks.length}</p>
                     <p>Total Steps: {journey.stepsLength}</p>
-                  {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized journey-category">{journey.category}</h6></div>}
-                    {journey.tags.length !==0 && <p>Tags: {journey.tags}</p>}
+                  {journey.category && <div><p className='no-m'>Category:</p><h6 className="btn-outline-dark category sized journey-category smaller">{journey.category}</h6></div>}
+                    {journey.tags.length !==0 && <div>
+                      <p>Tags:</p>
+                      <div className='tags-flex'>
+                      {journey.tags.map(tag=>{
+                        return <p className='btn btn-outline-primary tagged'>{tag}</p>
+                      })}
+                      </div>
+                    </div>}
                     
                 </div>
                 
