@@ -182,7 +182,7 @@ function UserJourneyPage() {
         <div className="main-container">
             {isLoading && 
                 <>  
-                    <div className='text-center'>
+                    <div style={{marginTop: '150px'}} className='text-center'>
                         <div className="spinner-border spinner-border-lg">
                             <span className="sr-only"></span>
                         </div>
