@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../../context/auth.context";
 import CreateJourney from "../../components/CreateJourney/CreateJourney";
 import axios from "axios";
@@ -16,10 +16,12 @@ function ProfilePage() {
     const [addJourney, setAddJourney] = useState(false);
     const [journeysCopied, setJourneysCopied] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [totalUpvotes, setTotalUpvotes] = useState(0)
-    const [creationDate, setCreationDate] = useState('')
-    const [username, setUsername] =useState('')
-    const [userImg, setUserImg] =useState('')
+    const [totalUpvotes, setTotalUpvotes] = useState(0);
+    const [creationDate, setCreationDate] = useState('');
+    const [username, setUsername] =useState('');
+    const [userImg, setUserImg] =useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
+    const hiddenFileInput  = useRef(null);
 
 
 
@@ -63,6 +65,27 @@ function ProfilePage() {
             
     }, [user])
 
+
+    const handleImageUpload = () => {
+        hiddenFileInput.current.click();
+    }
+
+    const handleImageChange = async (event) => {
+        let newImageUrl = '';
+        const uploadData = new FormData();
+        uploadData.append("imageUrl", event.target.files[0]);
+        const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
+            .then(response => {
+                newImageUrl = response.data.imageUrl
+                console.log(newImageUrl)
+            })
+            .catch(error => setErrorMessage(error.response.data.message));
+
+        axios.put(`${API_ROUTE}/api/users/${user._id}`, {profilePicture: newImageUrl})
+            .then((response) => setUserImg(response.data.profilePicture))
+            .catch(error => setErrorMessage(error.response.data.message));
+    }
+
     
 
     return(
@@ -93,6 +116,10 @@ function ProfilePage() {
             <br/>
             <div className="flex-row-adjusted">
                 <img className="small-pic img-fluid" src={userImg}/>
+                <br/>
+                <button className='btn btn-link' onClick={handleImageUpload}>Update Profile Picture</button>
+                {errorMessage && <p className = 'error-message'>{errorMessage}</p>}
+                <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
                 <div className="flex-row-public">
                     <div className="flex-column-public green">
                         <h3 className="btn btn-outline-success upvotes-received">Upvotes</h3>
