@@ -39,7 +39,7 @@ function CreateJourney(props){
         event.preventDefault();
         if(title && description){
         const userJourney = {title, description, image, tags: tagArray, isPublic, category};
-        console.log(userJourney)
+
         axios.post(`${API_ROUTE}/api/${user._id}/journeys`, userJourney)
             .then(response => {
                 console.log(response.data)   

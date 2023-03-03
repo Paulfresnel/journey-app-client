@@ -374,8 +374,15 @@ function PublicJourneysPage(){
     return(
         <div className='centered-journeys'>
         
-    
-    {isLoading && <img alt="loading spinner" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+      {isLoading && 
+        <div className="d-flex justify-content-center">  
+          <div style={{marginTop: '150px'}} className='text-center'>
+            <div className="spinner-border spinner-border-lg">
+                <span className="sr-only"></span>
+            </div>
+          </div>
+        </div>}
+
         {!isLoading && <div>
           <h1>Filter by:</h1>
           <div>
