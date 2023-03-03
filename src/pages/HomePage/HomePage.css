@@ -28,7 +28,7 @@
 
 .second-title{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 3.5em;
+    font-size: 3em;
     margin: 5px 10px 10px 10px;
     color: #003566;
 }
@@ -88,6 +88,7 @@
 }
 
 .carousel-title{
+    align-self: center;
     color: #ffcc00;
     text-shadow: 2px 2px #003566;
     font-size: 3em;
