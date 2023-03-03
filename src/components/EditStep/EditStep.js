@@ -314,7 +314,7 @@ function EditStep(){
                 <div div className='edit-resources'>
                     {
                         step.notes && step.notes.map(note => {
-                            return <p className='step-content'>{note}</p>
+                            return <p className='step-content note-content'>{note}</p>
                         })
                     }
                     <button className="btn btn-outline-info colored" onClick={() => setFieldToEdit('journey-step-notes')}>Edit Notes</button>
