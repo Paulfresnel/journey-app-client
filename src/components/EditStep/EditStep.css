@@ -121,6 +121,7 @@
 
 .step-content{
     color: #2B3A55;
+    padding: 0 5px;
 }
 
 @media only screen and (max-width: 768px) {

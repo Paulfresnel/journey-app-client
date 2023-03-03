@@ -250,12 +250,14 @@ function EditStep(){
                         </div>  
 
                         <label  className="title-step">Description: </label>
+                        <br/>
                         { fieldToEdit === 'journey-step-description' ? 
                            <input type='text-area' name= 'description' defaultValue={step.description} autoFocus onFocus={(event) => event.currentTarget.select()} onBlur={(e)=>handleBlur(e)}></input>
                          : <h2 className='step-content' id='journey-step-description' onClick={() => setFieldToEdit('journey-step-description')}>{step.description}</h2>
                         }
                         <br/>
                         <label  className="title-step">Difficulty:</label>
+                        <br/>
                         { fieldToEdit === 'journey-step-difficulty' ?
                         <>
                             <select name="difficulty" defaultValue={step.difficulty} autoFocus onFocus={(event) => event.currentTarget.select()} onChange={(e)=>handleBlur(e)} onBlur={(e)=>handleBlur(e)}>
@@ -269,6 +271,7 @@ function EditStep(){
                         }
                         <br/>
                         <label  className="title-step">Importance:</label>
+                        <br/>
                         { fieldToEdit === 'journey-step-importance' ?
                         <>
                             <select name="importance" defaultValue={step.importance} autoFocus onFocus={(event) => event.currentTarget.select()} onChange={(e)=>handleBlur(e)} onBlur={(e)=>handleBlur(e)}>
