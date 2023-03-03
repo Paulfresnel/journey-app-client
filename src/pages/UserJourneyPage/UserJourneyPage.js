@@ -19,11 +19,8 @@ function UserJourneyPage() {
     const [ showForm, setShowForm ] = useState(false);
     const [ updatedJourney, setUpdatedJourney ] = useState({});
     const [ blockToDisplay, setBlockToDisplay ] = useState('');
-    const [blockCompleted, setBlockCompleted] = useState(false); 
     const [ fieldToEdit, setFieldToEdit ] = useState('');
-    const [ tag, setTag] = useState('');
     const [ tagArray, setTagArray ] = useState([]);
-    const [ editTags, setEditTags ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
     const [ addStep, setAddStep ] = useState(false);
     const [ activeBlock, setActiveBlock ] = useState('');
@@ -31,8 +28,6 @@ function UserJourneyPage() {
     const [isPublic, setIsPublic] = useState('')
     const { journeyId } = useParams();
     const hiddenFileInput  = useRef(null);
-    const isFirstRender = useRef(true);
-    const allTags = [...tagArray];
     const checkMark = "\u2713";
    
     const navigate = useNavigate();
@@ -45,7 +40,7 @@ function UserJourneyPage() {
                 setUserJourney(foundJourney.data);
                 setJourneyBlocks(foundJourney.data.blocks);
                 setJourneyTags(foundJourney.data.tags);
-                setIsPublic(foundJourney.data.isPublic)
+                setIsPublic(foundJourney.data.isPublic);
                 setIsLoading(false)}
             });
            
@@ -54,10 +49,6 @@ function UserJourneyPage() {
 
 
    useEffect(() => {
-    // if(isFirstRender.current){
-    //     isFirstRender.current = false;
-    //     return;
-    // }
         if(activeBlock){
             let stepsCompleted = activeBlock.steps.filter(step => step.isCompleted);
             let completedPercentage = stepsCompleted.length ? stepsCompleted.length/activeBlock.steps.length * 100 : 0;
@@ -65,36 +56,18 @@ function UserJourneyPage() {
                 setBlockProgress(Math.round(completedPercentage))
             } else setBlockProgress(0)};
         
-        if(blockProgress === 100){
-            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-                    .then((response) => setUpdatedJourney(response.data))
-        } else {
-            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-                    .then((response) => setUpdatedJourney(response.data))
-        }  
-                    
-                // if(blockProgress === 100) {
-                //     axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-                //     .then((response) => setUpdatedJourney(response.data))}
-                // else{
-                //     axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-                //     .then((response) => setUpdatedJourney(response.data))}
-          
-        
+        if(activeBlock) {
+            if(blockProgress === 100){
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                        .then((response) => setUpdatedJourney(response.data))
+            } else {
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+                        .then((response) => setUpdatedJourney(response.data))
+        }} 
+
      }, [blockProgress, activeBlock]);   
      
      
-//    useEffect(()=> {
-//         if(blockCompleted){
-//             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-//                     .then((response) => setUpdatedJourney(response.data))
-//         } else {
-//             axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-//                     .then((response) => setUpdatedJourney(response.data))
-//         }
-//    }, [blockCompleted, updatedJourney, activeBlock, blockProgress])
-
-
 
     const handleEditValue = (event) => {
         const name = event.target.name;
@@ -157,23 +130,12 @@ function UserJourneyPage() {
             .then(() => navigate('/profile'));
     }
 
-    
-
-    // const handleBlockClick = (block) => {
-    //     console.log(block)
-    //     axios.get(`${API_ROUTE}/api/blocks/${block}`)
-    //         .then((response) => console.log(response.data))
-    //         .catch(error => setErrorMessage(error.response.data.message));
-    //     setBlockToDisplay(""); 
-    // }
 
     const handleIsPublic = (e)=>{
         let newState = e.target.checked
         setIsPublic(newState)
-        console.log(newState)
         axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {isPublic: newState})
             .then(response=>{
-                console.log(response)
             })
     }
         
@@ -205,7 +167,7 @@ function UserJourneyPage() {
                     <div>
                         <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '50%', height: 'auto'}}/>
                         <br/>
-                        <label for='update-journey-image'>
+                        <label htmlFor='update-journey-image'>
                         <br/>
                             <button className="btn btn-light img-upload-btn" onClick={handleImageUpload}>Update Image</button>
                             <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
@@ -214,11 +176,11 @@ function UserJourneyPage() {
                     </div>
                     <br/>
                     <div className='d-flex justify-content-center'>
-                        <div className='card .text-{color}' style={{width: '100%', padding: '10px 10px'}}> 
+                        <div className='card .text-{color}' style={{width: '90%'}}> 
                             <div className='card-body d-flex flex-column align-items-center' style={{padding: '10px 10px'}}>
                                 <p className='is-public-p' style={{marginBottom: '-10px', paddingTop:'10px'}}>Your Journey is currently <b>{isPublic ? "public" : "private"}</b></p>
                                 <div className="flex-centered">
-                                    <p className="no-padding margin-r is-public-p">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
+                                    <p className="no-padding margin-r is-public-p">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} style={{padding: '0', marginLeft: '0'}} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
                                 </div>
                             </div>
                         </div>
@@ -247,8 +209,8 @@ function UserJourneyPage() {
                                 {userJourney.tags && userJourney.tags.map(tag => {
                                     if(tag){
                                         return  (
-                                            <div >
-                                                <button type="button" class="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
+                                            <div key={tag}>
+                                                <button type="button" className="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
                                                     {tag} <span className="badge badge-light"/>
                                                 </button>
                                             </div>
@@ -309,8 +271,8 @@ function UserJourneyPage() {
                                             return (
                                                 <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}>
                                                 
-                                                    <button type="button" class="btn btn-primary" style={{margin:'5px', width: '70%'}}>
-                                                        {step.title}<span class="badge badge-light">{step.isCompleted ? checkMark : ""}</span>
+                                                    <button type="button" className="btn btn-primary" style={{margin:'5px', width: '70%'}}>
+                                                        {step.title}<span className="badge badge-light">{step.isCompleted ? checkMark : ""}</span>
                                                     </button>
                                                 </Link>)
                                         })}
@@ -330,7 +292,7 @@ function UserJourneyPage() {
                     </div>
                     <hr/>
                 </div>
-               
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
                 
                 <div className="margin-t">  
                     {showForm ? <CreateBlock journeyId={journeyId} setUpdatedJourney={setUpdatedJourney} userJourney={userJourney} setUserJourney={setUserJourney} setShowForm={setShowForm}/>
