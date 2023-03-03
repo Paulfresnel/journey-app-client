@@ -8,25 +8,19 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL
 
 function CreateStep(props){
 
-    const { blockId, journeyId, setAddStep, setUpdatedJourney } = props;
-   
-    const navigate = useNavigate()
+    const { blockId, journeyId, setAddStep } = props;
+    const navigate = useNavigate();
     
-    const [imageUrl,setImageUrl] = useState('')
-
-    const [linkFields, setLinkFields] = useState([
-        {name:"", link:""}
-    ])
-    
-    const [block, setBlock]= useState({title:"", description:"", category:"", importance:"",steps:[{}]})
-    console.log(block)
-    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]})
-
-    const [notesFields, setNotesFields] = useState([""])
-    const [linkMessage, setLinkMessage] = useState('')
-    const [noteMessage, setNoteMessage] = useState('')
-    const [formMessage, setFormMessage] = useState('')
-    const [isLoading,setIsLoading] = useState(true)
+    const [imageUrl,setImageUrl] = useState('');
+    const [linkFields, setLinkFields] = useState([{name:"", link:""}]);
+    const [block, setBlock]= useState({title:"", description:"", category:"", importance:"",steps:[{}]});
+    const [step, setStep] = useState({title:"", description: "", category:"", difficulty:"", importance:"", image:"", links:[{name:"", link:""}], notes:[""]});
+    const [notesFields, setNotesFields] = useState([""]);
+    const [linkMessage, setLinkMessage] = useState('');
+    const [noteMessage, setNoteMessage] = useState('');
+    const [formMessage, setFormMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
 
     const handleFieldsChange = (index, event)=>{
@@ -89,13 +83,10 @@ function CreateStep(props){
     const uploadImage = (file) => {
         return axios.post(`${API_ROUTE}/api/upload`, file)
           .then(res => {
-            console.log("file url from cloudinary")
-            console.log(res.data)
             setImageUrl(res.data.imageUrl)
             setStep({...step, image: res.data.imageUrl})
-            console.log(step)
         })
-          .catch(err=>console.log(err));
+          .catch(err=>setErrorMessage(err.res.data.message));
       }
 
     const handleFileUpload= (e)=>{
@@ -105,21 +96,22 @@ function CreateStep(props){
         uploadData.append("imageUrl", e.target.files[0]);
             uploadImage(uploadData)
                 .then(response=>{
-                    console.log(response)
                 })
-                .catch(err=>console.log(err))
+                .catch(err=>setErrorMessage(err.res.data.message))
     }
 
 
     const formHandleSubmit = (e)=>{
-        e.preventDefault()
+        e.preventDefault();
+        if(step.title && step.description && step.links && step.difficulty && step.importance){
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/${blockId}/steps`, step)
             .then((response) => {
-                      
                       navigate(`/profile/journeys/${journeyId}`)
                       setAddStep(false)
                     })
-
+        } else {
+            setErrorMessage('Please add a title, description and at least one resource link to this step.')
+        }
     }
 
     const handleChange = (e)=>{
@@ -133,11 +125,8 @@ function CreateStep(props){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/blocks/${blockId}`)
             .then(response=>{
-                console.log("response")
-                console.log(response)
                 const {block} = response.data
                 setBlock(block)
-                console.log(block)
                 setIsLoading(false)
             })
     },[])
@@ -178,7 +167,7 @@ function CreateStep(props){
                         </div>
                         <div className='form-floating mb-3'>
                             <input className='form-control' type="file" placeholder='image' onChange={(e) => handleFileUpload(e)} />
-                            <img width={75} src={step.image} style={{paddingTop:'10px'}}/>
+                                {step.image && <img width={75} src={step.image} style={{paddingTop:'10px', margin: '0 auto'}} alt='step'/>}
                             <label>Add a Photo:</label>
                         </div>
                         <div>
@@ -186,9 +175,8 @@ function CreateStep(props){
                         {linkMessage && <p style={{color:"red"}}>{linkMessage}</p>}
                         {linkFields.map((input, index) => {
                             return ( 
-                            <>  
-                                {console.log(input)}
-                                <div id='parent-resource-name' key={index} className='form-floating mb-3'> 
+                            <div key={index}>  
+                                <div id='parent-resource-name' className='form-floating mb-3'> 
                                     <input required
                                         className='form-control'
                                         name='name'
@@ -208,7 +196,7 @@ function CreateStep(props){
                                     <label>http://</label>
                                     <button className="btn btn-secondary btn-sm active" name="removeLink" style={{marginTop:'20px'}} onClick={(event) => removeFields(index,event)}>Remove Link</button>
                                 </div>
-                            </>
+                            </div>
                             )
                             })}
                         <button className="btn btn-primary btn-sm active" name="addLink" onClick={(e)=>addFields(e)}>Add another Link</button>
@@ -220,8 +208,8 @@ function CreateStep(props){
                             {noteMessage && <p style={{color:"red"}}>{noteMessage}</p>}
                             {notesFields.map((input, index) => {
                             return (
-                                <>
-                                    <div className='form-floating mb-3' key={index}>
+                                <div key={index}>
+                                    <div className='form-floating mb-3'>
                                         <textarea required
                                             className='form-control'
                                             name='note'
@@ -233,12 +221,13 @@ function CreateStep(props){
                                         <label>Note:</label>
                                     </div>
                                     <button className="btn btn-secondary btn-sm active" name="removeNote" onClick={(event) => removeFields(index,event)}>Remove Note</button>
-                                    
-                                </>
+                                </div>
                                 )
                             })}
                             <br/>
+                        
                         <button className="btn btn-primary btn-sm active" name="addNote" style={{marginTop: '20px'}} onClick={(e)=>addFields(e)}>Add another Note</button>
+                        {errorMessage && <p className='error-message' style={{marginTop: '20px', textAlign: 'center'}}>{errorMessage}</p>}
                         </div>
                         {formMessage.includes("fill") ? <p style={{color:"red"}}>{formMessage}</p> : <p style={{color:"green"}}>{formMessage}</p>}
                         <div style={{display: 'flex', justifyContent: 'center'}}>
