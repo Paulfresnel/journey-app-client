@@ -74,7 +74,7 @@ function CreateBlock(props) {
                             <option value={'default'} disabled>Select Priority</option>
                             <option value='Critical'>Critical</option>
                             <option value='Recommended'>Recommended</option>
-                            <option value='Optional'>Critical</option>
+                            <option value='Optional'>Optional</option>
                         </select>
                         <label>Importance Level:</label>
                     </div>
