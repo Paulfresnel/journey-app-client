@@ -309,7 +309,7 @@ function EditStep(){
                                                     defaultValue={input.link}
                                                     onChange={(event) => handleFieldsChange(index, event)}
                                                 />
-                                            <label>http:// </label>
+                                            <label>Has to include http:// </label>
                                         </div>
                                     <button className="btn btn-outline-danger margined-delete" name="removeLink" onClick={(event) => removeFields(index,event)}>Remove Link</button>
                                 </div>
@@ -322,7 +322,7 @@ function EditStep(){
                         : 
                         <div>
                             {step.links && step.links.map(link => {
-                                return(<Link to={`http://${link.link}`} target='blank'><h3>{link.name}</h3></Link>)
+                                return(<Link to={link.link} target='blank'><h3>{link.name}</h3></Link>)
                                 })
                             }
                             <br/>
