@@ -2,13 +2,11 @@ import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../../context/auth.context"
 import './Header.css'
-import { useNavigate } from "react-router-dom"
 
 
 function Header(){
-    const navigate = useNavigate()
     
-    const {user, isLoggedIn, logoutUser} = useContext(AuthContext)
+    const {isLoggedIn, logoutUser} = useContext(AuthContext)
 
     
     return (

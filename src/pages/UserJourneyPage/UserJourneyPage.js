@@ -135,8 +135,6 @@ function UserJourneyPage() {
         let newState = e.target.checked
         setIsPublic(newState)
         axios.put(`${API_ROUTE}/api/journeys/${userJourney._id}`, {isPublic: newState})
-            .then(response=>{
-            })
     }
         
 

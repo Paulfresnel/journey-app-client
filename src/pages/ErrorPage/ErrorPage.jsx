@@ -14,7 +14,7 @@ function ErrorPage(){
     
     <p><b>You have reached an unacesible page</b><i style={{fontSize:'2rem', color:"red"}} class="bi bi-cone-striped"></i></p>
     <p> Click <Link to={"/"}> Here </Link>to return to the HomePage</p>
-    <p> Or you can go to your <Link to={"/profile"}>profile page</Link></p>
+    {user && <p> Or you can go to your <Link to={"/profile"}>profile page</Link></p>}
     <p>You can also <Link to={-1}> go back </Link>to your previous  Page   </p>
         </div>
         

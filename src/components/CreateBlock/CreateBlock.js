@@ -1,16 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
 import './CreateBlock.css'
-import { /* Link, */ useNavigate } from "react-router-dom"
 import './CreateBlock.css'
 
 const API_ROUTE = process.env.REACT_APP_SERVER_URL
-/* const testArray = [];
- */
 function CreateBlock(props) {
 
-    const {journeyId, setJourney, journey, setUpdatedJourney, setUserJourney, userJourney, setShowForm} = props
-    const navigate = useNavigate()
+    const {journeyId, setUserJourney, setShowForm} = props
 
     const [block, setBlock] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -21,7 +17,6 @@ function CreateBlock(props) {
         setBlock({...block, [name] : value});
     }
 
-    // DEFINE setJourney or setUserJourney! ///////////
    
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -29,9 +24,7 @@ function CreateBlock(props) {
 
             .then((apiResponse) => {
                 let updatedJourney = apiResponse.data
-                console.log(apiResponse)
-                /* setUpdatedJourney({...journey, blocks: updatedBlock}) */
-                // setJourney({...journey, blocks: updatedBlock})
+                
                 setUserJourney(updatedJourney)
                 setShowForm(false);
 
@@ -46,16 +39,6 @@ function CreateBlock(props) {
             <div className="overlay-style"/>
             <div className="modal-style">
                 <h1>Create a Block</h1>
-                {/* <div>
-                {} {blocksInJourney && blocksInJourney.map(blocks => {
-                    return <div>
-                            <h1>{blocks.block.name}</h1>
-                            <h2>{blocks.block.description}</h2>
-                            <h2>{blocks.block.category}</h2>
-                            <h2>{blocks.block.importance}</h2>
-                        </div>
-                    })}
-                </div> */}
                 <form onSubmit={(event) => handleSubmit(event)}>
                     <div className='form-floating mb-3'>
                         <input className='form-control' type='text' name='title' placeholder='title' onChange={(event) => handleChange(event)}/>

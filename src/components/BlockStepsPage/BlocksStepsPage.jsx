@@ -23,8 +23,6 @@ function BlocksStepsPage(){
              await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/blocks/${blockId}`)
                 .then(blockResponse=>{
                     const updatedBlock = blockResponse.data.block
-                console.log("api response:")
-                console.log(updatedBlock) 
                 setValidationMessage(response.data.message)
                 setBlock(updatedBlock)
                
@@ -46,9 +44,6 @@ function BlocksStepsPage(){
                 setIsLoading(false)
             })
     },[blockId])
-
-    console.log("consoel loggin block")
-    console.log(block)
 
     return(
         <div>

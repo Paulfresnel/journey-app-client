@@ -12,7 +12,7 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState(undefined);
   
   const navigate = useNavigate();
-  const { user, storeToken, authenticateUser } = useContext(AuthContext);
+  const { storeToken, authenticateUser } = useContext(AuthContext);
  
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);

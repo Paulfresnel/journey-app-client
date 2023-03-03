@@ -70,7 +70,6 @@ function EditStep(){
 
     const removeFields = (index, event)=>{
         event.preventDefault()
-     console.log(index)
         if (event.target.name === "removeNote" ){
             
         let data = [...notesFields]
@@ -85,9 +84,7 @@ function EditStep(){
     }
         
         else if (event.target.name === "removeLink"){
-            console.log(event)
             let data = [...linkFields]
-            console.log(data.length)
             if (data.length<=1){
                 setLinkMessage("You can not erase all the links, please add another one before deleting this one")
              }
@@ -114,20 +111,6 @@ function EditStep(){
             setFieldToEdit('')
             } else setFieldToEdit('');
         }
-
-
-    // const handleFormSubmit =(e)=>{
-    //     e.preventDefault()
-    //     console.log("info sent:")
-    //     console.log(step)
-    //     axios.put(`${process.env.REACT_APP_SERVER_URL}/api/steps/${stepId}`, {step})
-    //         .then(response=>{
-    //             const data = response.data.step
-    //             console.log(data)
-    //             setStep(data)
-    //             navigate(-1)
-    //         })
-    // }
     
     const handleImageUpload = () => {
         hiddenFileInput.current.click();
@@ -146,32 +129,6 @@ function EditStep(){
             .catch(error => setErrorMessage(error.response.data.message));
 
     }
-
-    
-
-    // const uploadImage = (file) => {
-    //     return axios.post("http://localhost:5005/api/upload", file)
-    //       .then(res => {
-    //         console.log("file url from cloudinary")
-    //         console.log(res.data)
-    //         setImageUrl(res.data.imageUrl)
-    //         setStep({...step, image: res.data.imageUrl})
-    //     })
-    //       .catch(err=>console.log(err));
-    //   }
-
-    // const handleFileUpload= (e)=>{
-    //     const uploadData = new FormData();
- 
-
-    // uploadData.append("imageUrl", e.target.files[0]);
-    // uploadImage(uploadData)
-    //     .then(response=>{
-    //         console.log("file url is returning...:")
-    //         console.log(response)
-    //     })
-    //     .catch(err=>console.log(err))
-    // }
 
     const deleteStep = () => {
         console.log('delete step is working')
@@ -386,9 +343,6 @@ function EditStep(){
             <div className="margin-t">
             <button className="btn btn-outline-danger margin-b" type='button' onClick={deleteStep}>Delete Step</button>
             </div>
-
-
-        {/* </form> */}
 
                     </div>
                 }

@@ -61,7 +61,6 @@ function UsersLeadBoard(){
                         return user
                     }
                 })
-                console.log(journeysToDisplay)
                setSortedUsersArray(journeysToDisplay)
                setIsLoading(false)
             })

@@ -19,7 +19,6 @@ function PublicIndividualStep(){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/steps/${stepId}`)
             .then(response=>{
-                console.log(response)
                 let stepReceived = response.data
                 let dateUpdated = stepReceived.updatedAt
                 let dateObject = new Date(dateUpdated)
@@ -36,7 +35,7 @@ function PublicIndividualStep(){
                 },1000)
             })
     },[stepId])
-    console.log(step)
+    
     return(
         <div>
             {isLoading && <img alt="spinner loader" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}

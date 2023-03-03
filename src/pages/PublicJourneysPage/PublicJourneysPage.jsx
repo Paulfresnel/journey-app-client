@@ -79,8 +79,6 @@ function PublicJourneysPage(){
             if (journeyCategory){
               journeyCategoryTxtValue = journeyCategory.innerHTML
             }
-
-          
             authorTxtValue = authorName.innerHTML
             journeyTxtValue = journeyTitle.innerHTML
             
@@ -287,33 +285,6 @@ function PublicJourneysPage(){
               card[i].parentElement.style.visibility = 'hidden'
               card[i].parentElement.style.left = '-999em'
             }
-            /* if (txtValue.indexOf(categoryFilterName) >-1){
-              
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
-            }
-            else if(categoryFilterName==="all"){
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
-            }
-            else{
-              card[i].parentElement.style.position="absolute"
-              card[i].parentElement.style.visibility = 'hidden'
-              card[i].parentElement.style.left = '-999em'
-            }
-          }
-          else if(!categoryName && categoryFilterName==="all"){
-            card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
-          }
-          else if(!categoryName) {
-            card[i].parentElement.style.position="absolute"
-            card[i].parentElement.style.visibility = 'hidden'
-            card[i].parentElement.style.left = '-999em'
-          } */
         
       }
       }

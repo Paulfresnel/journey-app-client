@@ -12,7 +12,7 @@ const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 function CreateJourney(props){
 
     const { user, setUser } = useContext(AuthContext);
-    const { setAddJourney, journeys, setJourneys } = props;
+    const { setAddJourney, setJourneys } = props;
     const [journeyTags, setJourneyTags] = useState([]);
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
