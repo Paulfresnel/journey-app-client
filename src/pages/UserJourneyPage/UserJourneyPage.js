@@ -143,14 +143,14 @@ function UserJourneyPage() {
     return(
         <div className="main-container">
             {isLoading && 
-                <>  
-                    <div style={{marginTop: '150px'}} className='text-center'>
+                <div style={{marginTop: '150px'}}>  
+                    <div  className='text-center'>
                         <div className="spinner-border spinner-border-lg">
                             <span className="sr-only"></span>
                         </div>
                     </div>
-                    <p>Loading...</p>
-                </>}   
+
+                </div>}   
             {userJourney && !isLoading &&
             <div className="user-journey-container">
                 <div>

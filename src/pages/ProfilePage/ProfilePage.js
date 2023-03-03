@@ -77,7 +77,6 @@ function ProfilePage() {
         const updatedUrl = await axios.post(`${API_ROUTE}/api/upload`, uploadData)
             .then(response => {
                 newImageUrl = response.data.imageUrl
-                console.log(newImageUrl)
             })
             .catch(error => setErrorMessage(error.response.data.message));
 
@@ -94,13 +93,12 @@ function ProfilePage() {
             
             {isLoading && 
             <>
-                <div className='text-center'>
+                <div className='text-center' style={{marginTop: '150px'}}>
                     <div className="spinner-border spinner-border-lg">
                         <span className="sr-only"></span>
                     </div>
                 </div>
-                <p>Loading...</p>
-                </>
+            </>
             }
         {!isLoading &&
         <> 
