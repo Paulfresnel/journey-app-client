@@ -53,59 +53,86 @@ function PublicJourneysPage(){
       };  
 
       const handleFilterByName = (e)=>{
-        let authorFilterName = e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1)
-        let categoryFilter  = document.getElementById('selector-category').value
-        console.log(categoryFilter)
+
+        let authorFilterName = e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1) //All - Paul - Humberto
+        let journeyTitleFilter  = document.getElementsByClassName('select-filter-title')[0].value
+        console.log("journey title filter:", journeyTitleFilter)
         console.log(authorFilterName)
         
           // Declare variables
-          let authorName, authorTxtValue, card,i, categoryTxtValue
+          let authorName, authorTxtValue, card,i, journeyTitle, journeyTxtValue
           card = document.getElementsByClassName('card');
           // Loop through all list items, and hide those who don't match the search query
           for (i = 0; i < card.length; i++) {
             authorName = card[i].getElementsByClassName("author-name")[0]
-            if(card[i].getElementsByClassName("category-name")[0]){
-            categoryTxtValue = card[i].getElementsByClassName("category-name")[0]
-          }
+            journeyTitle = card[i].getElementsByClassName("card-title")[0]
+          
             authorTxtValue = authorName.innerHTML
-            console.log(categoryTxtValue)
-            if(categoryTxtValue){
-              if (authorTxtValue.indexOf(authorFilterName) >-1 && categoryTxtValue.indexOf(categoryFilter) > -1){
-              
-                card[i].parentElement.style.position = 'static'
-                card[i].parentElement.style.display = "block"
-                card[i].parentElement.style.visibility = 'visible'
-              }
-              else if(authorFilterName==="All" && categoryTxtValue.indexOf(categoryFilter) > -1){
-                card[i].parentElement.style.position = 'static'
-                card[i].parentElement.style.display = "block"
-                card[i].parentElement.style.visibility = 'visible'
-              }
-              else{
-                card[i].parentElement.style.position="absolute"
-                card[i].parentElement.style.visibility = 'hidden'
-                card[i].parentElement.style.left = '-999em'
-              }
-            }
-            else {
-              if (authorTxtValue.indexOf(authorFilterName) >-1){
-              
-                card[i].parentElement.style.position = 'static'
-                card[i].parentElement.style.display = "block"
-                card[i].parentElement.style.visibility = 'visible'
-              }
-              else if(authorFilterName==="All"){
-                card[i].parentElement.style.position = 'static'
-                card[i].parentElement.style.display = "block"
-                card[i].parentElement.style.visibility = 'visible'
-              }
-              else{
-                card[i].parentElement.style.position="absolute"
-                card[i].parentElement.style.visibility = 'hidden'
-                card[i].parentElement.style.left = '-999em'
-              }
-            }
+            journeyTxtValue = journeyTitle.innerHTML
             
+              if (authorTxtValue.indexOf(authorFilterName) >-1 && journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1){
+              
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else if(authorFilterName==="All" && journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1){
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else{
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
+              }
+            
+
+            
+          }
+        
+
+      }
+
+      const handleFilterByTitle = (e)=>{
+      let journeyTitleName = e.target.value
+      let authorFilter = document.getElementsByClassName('select-filter-author')[0].value
+        console.log(authorFilter)
+        
+          // Declare variables
+          let journeyTitle, txtValue, card,i, journeyAuthor, authorTxtValue
+          card = document.getElementsByClassName('card');
+          // Loop through all list items, and hide those who don't match the search query
+          for (i = 0; i < card.length; i++) {
+            journeyTitle = card[i].getElementsByClassName("card-title")[0]
+            journeyAuthor = card[i].getElementsByClassName('author-name')[0]
+
+            txtValue = journeyTitle.innerHTML.toLowerCase()
+            authorTxtValue = journeyAuthor.innerHTML
+            console.log("author txt value", authorTxtValue)
+            console.log(txtValue)
+
+            if (txtValue.indexOf(journeyTitleName) >-1 && authorTxtValue.indexOf(authorFilter)>-1){
+              
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else if (txtValue.indexOf(journeyTitleName) >-1 && authorFilter==='all'){
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else if (txtValue==='' && authorFilter === 'all'){
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else{
+              card[i].parentElement.style.position="absolute"
+              card[i].parentElement.style.visibility = 'hidden'
+              card[i].parentElement.style.left = '-999em'
+            }
           }
         
 
@@ -157,33 +184,7 @@ function PublicJourneysPage(){
       }
       }
 
-    const handleFilterByTitle = (e)=>{
-      let journeyTitleName = e.target.value.toLowerCase()
-        console.log(journeyTitleName)
-        
-          // Declare variables
-          let journeyTitle, txtValue, card,i;
-          card = document.getElementsByClassName('card');
-          // Loop through all list items, and hide those who don't match the search query
-          for (i = 0; i < card.length; i++) {
-            journeyTitle = card[i].getElementsByClassName("card-title")[0]
-            txtValue = journeyTitle.innerHTML.toLowerCase()
-
-            if (txtValue.indexOf(journeyTitleName) >-1){
-              
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
-            }
-            else{
-              card[i].parentElement.style.position="absolute"
-              card[i].parentElement.style.visibility = 'hidden'
-              card[i].parentElement.style.left = '-999em'
-            }
-          }
-        
-
-      }
+    
 
       const handleFilterByEmptyness =(e)=>{
         let journeyEmpty, txtValue, card,i;
