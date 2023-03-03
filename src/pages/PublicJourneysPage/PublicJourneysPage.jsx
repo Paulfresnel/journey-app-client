@@ -52,81 +52,105 @@ function PublicJourneysPage(){
         );
       };  
 
+
       const handleFilterByName = (e)=>{
 
         let authorFilterName = e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1) //All - Paul - Humberto
-        let journeyTitleFilter  = document.getElementsByClassName('select-filter-title')[0].value
-        console.log("journey title filter:", journeyTitleFilter)
-        console.log(authorFilterName)
+        let journeyTitleFilter  = document.getElementsByClassName('select-filter-title')[0].value.toLowerCase()
+        let checkedState = document.getElementsByClassName('checkbox-filter')[0].checked
+        let categoryFilter = document.getElementsByClassName('select-filter-category')[0].value
+
+        
+        
         
           // Declare variables
-          let authorName, authorTxtValue, card,i, journeyTitle, journeyTxtValue
+          let authorName, authorTxtValue, card,i, journeyTitle, journeyTxtValue, emptyJourney, emptyJourneyTxtValue, journeyCategory, journeyCategoryTxtValue
           card = document.getElementsByClassName('card');
           // Loop through all list items, and hide those who don't match the search query
           for (i = 0; i < card.length; i++) {
             authorName = card[i].getElementsByClassName("author-name")[0]
             journeyTitle = card[i].getElementsByClassName("card-title")[0]
+            emptyJourney = card[i].getElementsByClassName("bg-danger")[0]
+            journeyCategory = card[i].getElementsByClassName("category-name")[0]
+
+            if (emptyJourney){
+             emptyJourneyTxtValue =  emptyJourney.innerHTML.toLowerCase()
+            }
+            if (journeyCategory){
+              journeyCategoryTxtValue = journeyCategory.innerHTML
+            }
+
           
             authorTxtValue = authorName.innerHTML
             journeyTxtValue = journeyTitle.innerHTML
             
-              if (authorTxtValue.indexOf(authorFilterName) >-1 && journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1){
+              if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="All") && (journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && (!emptyJourney && checkedState === true) && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){
               
                 card[i].parentElement.style.position = 'static'
                 card[i].parentElement.style.display = "block"
                 card[i].parentElement.style.visibility = 'visible'
               }
-              else if(authorFilterName==="All" && journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1){
+              else if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="All") && (journeyTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && checkedState === false && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){
                 card[i].parentElement.style.position = 'static'
                 card[i].parentElement.style.display = "block"
                 card[i].parentElement.style.visibility = 'visible'
+              }
+              else if(emptyJourney && (emptyJourneyTxtValue.indexOf('empty')>-1 && checkedState === true) && (journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)<=-1)){
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
               }
               else{
                 card[i].parentElement.style.position="absolute"
                 card[i].parentElement.style.visibility = 'hidden'
                 card[i].parentElement.style.left = '-999em'
               }
-            
-
-            
           }
-        
-
       }
 
       const handleFilterByTitle = (e)=>{
-      let journeyTitleName = e.target.value
-      let authorFilter = document.getElementsByClassName('select-filter-author')[0].value
-        console.log(authorFilter)
+      let journeyTitleFilter = e.target.value.toLowerCase()
+      let authorFilterName = document.getElementsByClassName('select-filter-author')[0].value
+      let checkedState = document.getElementsByClassName('checkbox-filter')[0].checked
+      let categoryFilter = document.getElementsByClassName('select-filter-category')[0].value
+
+
         
           // Declare variables
-          let journeyTitle, txtValue, card,i, journeyAuthor, authorTxtValue
+          let journeyTitle, card,i, journeyAuthor, authorTxtValue, emptyJourney, journeyTitleTxtValue, emptyJourneyTxtValue, journeyCategory, journeyCategoryTxtValue
+
           card = document.getElementsByClassName('card');
           // Loop through all list items, and hide those who don't match the search query
           for (i = 0; i < card.length; i++) {
             journeyTitle = card[i].getElementsByClassName("card-title")[0]
             journeyAuthor = card[i].getElementsByClassName('author-name')[0]
+            emptyJourney = card[i].getElementsByClassName("bg-danger")[0]
+            journeyCategory = card[i].getElementsByClassName("category-name")[0]
 
-            txtValue = journeyTitle.innerHTML.toLowerCase()
+            if (journeyCategory){
+              journeyCategoryTxtValue = journeyCategory.innerHTML
+            }
+            if (emptyJourney){
+             emptyJourneyTxtValue =  emptyJourney.innerHTML.toLowerCase()
+            }
+            journeyTitleTxtValue = journeyTitle.innerHTML.toLowerCase()
             authorTxtValue = journeyAuthor.innerHTML
-            console.log("author txt value", authorTxtValue)
-            console.log(txtValue)
 
-            if (txtValue.indexOf(journeyTitleName) >-1 && authorTxtValue.indexOf(authorFilter)>-1){
+            if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="all") && (journeyTitleTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && (!emptyJourney && checkedState === true) && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){
               
               card[i].parentElement.style.position = 'static'
               card[i].parentElement.style.display = "block"
               card[i].parentElement.style.visibility = 'visible'
             }
-            else if (txtValue.indexOf(journeyTitleName) >-1 && authorFilter==='all'){
+            else if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="all") && (journeyTitleTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && checkedState === false && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){
               card[i].parentElement.style.position = 'static'
               card[i].parentElement.style.display = "block"
               card[i].parentElement.style.visibility = 'visible'
             }
-            else if (txtValue==='' && authorFilter === 'all'){
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
+            else if(emptyJourney && (emptyJourneyTxtValue.indexOf('empty')>-1 && checkedState === true) && (journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilter)<=-1)){
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
             }
             else{
               card[i].parentElement.style.position="absolute"
@@ -137,23 +161,133 @@ function PublicJourneysPage(){
         
 
       }
+      const handleFilterByEmptyness =(e)=>{
+        let journeyEmpty, card,i, authorTxtValue, journeyEmptyTxtValue, journeyTitleTxtValue, categoryTxtValue, categoryValue
+
+        let hideEmptyJourneys = e.target.checked
+        let authorFilter = document.getElementsByClassName('select-filter-author')[0].value
+        let journeyTitleFilter  = document.getElementsByClassName('select-filter-title')[0].value.toLowerCase()
+        let categoryFilter = document.getElementsByClassName('select-filter-category')[0].value
+
+        card = document.getElementsByClassName('card');
+        if (hideEmptyJourneys  === true){
+          for (i = 0; i < card.length; i++) {
+            journeyEmpty = card[i].getElementsByClassName("bg-danger")[0]
+            authorTxtValue = card[i].getElementsByClassName("author-name")[0].innerHTML
+            journeyTitleTxtValue = card[i].getElementsByClassName("card-title")[0].innerHTML
+            categoryValue = card[i].getElementsByClassName("category-name")[0]
+
+            if (categoryValue){
+              categoryTxtValue = categoryValue.innerHTML
+            }
+
+
+
+            if (journeyEmpty){
+              journeyEmptyTxtValue = journeyEmpty.innerHTML.toLowerCase()
+            
+
+            if (journeyEmptyTxtValue.indexOf("empty")>-1){
+              card[i].parentElement.style.position="absolute"
+              card[i].parentElement.style.visibility = 'hidden'
+              card[i].parentElement.style.left = '-999em'
+              }
+          }
+          }
+        }
+        else if (hideEmptyJourneys  === false){
+
+          for (i = 0; i < card.length; i++) {
+            journeyEmpty = card[i].getElementsByClassName("bg-danger")[0]
+            authorTxtValue = card[i].getElementsByClassName("author-name")[0].innerHTML
+            journeyTitleTxtValue = card[i].getElementsByClassName("card-title")[0].innerHTML.toLowerCase()
+            categoryValue = card[i].getElementsByClassName("category-name")[0]
+            if (categoryValue){
+              categoryTxtValue = categoryValue.innerHTML
+            }
+            if(journeyEmpty){
+              journeyEmptyTxtValue = journeyEmpty.innerHTML.toLowerCase()
+            }
+
+            
+              if ((authorTxtValue.indexOf(authorFilter) > -1 || authorFilter === 'all' ) && (journeyTitleTxtValue.indexOf(journeyTitleFilter)>-1 || journeyTitleFilter==='' ) && ((categoryValue && categoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){ 
+                card[i].parentElement.style.position = 'static'
+                card[i].parentElement.style.display = "block"
+                card[i].parentElement.style.visibility = 'visible'
+              }
+              else if ((authorTxtValue.indexOf(authorFilter) >-1 || authorFilter==="all") && (journeyTitleTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && hideEmptyJourneys === false && ((categoryValue && categoryTxtValue.indexOf(categoryFilter)>-1) || categoryFilter === 'all')){
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else if(journeyEmpty && (journeyEmptyTxtValue.indexOf('empty')>-1 && hideEmptyJourneys === true) && (categoryTxtValue.indexOf(categoryFilter)<=-1)){
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
+            }
+            else{
+              card[i].parentElement.style.position="absolute"
+              card[i].parentElement.style.visibility = 'hidden'
+              card[i].parentElement.style.left = '-999em'
+            }
+          }
+        }
+      }
+
+
+
+
 
       const handleFilterByCategory = (e)=>{
         let categoryFilterName = e.target.value
-        console.log(categoryFilterName)
+        let authorFilterName = document.getElementsByClassName('select-filter-author')[0].value
+        let checkedState = document.getElementsByClassName('checkbox-filter')[0].checked
+        let journeyTitleFilter  = document.getElementsByClassName('select-filter-title')[0].value.toLowerCase()
+
+
+
         
           // Declare variables
-          let categoryName, txtValue, card,i;
+          let categoryName, txtValue, card,i, journeyCategory, journeyCategoryTxtValue, journeyTitle, journeyAuthor, emptyJourney, emptyJourneyTxtValue, journeyTitleTxtValue, authorTxtValue;
 
           card = document.getElementsByClassName('card');
           // Loop through all list items, and hide those who don't match the search query
           for (i = 0; i < card.length; i++) {
+            journeyTitle = card[i].getElementsByClassName("card-title")[0]
+            journeyAuthor = card[i].getElementsByClassName('author-name')[0]
+            emptyJourney = card[i].getElementsByClassName("bg-danger")[0]
+            journeyCategory = card[i].getElementsByClassName("category-name")[0]
             
-            categoryName = card[i].getElementsByClassName("journey-category")[0]
-            if (categoryName){
-            txtValue = categoryName.innerHTML
-
-            if (txtValue.indexOf(categoryFilterName) >-1){
+            if (journeyCategory){
+              journeyCategoryTxtValue = journeyCategory.innerHTML
+            }
+            if (emptyJourney){
+             emptyJourneyTxtValue =  emptyJourney.innerHTML.toLowerCase()
+            }
+            journeyTitleTxtValue = journeyTitle.innerHTML.toLowerCase()
+            authorTxtValue = journeyAuthor.innerHTML
+            if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="all") && (journeyTitleTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && (!emptyJourney && checkedState === true) && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilterName)>-1) || categoryFilterName === 'all')){
+              
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else if ((authorTxtValue.indexOf(authorFilterName) >-1 || authorFilterName==="all") && (journeyTitleTxtValue.toLowerCase().indexOf(journeyTitleFilter) > -1 || journeyTitleFilter === '') && checkedState === false && ((journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilterName)>-1) || categoryFilterName === 'all')){
+              card[i].parentElement.style.position = 'static'
+              card[i].parentElement.style.display = "block"
+              card[i].parentElement.style.visibility = 'visible'
+            }
+            else if(emptyJourney && (emptyJourneyTxtValue.indexOf('empty')>-1 && checkedState === true) && (journeyCategory && journeyCategoryTxtValue.indexOf(categoryFilterName)<=-1)){
+                card[i].parentElement.style.position="absolute"
+                card[i].parentElement.style.visibility = 'hidden'
+                card[i].parentElement.style.left = '-999em'
+            }
+            else{
+              card[i].parentElement.style.position="absolute"
+              card[i].parentElement.style.visibility = 'hidden'
+              card[i].parentElement.style.left = '-999em'
+            }
+            /* if (txtValue.indexOf(categoryFilterName) >-1){
               
               card[i].parentElement.style.position = 'static'
               card[i].parentElement.style.display = "block"
@@ -179,43 +313,16 @@ function PublicJourneysPage(){
             card[i].parentElement.style.position="absolute"
             card[i].parentElement.style.visibility = 'hidden'
             card[i].parentElement.style.left = '-999em'
-          }
+          } */
         
       }
       }
 
     
 
-      const handleFilterByEmptyness =(e)=>{
-        let journeyEmpty, txtValue, card,i;
-
-        let hideEmptyJourneys = e.target.checked
-
-
-        card = document.getElementsByClassName('card');
-        if (hideEmptyJourneys  === true){
-          for (i = 0; i < card.length; i++) {
-            journeyEmpty = card[i].getElementsByClassName("bg-danger")[0]
-            if (journeyEmpty){
-            txtValue = journeyEmpty.innerHTML.toLowerCase()
-            console.log(txtValue)
-            card[i].parentElement.style.position="absolute"
-              card[i].parentElement.style.visibility = 'hidden'
-              card[i].parentElement.style.left = '-999em'
-          }
-          }
-        }
-        else {
-          for (i = 0; i < card.length; i++) {
-              card[i].parentElement.style.position = 'static'
-              card[i].parentElement.style.display = "block"
-              card[i].parentElement.style.visibility = 'visible'
-          }
-        }
-      }
+      
 
     useEffect(()=>{
-        console.log('useEffect');
         async function fetchData(){
           
           await  axios.get(`${API_ROUTE}/api/journeys`)
@@ -262,9 +369,7 @@ function PublicJourneysPage(){
          
     }, [])
 
-    /* console.log('allPublicJourneys:', allPublicJourneys);
-    console.log("all users:", usersArrayDisplay)
-    console.log("all categories:", categories) */
+    
     let showBlocks;
     return(
         <div className='centered-journeys'>
@@ -293,11 +398,11 @@ function PublicJourneysPage(){
                <label> Journey Title:<input className='select-filter-title' type="text" onChange={(e)=>handleFilterByTitle(e)} placeholder="Search for journey name.."/></label>
               </div>
               <div>
-              <label>Filter Empty Journeys ? <input onChange={(e)=>handleFilterByEmptyness(e)} type="checkbox"/></label>
+              <label>Filter Empty Journeys ? <input className='checkbox-filter' onChange={(e)=>handleFilterByEmptyness(e)} type="checkbox"/></label>
               </div>
         </div>}
         {!isLoading && allPublicJourneys.map((journey,index)=>{
-            return ( <div>
+            return ( <div key={journey._id}>
             <div>
               
               </div>
