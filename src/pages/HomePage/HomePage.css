@@ -88,9 +88,8 @@
 }
 
 .carousel-title{
-    align-self: center;
     color: #ffcc00;
     text-shadow: 2px 2px #003566;
-    font-size: 3em;
+    font-size: 2rem;
     text-decoration: none;
 }
