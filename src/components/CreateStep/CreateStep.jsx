@@ -193,7 +193,7 @@ function CreateStep(props){
                                         placeholder='link https:// ressource here'
                                         onChange={(event) => handleFieldsChange(index, event)}
                                     />
-                                    <label>http://</label>
+                                    <label>Has to include http://</label>
                                     <button className="btn btn-secondary btn-sm active" name="removeLink" style={{marginTop:'20px'}} onClick={(event) => removeFields(index,event)}>Remove Link</button>
                                 </div>
                             </div>

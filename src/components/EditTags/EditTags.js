@@ -6,7 +6,7 @@ function EditTags(props){
     const { setTagArray, journeyTags, setJourneyTags } = props;
     const [tag, setTag] = useState('');
     const currentTags = [...journeyTags];
-    console.log(journeyTags);
+
     
     const addTag = () => {
        currentTags.push(tag);

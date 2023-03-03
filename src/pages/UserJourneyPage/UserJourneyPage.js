@@ -157,9 +157,9 @@ function UserJourneyPage() {
                 <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
                     
                     {fieldToEdit === 'user-journey-title' ? 
-                        <div>
+                        <div style={{width: '95%'}}>
                         
-                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', size: `${userJourney.title.length}`, fontSize: '1.8em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
+                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', fontSize: '1.6em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
                     : <h1 id='user-journey-title' style={{marginTop: '20px'}} onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
@@ -176,11 +176,11 @@ function UserJourneyPage() {
                     </div>
                     <br/>
                     <div className='d-flex justify-content-center'>
-                        <div className='card .text-{color}' style={{width: '90%'}}> 
-                            <div className='card-body d-flex flex-column align-items-center' style={{padding: '10px 10px'}}>
+                        <div className='card .text-{color}' style={{width: '100%'}}> 
+                            <div className='card-body d-flex flex-column align-items-center' style={{padding: '5px 5x'}}>
                                 <p className='is-public-p' style={{marginBottom: '-10px', paddingTop:'10px'}}>Your Journey is currently <b>{isPublic ? "public" : "private"}</b></p>
                                 <div className="flex-centered">
-                                    <p className="no-padding margin-r is-public-p">{isPublic ? "Uncheck to make journey private :": "Make journey public :"}</p><input checked={isPublic} style={{padding: '0', marginLeft: '0'}} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
+                                    <p className="no-padding is-public-p">{isPublic ? "Uncheck to make journey private: ": "Make journey public: "}</p><input checked={isPublic} style={{padding: '0', marginLeft: '5px'}} onClick={(e)=>handleIsPublic(e)} type='checkbox'/>
                                 </div>
                             </div>
                         </div>

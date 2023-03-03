@@ -41,8 +41,7 @@ function CreateJourney(props){
         const userJourney = {title, description, image, tags: tagArray, isPublic, category};
 
         axios.post(`${API_ROUTE}/api/${user._id}/journeys`, userJourney)
-            .then(response => {
-                console.log(response.data)   
+            .then(response => { 
                 let newJourneysArray = response.data.user.journeysCreated
                 setUser(response.data.user);
                 navigate(`/profile`);
