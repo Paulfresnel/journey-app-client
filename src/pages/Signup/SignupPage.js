@@ -53,7 +53,7 @@ function SignupPage() {
               placeholder="username"
               onChange={handleuserName}
             />
-            <label>Userame:</label>
+            <label>Username:</label>
           </div>
   
           <div className='form-floating mb-3'>

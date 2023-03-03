@@ -40,14 +40,22 @@ function HomePage(){
     return(
         <div className="main-menu">
             <div className='home-header'>
-                <img className='home-img' src='https://res.cloudinary.com/djwmauhbh/image/upload/v1677850123/journey-app-assets/Banner_ntdakc.jpg'/>
+                <img className='home-img' src='https://res.cloudinary.com/djwmauhbh/image/upload/v1677877002/journey-app-assets/SkillRoadBanner_2_ryhgmh.jpg'/>
             </div>    
             <div className='featured-j-container'>
                 <br/>
                 <hr/>
                 <h1 className='second-title'>Featured Journey</h1>
                 <p className="italic colored main-menu-description">Discover the Journeys created by our Users</p>
-                {isLoading && <img src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+                {isLoading && 
+                    <>
+                        <div className='text-center' style={{marginTop: '150px'}}>
+                            <div className="spinner-border spinner-border-lg">
+                                <span className="sr-only"></span>
+                            </div>
+                        </div>
+                    </>
+                    }
                 {!isLoading && 
                     <div className='carousel-container'>
                         <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel" >  
