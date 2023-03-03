@@ -157,9 +157,9 @@ function UserJourneyPage() {
                 <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
                     
                     {fieldToEdit === 'user-journey-title' ? 
-                        <div>
+                        <div style={{width: '95%'}}>
                         
-                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', size: `${userJourney.title.length}`, fontSize: '1.8em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
+                            <input type="text" defaultValue={userJourney.title} name="title" autoFocus style={{height: '50px', fontSize: '1.6em'}} onFocus={(event) => event.currentTarget.select()} onBlur={(event) => handleEditValue(event)}/>         
                             <br/>
                         </div> 
                     : <h1 id='user-journey-title' style={{marginTop: '20px'}} onClick={() => setFieldToEdit('user-journey-title')}>{userJourney.title}<span><i className="bi bi-pencil-fill pencil" ></i></span></h1>}             
