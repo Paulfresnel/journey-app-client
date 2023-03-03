@@ -35,7 +35,7 @@ function PublicIndividualStep(){
                 },1000)
             })
     },[stepId])
-    
+
     return(
         <div>
             {isLoading && <img alt="spinner loader" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
@@ -71,7 +71,7 @@ function PublicIndividualStep(){
                 {step.links.map((link,index)=>{
                     return <tr>
                         <td className={index%2===0 ? " font-color table-row-par":"table-row-odd"}>{index}</td>
-                        <td className={index%2===0 ? "table-row-par":" font-colortable-row-odd"}><Link className={index%2===0 ? " font-color bold font-color":"bold"} to={link.link}> {link.name}</Link></td>
+                        <td className={index%2===0 ? "table-row-par":" font-color table-row-odd"}><Link className={index%2===0 ? " font-color bold font-color":"bold"} to={link.link}> {link.name}</Link></td>
                     </tr>
                 })}
                 </tbody>
