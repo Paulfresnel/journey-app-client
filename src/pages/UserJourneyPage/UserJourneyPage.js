@@ -56,13 +56,15 @@ function UserJourneyPage() {
                 setBlockProgress(Math.round(completedPercentage))
             } else setBlockProgress(0)};
         
-        if(blockProgress === 100){
-            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
-                    .then((response) => setUpdatedJourney(response.data))
-        } else {
-            axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
-                    .then((response) => setUpdatedJourney(response.data))
-        }  
+        if(activeBlock) {
+            if(blockProgress === 100){
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: true })
+                        .then((response) => setUpdatedJourney(response.data))
+            } else {
+                axios.put(`${API_ROUTE}/api/blocks/${activeBlock._id}`, { isCompleted: false })
+                        .then((response) => setUpdatedJourney(response.data))
+        }} 
+
      }, [blockProgress, activeBlock]);   
      
      
@@ -165,7 +167,7 @@ function UserJourneyPage() {
                     <div>
                         <img src={userJourney.image} alt={`${userJourney.title}`} style={{width: '50%', height: 'auto'}}/>
                         <br/>
-                        <label for='update-journey-image'>
+                        <label htmlFor='update-journey-image'>
                         <br/>
                             <button className="btn btn-light img-upload-btn" onClick={handleImageUpload}>Update Image</button>
                             <input id= 'update-journey-image' type='file' ref={hiddenFileInput} onChange={(event) => handleImageChange(event)} style={{display: 'none'}}/>
@@ -207,8 +209,8 @@ function UserJourneyPage() {
                                 {userJourney.tags && userJourney.tags.map(tag => {
                                     if(tag){
                                         return  (
-                                            <div >
-                                                <button type="button" class="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
+                                            <div key={tag}>
+                                                <button type="button" className="btn btn-outline-primary tag-map" style={{margin: '10px'}}>
                                                     {tag} <span className="badge badge-light"/>
                                                 </button>
                                             </div>
@@ -269,8 +271,8 @@ function UserJourneyPage() {
                                             return (
                                                 <Link to={`/profile/journeys/${journeyId}/${block._id}/${step._id}`}>
                                                 
-                                                    <button type="button" class="btn btn-primary" style={{margin:'5px', width: '70%'}}>
-                                                        {step.title}<span class="badge badge-light">{step.isCompleted ? checkMark : ""}</span>
+                                                    <button type="button" className="btn btn-primary" style={{margin:'5px', width: '70%'}}>
+                                                        {step.title}<span className="badge badge-light">{step.isCompleted ? checkMark : ""}</span>
                                                     </button>
                                                 </Link>)
                                         })}
