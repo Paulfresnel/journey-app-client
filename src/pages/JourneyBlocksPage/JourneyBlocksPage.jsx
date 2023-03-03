@@ -1,7 +1,5 @@
-import CreateBlock from "../../components/CreateBlock/CreateBlock"
 import { Link, useParams } from "react-router-dom"
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../context/auth.context"
+import {  useEffect, useState } from "react"
 import axios from "axios"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
 
@@ -11,7 +9,6 @@ function JourneyBlocksPage(){
      const {journeyId} = useParams()
      const [showForm, setShowForm] = useState(false)
      const [isLoading, setIsLoading] = useState(true)
-     const {user, setUser} = useContext(AuthContext)
      const [journey, setJourney] = useState(
         {_id:"", title:"", description:"", blocks:[{}], usersCopying:[""], tags:[""], upvoteUsers:[''], isPublic:"",image:""  }
      )
@@ -20,7 +17,6 @@ function JourneyBlocksPage(){
 
 
     const [block, setBlock] = useState('');
-    const [blocksInJourney, setBlocksInJourney] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');   
 
 
@@ -35,12 +31,8 @@ function JourneyBlocksPage(){
         event.preventDefault();
         axios.post(`${API_ROUTE}/api/${journeyId}/blocks`, block)
             .then( (apiResponse) => {
-                console.log("new journey updated")
                 let updatedJourney = apiResponse.data
-                console.log(updatedJourney)
                 setJourney(updatedJourney)
-                console.log("copy array after block push")
-                console.log(journey)
             })
             .catch(err => {
                 console.log(err)
@@ -51,9 +43,7 @@ function JourneyBlocksPage(){
         e.preventDefault()
         let blockId = e.target.value
         axios.delete(`${API_ROUTE}/api/${journeyId}/blocks/${blockId}`)
-            .then(apiResponse=>{
-                console.log(apiResponse)
-                
+            .then(apiResponse=>{                
                    let filteredBlocks =  journey.blocks.filter(block=>{
                         return block._id !== blockId
                     })
@@ -68,10 +58,7 @@ function JourneyBlocksPage(){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/journeys/${journeyId}`)
             .then(apiResponse=>{
-                console.log(apiResponse)
-                console.log("here")
                 setJourney(apiResponse.data)
-                console.log(journey)
                 setIsLoading(false)
             })
     },[journeyId])

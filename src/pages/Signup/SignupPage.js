@@ -6,7 +6,7 @@ import "./SignupPage.css"
 const API_ROUTE = process.env.REACT_APP_SERVER_URL;
  
  
-function SignupPage(props) {
+function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");

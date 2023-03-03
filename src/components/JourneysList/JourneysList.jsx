@@ -18,11 +18,9 @@ function JourneysList(){
     }
 
     useEffect(()=>{
-        console.log(userId)
         axios.get(`${API_ROUTE}/api/users/${userId}`)
             .then(apiResponse=>{
                 let updatedUser = apiResponse.data
-                console.log(updatedUser)
                 setUser(updatedUser)
                 setIsLoading(false)
             })

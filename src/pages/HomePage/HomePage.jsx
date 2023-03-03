@@ -14,7 +14,6 @@ function HomePage(){
     useEffect(()=>{
         axios.get(`${API_ROUTE}/api/journeys`)
             .then(response=>{
-                console.log(response)
                 let publicJourneys = response.data.publicJourneys
                 publicJourneys.map(journey=>{
                     let counter=0
@@ -31,10 +30,8 @@ function HomePage(){
               let journeysNotEmpty =  publicJourneys.filter(journey=>{
                     return journey.totalSteps > 0
                 })
-                console.log(journeysNotEmpty)
 
                 let randomNumber = Math.floor(Math.random()* journeysNotEmpty.length)
-                console.log(randomNumber)
                 setFeaturedJourney(journeysNotEmpty[randomNumber])
                 setIsLoading(false)
             })  

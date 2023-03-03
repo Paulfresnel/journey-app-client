@@ -34,7 +34,6 @@ useEffect(()=>{
            }, 1000) 
         })
 }, [blockId])
-    console.log(block)
 
 
     return(

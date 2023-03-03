@@ -27,8 +27,6 @@ function PublicUserPage(){
         axios.get(`${API_ROUTE}/api/users/${userId}`)
             .then(response=>{
                 let user = response.data
-                console.log(user)
-
                 if(user.createdAt){
                 let userCreationDate = user.createdAt
                 let userCreationDateObject = new Date(userCreationDate)
@@ -45,7 +43,6 @@ function PublicUserPage(){
                         return journey
                     }
                 })
-                console.log(UserJourneyPage)
 
                 userJourneysCreated.map(journey=>{
                     if (journey.upvoteUsers){

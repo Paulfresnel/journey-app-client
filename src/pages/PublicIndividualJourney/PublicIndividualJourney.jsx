@@ -36,7 +36,6 @@ useEffect(()=>{
                 let readableUpdatedData = dateUpdatedObject.toLocaleDateString('en-US', options)
                 setCreationDate(readableCreationDate)
                 setUpdatedData(readableUpdatedData)
-                console.log(journey)
                 let counterIt =0
                 journey.blocks.map((block)=>{
                     if (block.steps !== []){
