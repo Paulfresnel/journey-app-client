@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# SkillRoad App: Share your Knowledge
+<p>This project is available <a href="https://wwww.skillroad.netlify.app"> Here </a>. It is cooperatively maintained by GitHub users <a href="https://github.com/humbertovacu">Humberto</a> and <a href="https://github.com/Paulfresnel"> Paul </a>. </p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8am91cm5leSUyMGxlYXJuaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"/>
 
-## Available Scripts
+## Concept: A Peer-to-Peer Knowledge Base
 
-In the project directory, you can run:
+<h3>Idea</h3>
+<ul>
+<li>P2P Knowledge Base</li>
+<li>Millions of different options</li>
+<li>Easy-to-access resources</li>
+<li>Inspired from Roadmap.sh</li>
+</ul>
 
-### `npm start`
+<h3>Idea</h3>
+<ul>
+<li>A “roadmap” for any skill</li>
+<li>Easily create, edit and view Roadmaps</li>
+<li>Several areas of knowledge</li>
+<li>A social experience</li>
+<li>Friendly, intuitive UI/UX</li>
+</ul>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+<h3>How it works</h3>
+<ul>
+<li>Create your User profile</li>
+<li>Create your own Journeys/Roadmaps and share them publicly </li>
+<li>Add Learning Block(s) to your journey</li>
+<li>Add Step(s) to accomplish within your Blocks</li>
+<li>Add as many Link Ressources to your Steps as needed</li>
+</ul>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<h3>Social Components</h3>
+<ul>
+<li>Public/Private Journeys</li>
+<li>Upvote Journeys </li>
+<li>Profile Page</li>
+<li>User Leaderboard</li>
+<li>Journeys Leaderboard</li>
+</ul>
 
-### `npm run build`
+## Mobile-first Design
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Our App features and design are best enjoyed under a mobile screen display. Future updates will ensure better design adaptation for larger screen sizes.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
