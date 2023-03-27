@@ -1,5 +1,5 @@
 # SkillRoad App: Share your Knowledge
-<p>This project is available <a href="https://wwww.skillroad.netlify.app"> Here </a>. It is cooperatively maintained by GitHub users <a href="https://github.com/humbertovacu">Humberto</a> and <a href="https://github.com/Paulfresnel"> Paul </a>. </p>
+<p>This project is available <a href="https://skillroad.netlify.app"> Here </a>. It is cooperatively maintained by GitHub users <a href="https://github.com/humbertovacu">Humberto</a> and <a href="https://github.com/Paulfresnel"> Paul </a>. </p>
 
 <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8am91cm5leSUyMGxlYXJuaW5nfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"/>
 
