@@ -38,7 +38,15 @@ function PublicIndividualStep(){
 
     return(
         <div>
-            {isLoading && <img alt="spinner loader" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
+            {isLoading && 
+                <>
+                    <div className='text-center' style={{marginTop: '150px'}}>
+                         <div className="spinner-border spinner-border-lg">
+                            <span className="sr-only"></span>
+                        </div>
+                    </div>
+                </>
+            }
             {!isLoading && <div>
                 <div className="margined">
              <button onClick={()=>navigate(-1)} className="btn btn-primary space-r">Go Back</button>

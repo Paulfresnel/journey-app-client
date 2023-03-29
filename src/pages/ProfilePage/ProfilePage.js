@@ -92,14 +92,15 @@ function ProfilePage() {
             <button onClick={()=>navigate(-1)} className="btn btn-primary space-r margin-top">Go Back</button>
             
             {isLoading && 
-            <>
-                <div className='text-center' style={{marginTop: '150px'}}>
-                    <div className="spinner-border spinner-border-lg">
-                        <span className="sr-only"></span>
+                <>
+                    <div className='text-center' style={{marginTop: '150px'}}>
+                         <div className="spinner-border spinner-border-lg">
+                            <span className="sr-only"></span>
+                        </div>
                     </div>
-                </div>
-            </>
+                </>
             }
+
         {!isLoading &&
         <> 
             <div className='main-container-carousel no-padding'>
