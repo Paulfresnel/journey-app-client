@@ -37,7 +37,7 @@ function PublicUserPage(){
               }
             let readableUpdatedDate = userCreationDateObject.toLocaleDateString('en-US', options)
               setCreationDate(readableUpdatedDate)
-}
+            }
                 let userJourneysCreated = user.journeysCreated.filter((journey,)=>{
                     if (journey.isPublic === true){
                         return journey
@@ -96,60 +96,58 @@ function PublicUserPage(){
             {isLoading && <img alt="spinner loading" src="https://media4.giphy.com/media/y1ZBcOGOOtlpC/200w.webp?cid=ecf05e47wd7jjsjcajwwmcw8vx0gefelzn5rqsr3gy1jhymm&rid=200w.webp&ct=g"/>}
             
             {!isLoading && <div id="journeysCreated" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-        {journeys.map((journey,index)=>{
-            if (index===0){ 
-                return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
-            } else {
-           return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
-        }})}
-        </div>  
-  <div className="carousel-inner">
-     <div> {journeys.map((journey,index)=>{
-        if (index===0){
-    return (<div className="carousel-item active">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-             <h1 className="carousel-title">{journey.title}{!journey.blocks && <span class="badge bg-danger new-badge">Empty Journey</span>}</h1>
-            <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>
-            <Link to={`/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Check Journey</button>
-            </Link>
+            <div className="carousel-indicators">
+            {journeys.map((journey,index)=>{
+                if (index===0){ 
+                    return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1" ></button>
+                } else {
+            return <button style={{color:"black"}} type="button" data-bs-target="#journeysCreated" data-bs-slide-to={index} className="" aria-label={`Slide ${index+1}`} ></button>
+            }})}
+            </div>  
+        <div className="carousel-inner">
+            <div> {journeys.map((journey,index)=>{
+                if (index===0){
+            return (
+                <div className="carousel-item active">
+                <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                    <div className="carousel-caption">
+                        <h1 className="carousel-title">{journey.title}{!journey.blocks && <span class="badge bg-danger new-badge">Empty Journey</span>}</h1>
+                        <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>
+                        <Link to={`/journeys/${journey._id}`}>
+                        <button className="btn btn-primary carousel-btn">Check Journey</button>
+                        </Link>
+                    </div>
+                </div>
+            )} else {
+                    return (<div className="carousel-item">
+                        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
+                        <div className="carousel-caption">
+                        
+                            <h1 className="carousel-title">{journey.title}{journey.blocks.length ===0 && <span class="badge bg-danger new-badge">Empty Journey</span>}</h1>
+                            
+                            {journey.upvoteUsers && <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>}
+                            {journey.category && <h6 className="category">{journey.category}</h6>}
+                            <Link to={`/journeys/${journey._id}`}>
+                            <button className="btn btn-primary carousel-btn">Check Journey</button>
+                            </Link>
+                        </div>
+                    </div>
+                    )
+                    }
+                    })}
+                </div> 
+            </div>
+                {journeys.length !== 0 && <div><button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#journeysCreated" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden black">Next</span>
+                </button>
+                </div>}
+            </div>}
         </div>
-    </div>
-     )
-} else {
-    return (<div className="carousel-item">
-        <img loading='lazy' src={journey.image} className=" w-100 h-100" alt="..."/>
-        <div className="carousel-caption">
-        
-            <h1 className="carousel-title">{journey.title}{journey.blocks.length ===0 && <span class="badge bg-danger new-badge">Empty Journey</span>}</h1>
-            
-            {journey.upvoteUsers && <p className="upvote">Total Upvotes received: {journey.upvoteUsers.length}</p>}
-            {journey.category && <h6 className="category">{journey.category}</h6>}
-            <Link to={`/journeys/${journey._id}`}>
-            <button className="btn btn-primary carousel-btn">Check Journey</button>
-            </Link>
-        </div>
-    </div>
-     )
-}
-     }) }
-     </div> 
-     
-  </div>
-  {journeys.length !== 0 && <div><button className="carousel-control-prev" type="button" data-bs-target="#journeysCreated" data-bs-slide="prev">
-    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span className="visually-hidden">Previous</span>
-  </button>
-  <button className="carousel-control-next" type="button" data-bs-target="#journeysCreated" data-bs-slide="next">
-    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-    <span className="visually-hidden black">Next</span>
-  </button>
-  </div>}
-</div>
-    }
-    </div>
     </div>)}
 
 export default PublicUserPage

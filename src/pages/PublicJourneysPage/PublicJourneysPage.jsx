@@ -245,11 +245,11 @@ function PublicJourneysPage(){
 
 
         
-          // Declare variables
+        
           let categoryName, txtValue, card,i, journeyCategory, journeyCategoryTxtValue, journeyTitle, journeyAuthor, emptyJourney, emptyJourneyTxtValue, journeyTitleTxtValue, authorTxtValue;
 
           card = document.getElementsByClassName('card');
-          // Loop through all list items, and hide those who don't match the search query
+     
           for (i = 0; i < card.length; i++) {
             journeyTitle = card[i].getElementsByClassName("card-title")[0]
             journeyAuthor = card[i].getElementsByClassName('author-name')[0]
